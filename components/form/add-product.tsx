@@ -1,0 +1,143 @@
+"use client";
+
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { useUser } from "@clerk/nextjs";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AddProductSchema } from "@/lib/schema";
+import { useRouter } from "next/navigation";
+import z from "zod";
+import { addProduct } from "@/app/actions/general";
+import { toast } from "sonner";
+// import { supabase } from "@/lib/supabaseClient"; // MAKE SURE THIS EXISTS
+
+export default function AddProduct() {
+  const { user } = useUser();
+  const id = user?.id;
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const form = useForm({
+    resolver: zodResolver(AddProductSchema),
+    defaultValues: {
+      product_name: "",
+      // farmer_id: user?.id ?? "",
+      image: "",
+      price: 0,
+      product_detail: "",
+      status: "active",
+    },
+  });
+
+  const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
+    values
+  ) => {
+    setLoading(true);
+    console.log("values : ", values);
+    const added = await addProduct({ farmer_id: id, values });
+    toast(added.message);
+
+    setLoading(false);
+  };
+
+  return (
+    <Dialog>
+      <DialogTrigger className="px-4 py-2 bg-green-600 font-bold text-white rounded-md">
+        Add New Product
+      </DialogTrigger>
+
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add New Product</DialogTitle>
+          <DialogDescription>
+            Upload a product image and details.
+          </DialogDescription>
+        </DialogHeader>
+        <Card>
+          <CardHeader>Use a clear image</CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  name="product_name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Image</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="product_detail"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="hover:bg-black/10 active:bg-black/25"
+                >
+                  {loading ? "Uploading..." : "Add Product"}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </DialogContent>
+    </Dialog>
+  );
+}
