@@ -8,7 +8,7 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
 const { sessionClaims } = await auth();
 let role = sessionClaims?.metadata?.role;
 
-if(!role || role === null || role === "buyer"){
+if(!role || role === null || role === "BUYER"){
   const role = "user";
 }
 
@@ -26,7 +26,9 @@ if(!role || role === null || role === "buyer"){
 
         {/* Header */}
         <div className="w-full sticky top-0 z-40">
-          <DashboardHeader role={role} />
+         {role && (
+                <DashboardHeader role={role} />
+         )} 
         </div>
 
         {/* Page content container */}

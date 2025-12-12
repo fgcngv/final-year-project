@@ -2,7 +2,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 
 interface roleProps {
-  role:"admin" | "buyer" | "seller" | "lab_technician" | "cashier";
+  role:"ADMIN" | "BUYER" | "SELLER" | "LAB_TECHNICIAN" | "CASHIER";
 }
 
 
