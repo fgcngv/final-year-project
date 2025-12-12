@@ -100,7 +100,6 @@
 // Enhanced, premium UI version of your HomePage component
 "use client";
 
-import { Product } from "@/app/generated/prisma/client";
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -111,6 +110,7 @@ import { Button } from "./ui/button";
 import { useState } from "react";
 import { addToCart } from "@/utils/services/cartItem";
 import { ShoppingCart, ArrowRight, Coffee } from "lucide-react";
+import { Product } from "@prisma/client";
 
 interface roleProps {
   role: "admin" | "buyer" | "seller" | "lab_technician" | "cashier";

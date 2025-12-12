@@ -11,11 +11,11 @@
 
 "use client";
 
-import { PDescription } from "@/app/generated/prisma/client";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import AnimatedTypewriter from "./ai-clone/animated_type";
 import { useState } from "react";
+import { PDescription } from "@prisma/client";
 
 interface productDescriptionProps {
   id: string;

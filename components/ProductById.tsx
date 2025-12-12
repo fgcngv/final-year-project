@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/app/generated/prisma/client";
+import { Product } from "@prisma/client";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { motion } from "framer-motion";
