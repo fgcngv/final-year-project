@@ -15,7 +15,7 @@ function AuthLayout({ children }: { children: React.ReactNode }) {
         transition={{ duration: 0.6 }}
         className="flex flex-col items-center justify-center w-full md:w-1/2 p-8"
       >
-        <div className="w-full  relative justify-center items-center  shadow-xl rounded-xl p-8 border border-gray-100">
+        <div className="w-full  relative justify-center items-center  shadow-xl rounded-xl py-8 border border-gray-100">
         <Image
           src="/cup_coffee.png"
           alt="Green Coffee Art"
