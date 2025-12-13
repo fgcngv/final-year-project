@@ -1,4 +1,3 @@
-import { User } from "@/app/generated/prisma/client";
 import {
   Card,
   CardContent,
@@ -7,6 +6,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Button } from "../ui/button";
+import { User } from "@prisma/client";
 
 interface userDetailProps {
   param: string;
