@@ -31,19 +31,19 @@ export async function getUserById(id:string) {
 
 interface LanguageProps {
     id:string,
-    userType: "user" | "farmer"
+    userType: "BUYER" | "SELLER"
 }
 
 
 export async function getUserLanguage({ id, userType }: LanguageProps) {
   switch (userType) {
-    case "user":
+    case "BUYER":
       return await prisma.user.findUnique({
         where: { id },
         select: { language: true },
       });
 
-    case "farmer":
+    case "SELLER":
       return await prisma.farmer.findUnique({
         where: { id },
         select: { language: true },

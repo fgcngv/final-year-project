@@ -16,20 +16,6 @@ export default async function Home() {
   const { userId,sessionClaims } = await auth();
   let role = sessionClaims?.metadata?.role;
 
-    let userRole = role;
-
-    if(role === "buyer"){
-      userRole = "user"
-    }else if(role === "seller"){
-      userRole = "farmer"
-    }else if(role === "admin"){
-      userRole = "user"
-    }
-
-
-  if(role === "buyer" || !role || role === null){
-    role = "user";
-  }
 
 
 // console.log("sessionclaims ; ",role);
@@ -67,15 +53,13 @@ export default async function Home() {
     return <div>Not products found in the database</div>
   }
 
-  const language = await getUserLanguage({id:userId,userType:userRole});
-  const userLanguage = language?.language || "ENGLISH"
 
 
 
   return (
     <div className="pt-2">
       <Header />
-      <HomePage language={userLanguage} products={productsData?.data ?? []} role={role} />
+      <HomePage products={productsData?.data ?? []} role={role || "/"} />
     </div>
   );
 }

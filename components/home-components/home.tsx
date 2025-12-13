@@ -223,7 +223,7 @@
 // Enhanced, premium UI version of your HomePage component
 "use client";
 
-import { Product } from "@/app/generated/prisma/client";
+
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -236,11 +236,11 @@ import { addToCart } from "@/utils/services/cartItem";
 import { ShoppingCart, ArrowRight, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../checkTheme";
+import { Product } from "@prisma/client";
 
 interface roleProps {
-  role: "admin" | "buyer" | "seller" | "lab_technician" | "cashier";
+  role: "ADMIN" | "BUYER" | "SELLER" | "LAB_TECHNICIAN" | "CASHIER" | "/";
   products: Product[];
-  language: "ENGLISH" | "AMHARIC" | "AFAN_OROMO";
 }
 
 const container = {
@@ -350,7 +350,7 @@ export default function HomePage({ role, products }: roleProps) {
 
         {user && (
           <Link
-            href={`${role}`}
+            href={`/${role}`}
             className="relative mt-3 text-white hover:underline"
           >
             {language === "ENGLISH"
