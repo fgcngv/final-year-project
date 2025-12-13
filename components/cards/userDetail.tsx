@@ -26,6 +26,10 @@ function UserDetail({ param, userData }: userDetailProps) {
     timeZone: "Africa/Nairobi",
   });
 
+  const me = 23;
+  console.log(me);
+
+
   const formattedRegistrationDate = formatter.format(userData?.created_at);
   const formattedLastViewedDate = formatter.format(userData?.updated_at);
 
