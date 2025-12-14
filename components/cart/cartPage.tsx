@@ -270,6 +270,8 @@
 //   );
 // }
 
+
+
 "use client";
 
 import React, { useState } from "react";
@@ -285,6 +287,7 @@ import { useTheme } from "../checkTheme";
 import Header from "../header";
 
 interface CartItemProps {
+  cartQuantity?:number;
   cart_id: string;
   user_id: string;
   total: number;
@@ -304,6 +307,7 @@ interface CartItemProps {
 }
 
 export default function CartPage({
+  cartQuantity,
   cart_id,
   user_id,
   items,
@@ -367,7 +371,7 @@ export default function CartPage({
   return (
     <div className="flex flex-col gap-4">
       {/* <Header language={language} /> */}
-      <Header />
+      <Header cartQuantity={cartQuantity} />
       <div className="w-full min-h-screen p-4 md:p-8 bg-gray-50">
         <div className="h-8 p-10"></div>
 

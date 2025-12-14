@@ -18,10 +18,11 @@ interface Product {
 }
 
 interface ProductsProps {
+  cartQuantity?: number,
   products: Product[];
 }
 
-export default function ProductsPage({ products }: ProductsProps) {
+export default function ProductsPage({ products,cartQuantity }: ProductsProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const { theme, toggleTheme } = useTheme();
@@ -31,7 +32,7 @@ export default function ProductsPage({ products }: ProductsProps) {
   if (!products || products.length === 0) {
     return (
       <div className="flex h-screen w-full bg-green-900 text-2xl font-bold text-center items-center justify-center">
-        <Header />
+        <Header cartQuantity={cartQuantity} />
 
         <div className="flex flex-col gap-2 text-white">
           {language === "ENGLISH"

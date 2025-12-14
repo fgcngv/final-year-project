@@ -33,21 +33,29 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
 async function CartById() {
+  let cartQuantity = 0;
   const { userId } = await auth();
   if (!userId) return <div>Not Authenticated</div>;
 
-
   const data = await getCartByUserId(userId);
+   
 
-
-  if (!data) return <div className="h-screen flex flex-col bg-green-900 text-2xl text-white font-bold justify-center items-center">
+  if (!data || "error" in data) return <div className="h-screen flex flex-col bg-green-900 text-2xl text-white font-bold justify-center items-center">
     <h1>You have no Cart Stored</h1>
     <Link href="/product" className="bg-green-950 p-1 rounded hover:underline ">Buy Products</Link>
   </div>;
 
+// calculate cart quantity
+  data?.items?.map((item)=>(
+    cartQuantity += item?.quantity
+  ));
+
+  console.log("quantity : ",cartQuantity)
+
   return (
     <div>
       <CartPage
+        cartQuantity={cartQuantity}
         cart_id={data.id}
         user_id={userId}
         items={data.items}

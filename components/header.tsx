@@ -25,7 +25,7 @@ const headerLinks = [
   { name: "Orders", link: "/orders", key: "orders" },
 ];
 
-export default function Header() {
+export default function Header({cartQuantity}:{cartQuantity?:number}) {
   // Language Option
     const { theme, toggleTheme } = useTheme();
   
@@ -46,6 +46,7 @@ export default function Header() {
 
     router.refresh();
   };
+  
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-black text-white px-6 py-4 z-50 shadow-md">
@@ -83,17 +84,6 @@ export default function Header() {
 
           {/* Language Option*/}
           <div>
-            {/* <select
-              name="language"
-              id="language"
-              onChange={handleLanguageChange}
-              className="text-green-600 font-bold border p-1 rounded cursor-pointer border-green-600"
-            >
-               <option value="ENGLISH">Language</option>
-              <option value="ENGLISH">English</option>
-              <option value="AMHARIC">አማርኛ</option>
-              <option value="AFAN_OROMO">Afaan Oromoo</option>
-            </select> */}
                   <Button onClick={toggleTheme} className="cursor-pointer font-bold bg-green-600 hover:bg-green-700 active:bg-green-800">{theme}</Button>
           </div>
 
@@ -102,7 +92,7 @@ export default function Header() {
               <ShoppingCart className="w-7 h-7" />
             </Link>
             <span className="absolute -top-2 -right-2 bg-green-600 text-xs font-bold rounded-full px-2 py-0.5">
-              2
+              {cartQuantity}
             </span>
           </div>
 

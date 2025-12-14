@@ -8,12 +8,21 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getAllProducts } from "./actions/products";
 import { getUserLanguage } from "@/utils/services/admin";
+import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
 
 export default async function Home() {
+  const { userId,sessionClaims } = await auth();
+
+  const cart = await getCartByUserIdForCartQuantity(userId ? userId:"");
+  let cartQuantity = 0;
+
+  cart?.items?.map((item)=>(
+    cartQuantity += item.quantity
+  ));
+  console.log("cartQuantity: ",cartQuantity)
   const user = await currentUser();
   const productsData = await getAllProducts()
   // console.log("productsData : ",productsData.data)
-  const { userId,sessionClaims } = await auth();
   let role = sessionClaims?.metadata?.role;
 
 
@@ -58,7 +67,7 @@ export default async function Home() {
 
   return (
     <div className="pt-2">
-      <Header />
+      <Header cartQuantity={cartQuantity} />
       <HomePage products={productsData?.data ?? []} role={role || "/"} />
     </div>
   );

@@ -1,15 +1,25 @@
-import Header from "@/components/header";
+import OrdersPage from "@/components/ordersPage";
+import { getCartByUserId } from "@/utils/services/cart";
+import { auth } from "@clerk/nextjs/server";
 
-function OrdersPage() {
+async function Orders() {
+    let cartQuantity = 0;
+    const {userId} = await auth();
+    const cart = await getCartByUserId(userId || "");
+    
+    if(!cart ||"error" in cart){
+        return <div><OrdersPage /> </div>
+    }
+
+    cart?.items?.map((item)=>(
+        cartQuantity += item?.quantity
+    ));
+
     return ( 
         <div>
-            <Header />
-            <div className="pt-18">
-            orders page
-
-            </div>
+            <OrdersPage cartQuantity={cartQuantity} />
         </div>
      );
 }
 
-export default OrdersPage;
+export default Orders;

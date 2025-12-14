@@ -47,12 +47,16 @@ export async function getCartByUserId(userId: string) {
     include: {
       items: {
         include: {
-          product: true, // include product details for each CartItem
+          product: true, // include product details for each CartItem       
         },
       },
       user: true, // optional: include user info
     },
   });
+
+  if(!cart){
+    return {error:true,message:"Cart Not Found!"}
+  }
 
   return cart;
 }
