@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 
 export async function getUserById(id:string) {
@@ -173,4 +174,46 @@ export const getAllOrders = async () => {
       message: "Something went wrong!"
     };
   }
+};
+
+
+// export const getAllMessages = async() =>{
+//   const {userId,sessionClaims } = await auth();
+
+//   try{
+//     const role = sessionClaims?.metadata?.role;
+
+//     if(!userId || role !== "ADMIN"){
+//       return null
+//     }
+  
+//      const data = await prisma.contact.findMany();
+  
+//      if(!data){
+//       return {error:true,message:"Failed to load Messages!"}
+//      }
+
+//      return data;
+
+//   }catch(error){
+//     console.log(error);
+//     return {error:true,message:"Something went wrong!"}
+//   }
+// }
+
+export const getAllMessages = async () => {
+  const { userId, sessionClaims } = await auth();
+
+  if (!userId) {
+    throw new Error("Not authenticated");
+  }
+
+  const role = sessionClaims?.metadata?.role;
+  if (role?.toUpperCase() !== "ADMIN") {
+    throw new Error("Not authorized");
+  }
+
+  return await prisma.contact.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 };
