@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -7,6 +9,8 @@ import {
 } from "../ui/card";
 import { Button } from "../ui/button";
 import { User } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import LoaderBtn from "../loaderBtn";
 
 interface userDetailProps {
   param: string;
@@ -14,6 +18,7 @@ interface userDetailProps {
 }
 
 function UserDetail({ param, userData }: userDetailProps) {
+  const router = useRouter();
   const formatter = new Intl.DateTimeFormat("en-US", {
     weekday: "short",
     year: "numeric",
@@ -26,9 +31,7 @@ function UserDetail({ param, userData }: userDetailProps) {
     timeZone: "Africa/Nairobi",
   });
 
-  const me = 23;
-  console.log(me);
-
+  console.log("userdata : ", userData.id);
 
   const formattedRegistrationDate = formatter.format(userData?.created_at);
   const formattedLastViewedDate = formatter.format(userData?.updated_at);
@@ -70,8 +73,15 @@ function UserDetail({ param, userData }: userDetailProps) {
         </CardContent>
 
         <CardFooter className="flex justify-end gap-3">
-          <Button variant="destructive">Delete User</Button>
-          <Button variant="default">Update User</Button>
+          <LoaderBtn btnName="Delete User" className="bg-red-600" />
+
+          <LoaderBtn btnName="Update user" />
+
+          <LoaderBtn
+            linkTo={`/admin/order/${userData?.id}`}
+            btnName="View Order"
+            className="bg-blue-800"
+          />
         </CardFooter>
       </Card>
     </div>
