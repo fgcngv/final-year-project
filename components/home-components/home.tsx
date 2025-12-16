@@ -237,6 +237,7 @@ import { ShoppingCart, ArrowRight, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../checkTheme";
 import { Product } from "@prisma/client";
+import PopupNotification from "../popupNotification";
 
 interface roleProps {
   role: "ADMIN" | "BUYER" | "SELLER" | "LAB_TECHNICIAN" | "CASHIER" | "/";
@@ -285,6 +286,7 @@ export default function HomePage({ role, products }: roleProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf7f2] to-[#f4efe7]">
+
       {/* HERO SECTION */}
       <motion.section
         className="relative min-h-[90vh] flex flex-col justify-center items-center text-center bg-[url('/images/coffee-hero.jpg')] bg-cover bg-center bg-fixed shadow-inner"
@@ -468,6 +470,7 @@ export default function HomePage({ role, products }: roleProps) {
                 </Card>
               </motion.div>
             ))}
+
           </motion.div>
         </div>
       </section>
