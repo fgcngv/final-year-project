@@ -83,6 +83,10 @@ model User {
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  // chat integration
+  buyerConversations Conversation[] @relation("BuyerConversations")
+  sentMessages       Message[]      @relation("SenderMessages")
 }
 
 model Farmer {
@@ -98,6 +102,9 @@ model Farmer {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // chat integration
+  farmerConversations Conversation[] @relation("FarmerConversations")
 }
 
 model Product {
@@ -149,7 +156,6 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
 
 model OrderItem {
   id         String @id @default(cuid())
@@ -210,4 +216,33 @@ model Contact {
   message   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// chat integration
+
+model Conversation {
+  id        String   @id @default(cuid())
+  buyer_id  String
+  farmer_id String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  buyer    User      @relation("BuyerConversations", fields: [buyer_id], references: [id], onDelete: Cascade)
+  farmer   Farmer    @relation("FarmerConversations", fields: [farmer_id], references: [id], onDelete: Cascade)
+  messages Message[]
+
+  @@unique([buyer_id, farmer_id]) // ensures only one conversation per buyer-farmer pair
+}
+
+model Message {
+  id              String   @id @default(cuid())
+  conversation_id String
+  sender_id       String
+  content         String
+  read            Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  conversation Conversation @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
+  sender       User         @relation("SenderMessages", fields: [sender_id], references: [id], onDelete: Cascade)
 }
