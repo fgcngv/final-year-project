@@ -127,7 +127,7 @@ export default function ProductsPage({ products,cartQuantity }: ProductsProps) {
               <CardContent className="p-4">
                 <img
                   // src={product.image}
-                  src="/cup_coffee.png"
+                  src={`${product?.image}`}
                   alt={product.product_name || "Product image"}
                   className="w-full h-48 object-cover rounded-xl"
                   loading="lazy"

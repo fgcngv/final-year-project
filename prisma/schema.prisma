@@ -1,8 +1,14 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// suggested adding:
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Review/Rating System for farmers and products
+
+// Order History tracking
+
+// Notification System for order updates
+
+// Coffee Quality Metrics table (acidity, body, flavor notes with standardized values)
+
+// Region/Origin table for geographical indication protection
 
 generator client {
   provider = "prisma-client-js"

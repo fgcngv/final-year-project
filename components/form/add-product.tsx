@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import z from "zod";
 import { addProduct } from "@/app/actions/general";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabaseClient";
 // import { supabase } from "@/lib/supabaseClient"; // MAKE SURE THIS EXISTS
 
 export default function AddProduct() {
@@ -49,17 +50,66 @@ export default function AddProduct() {
     },
   });
 
+  // const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
+  //   values
+  // ) => {
+  //   setLoading(true);
+  //   console.log("values : ", values);
+  //   const added = await addProduct({ farmer_id: id, values });
+  //   toast(added.message);
+
+  //   setLoading(false);
+  // };
+
+  // updated onsubmit function
   const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
     values
   ) => {
+    if (!id) return;
+  
     setLoading(true);
-    console.log("values : ", values);
-    const added = await addProduct({ farmer_id: id, values });
-    toast(added.message);
-
-    setLoading(false);
+  
+    try {
+      const file = values.image;
+  
+      // 1. Generate unique file name
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${id}-${Date.now()}.${fileExt}`;
+  
+      // 2. Upload to Supabase Storage
+      const { error } = await supabase.storage
+        .from("Ethiopian-green-coffee-product-images")
+        .upload(fileName, file);
+  
+      if (error) {
+        throw new Error(error.message);
+      }
+  
+      // 3. Get public URL
+      const { data } = supabase.storage
+        .from("Ethiopian-green-coffee-product-images")
+        .getPublicUrl(fileName);
+  
+      const imageUrl = data.publicUrl;
+  
+      // 4. Send data to server action
+      const added = await addProduct({
+        farmer_id: id,
+        values: {
+          ...values,
+          image: imageUrl,
+        },
+      });
+  
+      toast.success(added.message);
+      router.refresh();
+    } catch (err: any) {
+      toast.error(err.message || "Upload failed");
+    } finally {
+      setLoading(false);
+    }
   };
-
+  
   return (
     <Dialog>
       <DialogTrigger className="px-4 py-2 bg-green-600 font-bold text-white rounded-md">
@@ -108,7 +158,11 @@ export default function AddProduct() {
                     <FormItem>
                       <FormLabel>Image</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => field.onChange(e.target.files?.[0])}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

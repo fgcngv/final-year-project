@@ -399,7 +399,7 @@ export default function HomePage({ role, products }: roleProps) {
                   <div className="relative group">
                     <img
                       // src={product.image}
-                      src="/cup_coffee.png"
+                      src={`${product?.image}`}
                       alt={product.product_name}
                       className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
                       loading="lazy"

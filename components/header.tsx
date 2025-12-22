@@ -72,7 +72,7 @@ export default function Header({cartQuantity}:{cartQuantity?:number}) {
           <div className="flex items-center bg-gray-800 px-3 rounded-full">
             <Search className="w-5 h-5 text-gray-400" />
             <input
-              className="bg-transparent outline-none ml-2 text-sm placeholder-gray-400"
+              className="bg-transparent outline-none ml-2 text-sm placeholder-gray-400 p-2"
               placeholder="Search products..."
             />
           </div>
