@@ -1,3 +1,4 @@
+
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
@@ -217,3 +218,5 @@ export const getAllMessages = async () => {
     orderBy: { createdAt: "desc" },
   });
 };
+
+
