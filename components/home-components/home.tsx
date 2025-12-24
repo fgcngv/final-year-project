@@ -289,13 +289,13 @@ export default function HomePage({ role, products }: roleProps) {
 
       {/* HERO SECTION */}
       <motion.section
-        className="relative min-h-[90vh] flex flex-col justify-center items-center text-center bg-[url('/images/coffee-hero.jpg')] bg-cover bg-center bg-fixed shadow-inner"
+        className="relative min-h-[90vh] flex flex-col justify-center items-center text-center bg-[url('/cup_coffee.png')] bg-cover bg-center bg-fixed shadow-inner"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-black/70" />
 
         <motion.h1
           className="relative text-5xl md:text-7xl font-extrabold  drop-shadow-lg tracking-wide text-green-700"
