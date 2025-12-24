@@ -71,6 +71,7 @@ const headerLinks = [
   { name: "About", link: "/about", key: "about" },
   { name: "Contact Us", link: "/contact", key: "contact" },
   { name: "Orders", link: "/orders", key: "orders" },
+  { name: "Notifications", link: "/notifications", key: "notifications" },
 ];
 
 export default function MobileHeader() {

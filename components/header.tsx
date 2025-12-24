@@ -3,7 +3,7 @@
 import { updateUserLanguage } from "@/app/actions/updateLanguage";
 import { useTransition } from "react";
 import Link from "next/link";
-import { Menu, X, Search, ShoppingCart, User } from "lucide-react";
+import { Menu, X, Search, ShoppingCart, User, Bell } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   SignedIn,
@@ -25,10 +25,10 @@ const headerLinks = [
   { name: "Orders", link: "/orders", key: "orders" },
 ];
 
-export default function Header({cartQuantity}:{cartQuantity?:number}) {
+export default function Header({ cartQuantity }: { cartQuantity?: number }) {
   // Language Option
-    const { theme, toggleTheme } = useTheme();
-  
+  const { theme, toggleTheme } = useTheme();
+
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const router = useRouter();
 
@@ -46,13 +46,15 @@ export default function Header({cartQuantity}:{cartQuantity?:number}) {
 
     router.refresh();
   };
-  
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-black text-white px-6 py-4 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* LOGO */}
-        <Link href="/" className="text-2xl text-green-600 font-bold tracking-wide">
+        <Link
+          href="/"
+          className="text-2xl text-green-600 font-bold tracking-wide"
+        >
           EGC
         </Link>
 
@@ -84,7 +86,12 @@ export default function Header({cartQuantity}:{cartQuantity?:number}) {
 
           {/* Language Option*/}
           <div>
-                  <Button onClick={toggleTheme} className="cursor-pointer font-bold bg-green-600 hover:bg-green-700 active:bg-green-800">{theme}</Button>
+            <Button
+              onClick={toggleTheme}
+              className="cursor-pointer font-bold bg-green-600 hover:bg-green-700 active:bg-green-800"
+            >
+              {theme}
+            </Button>
           </div>
 
           <div className="relative cursor-pointer">
@@ -93,6 +100,16 @@ export default function Header({cartQuantity}:{cartQuantity?:number}) {
             </Link>
             <span className="absolute -top-2 -right-2 bg-green-600 text-xs font-bold rounded-full px-2 py-0.5">
               {cartQuantity}
+            </span>
+          </div>
+
+          {/* notification */}
+          <div className="relative hidden min-[370px]:block ">
+            <Link href={`/notifications`}>
+              <Bell size={22} />
+            </Link>
+            <span className="absolute  w-6 -top-5 -right-3 items-center justify-center flex bg-red-500 rounded-full">
+              2
             </span>
           </div>
 
@@ -125,16 +142,6 @@ export default function Header({cartQuantity}:{cartQuantity?:number}) {
     </header>
   );
 }
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
@@ -277,5 +284,3 @@ export default function Header({cartQuantity}:{cartQuantity?:number}) {
 //     </header>
 //   );
 // }
-
-

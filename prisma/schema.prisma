@@ -234,6 +234,7 @@ model Conversation {
   @@unique([buyer_id, farmer_id]) // ensures only one conversation per buyer-farmer pair
 }
 
+
 model Message {
   id              String   @id @default(cuid())
   conversation_id String

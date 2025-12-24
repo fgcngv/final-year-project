@@ -10,6 +10,7 @@ import { addToCart } from "@/utils/services/cartItem";
 import { toast } from "sonner";
 import { useTheme } from "./checkTheme";
 import Header from "./header";
+import Link from "next/link";
 
 interface ProductProps {
   product: Product;
@@ -71,7 +72,7 @@ export default function ProductById({ product }: {product:any}) {
             />
 
             <div className="absolute top-4 right-4 bg-white shadow-md rounded-full p-2">
-              <Star className="text-yellow-500" />
+              <Star className="text-yellow-500 hover:fill-amber-400" />
             </div>
           </motion.div>
 
@@ -90,12 +91,23 @@ export default function ProductById({ product }: {product:any}) {
               <h2 className="text-2xl font-semibold mt-2">
                 {product?.product_name}
               </h2>
-              <p className="text-gray-600 text-md mt-1">
+                <div className="flex items-center bg-gray-400 p-2 max-w-75 rounded-2xl gap-1">
+                  <div className="bg-pink-400 p-2 rounded-full text-green-600 font-bold" >
+                      {product?.farmer?.first_name.charAt(0)}
+                      {product?.farmer?.last_name.charAt(0)}
+                  </div>
+                  <div>
+                  <p className="text-gray-600 text-md mt-1">
                 Farmer:{" "}
                 <span className="font-medium">
                   {product?.farmer?.first_name} {product?.farmer?.last_name}
                 </span>
               </p>
+                  </div>
+                  <div className="bg-green-800 p-1 rounded text-pink-400 font-bold">
+                    <Link href={`/chat`}>Chat</Link>
+                  </div>
+                </div>
             </div>
 
             {/* DETAILS */}

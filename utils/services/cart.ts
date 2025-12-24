@@ -42,7 +42,7 @@ export async function getCart() {
 
 
 export async function getCartByUserId(userId: string) {
-  const cart = await prisma.cart.findUnique({
+  const cart = await prisma.cart.findFirst({
     where: { user_id: userId },
     include: {
       items: {

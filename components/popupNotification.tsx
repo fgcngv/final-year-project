@@ -32,7 +32,7 @@ function PopupNotification() {
       <CardContent>
         <div>
           <Link
-            href={``}
+            href={`/notifications/1`}
             className="flex gap-1.5 border p-1 rounded border-gray-400 hover:bg-gray-400 bg-gray-300"
           >
             <img
