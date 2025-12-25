@@ -27,7 +27,7 @@ async function Products() {
   const result = await getAllProducts();
 
   if (!result.success || !result.data) {
-    return <div>Failed to load products</div>;
+    return <div>Failed to load products here</div>;
   }
 console.log("products : ",result.data)
   return (
