@@ -32,6 +32,7 @@
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
+import Link from "next/link";
 
 type ProductWithRelations = Prisma.ProductGetPayload<{
   include: {
@@ -118,68 +119,73 @@ export default function AdminProductsTable({
 
           <tbody className="divide-y">
             {products.map((product) => (
-              <tr
-                key={product.id}
-                className="hover:bg-gray-50 transition"
-              >
-                {/* Product */}
-                <td className="px-6 py-4 flex items-center gap-3">
-                  {/* <Image
-                    src={product.image}
-                    alt={product.product_name}
-                    width={40}
-                    height={40}
-                    className="rounded-md object-cover"
-                  /> */}
-                  <img src={product?.image} width={60} height={60} alt={product?.product_name} className="rounded"/>
-                  <div>
-                    <p className="font-medium">
-                      {product.product_name}
-                    </p>
-                    <p className="text-xs text-gray-500 line-clamp-1">
-                      {product.product_detail}
-                    </p>
-                  </div>
-                </td>
+                 <tr
+                 key={product.id}
+                 className="hover:bg-gray-50 transition"
+               >
+                 {/* Product */}
 
-                {/* Farmer */}
-                <td className="px-6 py-4">
-                  <p className="font-medium">
-                    {product.farmer.first_name}{" "}
-                    {product.farmer.last_name}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {product.farmer.email}
-                  </p>
-                </td>
+                 <td className="px-6 py-4 flex items-center gap-3">
+                   <img src={product?.image} width={60} height={60} alt={product?.product_name} className="rounded"/>
+                   <Link  href={`/admin/product/${product?.id}`}>
+                   <div>
+                     <p className="font-medium">
+                       {product.product_name}
+                     </p>
+                     <p className="text-xs text-gray-500 line-clamp-1">
+                       {product.product_detail}
+                     </p>
+                   </div>
+                   </Link>
+                 </td>
+ 
+                 {/* Farmer */}
+                 <td className="px-6 py-4">
+                 <Link  href={`/admin/product/${product?.id}`}>
+                 <p className="font-medium">
+                     {product.farmer.first_name}{" "}
+                     {product.farmer.last_name}
+                   </p>
+                   <p className="text-xs text-gray-500">
+                     {product.farmer.email}
+                   </p>
+                 </Link>
 
-                {/* Price */}
-                <td className="px-6 py-4 font-semibold text-green-600">
-                  {product.price.toLocaleString()} ETB
-                </td>
-
-                {/* Status */}
-                <td className="px-6 py-4">
-                  <StatusBadge status={product.status} />
-                </td>
-
-                {/* Created */}
-                <td className="px-6 py-4 text-gray-500">
-                  {new Date(product.createdAt).toLocaleDateString()}
-                </td>
-
-                {/* Actions */}
-                <td className="px-6 py-4">
-                  <div className="flex justify-end gap-2">
-                    <ActionButton icon={<Eye size={16} />} />
-                    <ActionButton icon={<Pencil size={16} />} />
-                    <ActionButton
-                      icon={<Trash2 size={16} />}
-                      danger
-                    />
-                  </div>
-                </td>
-              </tr>
+                 </td>
+ 
+                 {/* Price */}
+                 <td className="px-6 py-4 font-semibold text-green-600">
+                 <Link  href={`/admin/product/${product?.id}`}>
+                 {product.price.toLocaleString()} ETB
+                 </Link>
+                 </td>
+ 
+                 {/* Status */}
+                 <td className="px-6 py-4">
+                 <Link  href={`/admin/product/${product?.id}`}>
+                 <StatusBadge status={product.status} />
+                 </Link>
+                 </td>
+ 
+                 {/* Created */}
+                 <td className="px-6 py-4 text-gray-500">
+                 <Link  href={`/admin/product/${product?.id}`}>
+                 {new Date(product.createdAt).toLocaleDateString()}
+                 </Link>
+                 </td>
+ 
+                 {/* Actions */}
+                 <td className="px-6 py-4">
+                   <div className="flex justify-end gap-2">
+                     <ActionButton icon={<Eye size={16} />} />
+                     <ActionButton icon={<Pencil size={16} />} />
+                     <ActionButton
+                       icon={<Trash2 size={16} />}
+                       danger
+                     />
+                   </div>
+                 </td>
+               </tr>
             ))}
           </tbody>
         </table>

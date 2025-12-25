@@ -1,10 +1,16 @@
 
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, Users, ShoppingBag, Package, Receipt } from "lucide-react";
 import { getAllProducts } from "@/app/actions/products";
 import { getAllFarmers, getAllOrders, getAllUsers } from "@/utils/services/admin";
 import Cards from "@/components/cards/card";
+import { UserRoleChart } from "@/components/charts/userRoleChart";
+import { OrdersChart } from "@/components/charts/ordersChart";
+import { OrderStatusChart } from "@/components/charts/OrderStatusChart";
+import { PaymentStatusChart } from "@/components/charts/PaymentStatusChart";
+import { TopProductsChart } from "@/components/charts/TopProductsChart";
+import { FarmerPerformanceChart } from "@/components/charts/FarmerPerformanceChart";
+import { WishlistChart } from "@/components/charts/wishListChart";
 
 export default async function AdminDashboard() {
   // stats = { users, sellers, products, orders, revenue }
@@ -38,7 +44,13 @@ export default async function AdminDashboard() {
           <p className="text-muted-foreground">Total revenue generated</p>
         </CardContent>
       </Card>
-
+       <OrdersChart />
+       <OrderStatusChart />
+       <PaymentStatusChart />
+       <TopProductsChart />
+       <FarmerPerformanceChart />
+       <WishlistChart />
+       <UserRoleChart />
     </div>
   );
 }
