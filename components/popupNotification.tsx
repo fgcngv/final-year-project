@@ -136,7 +136,7 @@ function PopupNotification({ data,leftNotifications }: NotificationProp) {
             
           </Link>
             {
-              leftNotifications ? <Link href={`/notifications`} className="bg-gray-500 text-sm rounded-2xl px-2 p-1 text-center active:bg-gray-300">and {leftNotifications} others</Link>:null
+              leftNotifications ? <Link href={`/notifications`} className="bg-gray-500 text-sm rounded-2xl px-2 p-1 text-center active:bg-gray-300">and {leftNotifications}  other{leftNotifications >1 ? 's' :null}</Link>:null
             }
         </div>
       </CardContent>

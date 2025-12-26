@@ -106,7 +106,7 @@ export default function Header({ cartQuantity,notification }: { cartQuantity?: n
           {/* notification */}
    {
     notification && notification > 0 ?(
-                <div className="relative hidden min-[370px]:block ">
+                <div className="relative hidden min-[330px]:block ">
             <Link href={`/notifications`}>
               <Bell size={22} />
             </Link>
