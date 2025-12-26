@@ -25,7 +25,7 @@ const headerLinks = [
   { name: "Orders", link: "/orders", key: "orders" },
 ];
 
-export default function Header({ cartQuantity }: { cartQuantity?: number }) {
+export default function Header({ cartQuantity,notification }: { cartQuantity?: number,notification?:number }) {
   // Language Option
   const { theme, toggleTheme } = useTheme();
 
@@ -104,14 +104,18 @@ export default function Header({ cartQuantity }: { cartQuantity?: number }) {
           </div>
 
           {/* notification */}
-          <div className="relative hidden min-[370px]:block ">
+   {
+    notification && notification > 0 ?(
+                <div className="relative hidden min-[370px]:block ">
             <Link href={`/notifications`}>
               <Bell size={22} />
             </Link>
             <span className="absolute  w-6 -top-5 -right-3 items-center justify-center flex bg-red-500 rounded-full">
-              2
+              {notification}
             </span>
           </div>
+    ) : null
+   }
 
           {/* AUTH */}
           <SignedIn>

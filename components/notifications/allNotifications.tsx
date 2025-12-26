@@ -117,7 +117,7 @@ export default function AllNotifications({ notificationData }: NotificationProps
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-18">
-      <Header />
+      {/* <Header /> */}
 
       {/* Header */}
       <div className="mb-6">

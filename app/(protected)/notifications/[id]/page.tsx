@@ -1,10 +1,15 @@
 import Link from "next/link";
 import { ArrowLeft, Bell } from "lucide-react";
 import Header from "@/components/header";
-import { countUnReadNotifications, getNotificationById, markNotificationAsRead } from "@/utils/services/notification";
+import { countUnReadNotifications, getAllUnreadNotifications, getNotificationById, markNotificationAsRead } from "@/utils/services/notification";
 import { timeAgo } from "@/utils/notification_time";
+import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default async function NotificationDetailPage(props: { params: Promise<{ id: string }> }) {
+
+    const {userId} = await auth();
 
     const param = await props?.params;
     const id = param.id;
@@ -18,10 +23,23 @@ export default async function NotificationDetailPage(props: { params: Promise<{ 
     // mark this message as read
     await markNotificationAsRead(id);
 
+    const unread = await getAllUnreadNotifications();
+   
+    if(!userId){
+            redirect("/sign-in");
+    }
+    
+      const cart = await getCartByUserIdForCartQuantity(userId);
+    
+      let cartQuantity = 0;
+      cart?.items?.forEach(item => {
+        cartQuantity += item.quantity;
+      });
+
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-20">
-      <Header />
+      <Header cartQuantity={cartQuantity} notification={unread?.data?.length} />
       {/* Back Button */}
       <Link
         href="/notifications"

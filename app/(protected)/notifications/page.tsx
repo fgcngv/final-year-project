@@ -1,7 +1,9 @@
 
 
+import Header from "@/components/header";
 import AllNotifications from "@/components/notifications/allNotifications";
-import { getAllNotification } from "@/utils/services/notification";
+import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
+import { getAllNotification, getAllUnreadNotifications } from "@/utils/services/notification";
 import { auth } from "@clerk/nextjs/server";
 import { toast } from "sonner";
 
@@ -25,8 +27,20 @@ async function NotificationsPage() {
       if(!data){
         return <div className="text-2xl font-bold text-gray-500 text-center w-full p-4">No notification found!</div>
       }
-    return ( 
+
+          const unread = await getAllUnreadNotifications();
+
+
+  const cart = await getCartByUserIdForCartQuantity(userId);
+
+  let cartQuantity = 0;
+  cart?.items?.forEach(item => {
+    cartQuantity += item.quantity;
+  });
+  
+  return ( 
         <div>
+          <Header cartQuantity={cartQuantity} notification={unread?.data?.length} />
             <AllNotifications notificationData={data} />
         </div>
      );

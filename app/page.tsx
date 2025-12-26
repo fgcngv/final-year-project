@@ -76,6 +76,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { getAllProducts } from "./actions/products";
 import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
 
 export default async function Home() {
   // ✅ auth() is synchronous
@@ -126,9 +127,11 @@ export default async function Home() {
     return <div>No products found</div>;
   }
 
+  const unread = await getAllUnreadNotifications();
+
   return (
     <div className="pt-2">
-      <Header cartQuantity={cartQuantity} />
+      <Header notification={unread?.data?.length} cartQuantity={cartQuantity} />
       <HomePage products={productsData.data ?? []} role={role || "/"} />
     </div>
   );

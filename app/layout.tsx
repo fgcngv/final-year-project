@@ -44,7 +44,7 @@ export default async function RootLayout({
       {/* PopUp notification */}
       <div className="relative">
        {
-        notification.data && <PopupNotification data={notification?.data[0]} />
+        notification.data && <PopupNotification leftNotifications={notification.data.length - 1} data={notification?.data[0]} />
        }
       </div>
           <Toaster position="top-right" richColors />

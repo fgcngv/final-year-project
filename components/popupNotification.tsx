@@ -77,9 +77,10 @@ import { Notification } from "@prisma/client";
 
 interface NotificationProp {
   data: Notification;
+  leftNotifications?:number
 }
 
-function PopupNotification({ data }: NotificationProp) {
+function PopupNotification({ data,leftNotifications }: NotificationProp) {
   const [showNotification, setShowNotification] = useState(true);
 
   if (!showNotification) return null;
@@ -95,7 +96,7 @@ function PopupNotification({ data }: NotificationProp) {
   if(!data){
     return null
   }
-  
+
   return (
     <Card className="top-20 sm:left-7 fixed z-50 border border-gray-500 bg-transparent p-2 rounded-2xl">
       <CardHeader>
@@ -116,7 +117,7 @@ function PopupNotification({ data }: NotificationProp) {
         <div>
           <Link
             href={`/notifications/${data.id}`} // use actual notification id
-            className="flex gap-1.5 border p-1 rounded border-gray-400 hover:bg-gray-400 bg-gray-300"
+            className="flex gap-1.5 border p-1 rounded border-gray-400 hover:bg-gray-400 bg-gray-300 active:bg-gray-500"
           >
             <img
               src="/green_coffee.png"
@@ -131,7 +132,11 @@ function PopupNotification({ data }: NotificationProp) {
                 {truncateMessage(data?.message || "")}
               </div>
             </div>
+            
           </Link>
+            {
+              leftNotifications ? <Link href={`/notifications`} className="bg-gray-500 text-sm rounded-2xl px-2 p-1 text-center active:bg-gray-300">and {leftNotifications} others</Link>:null
+            }
         </div>
       </CardContent>
     </Card>
