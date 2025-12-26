@@ -71,7 +71,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { X } from "lucide-react";
+import { X,Bell} from "lucide-react";
 import { useState } from "react";
 import { Notification } from "@prisma/client";
 
@@ -117,15 +117,16 @@ function PopupNotification({ data,leftNotifications }: NotificationProp) {
         <div>
           <Link
             href={`/notifications/${data.id}`} // use actual notification id
-            className="flex gap-1.5 border p-1 rounded border-gray-400 hover:bg-gray-400 bg-gray-300 active:bg-gray-500"
+            className="flex gap-1.5 border p-1 rounded border-gray-400 hover:bg-gray-400 justify-center items-center bg-gray-300 active:bg-gray-500"
           >
-            <img
+            {/* <img
               src="/green_coffee.png"
               alt="farmer1"
               width={50}
               height={50}
               className="rounded-full"
-            />
+            /> */}
+            <Bell className="text-green-600" size={30}/>
             <div>
               <span className="font-bold text-sm">{data?.title}</span>
               <div className="text-sm">
