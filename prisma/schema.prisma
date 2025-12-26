@@ -69,6 +69,14 @@ enum Language {
   AFAN_OROMO
 }
 
+enum NotificationType {
+  ORDER
+  PAYMENT
+  MESSAGE
+  SYSTEM
+  PRODUCT
+}
+
 model User {
   id         String     @id //clerk id
   first_name String
@@ -87,6 +95,7 @@ model User {
   // chat integration
   buyerConversations Conversation[] @relation("BuyerConversations")
   sentMessages       Message[]      @relation("SenderMessages")
+  notification       Notification[]
 }
 
 model Farmer {
@@ -116,11 +125,12 @@ model Product {
   product_detail String?
   status         Status  @default(ACTIVE)
 
-  farmer      Farmer        @relation(fields: [farmer_id], references: [id], onDelete: Cascade)
-  wishlist    Wishlist[]
-  orderItems  OrderItem[]
-  cartItems   CartItem[]
-  description PDescription? // ONE-TO-ONE
+  farmer       Farmer         @relation(fields: [farmer_id], references: [id], onDelete: Cascade)
+  wishlist     Wishlist[]
+  orderItems   OrderItem[]
+  cartItems    CartItem[]
+  notification Notification[]
+  description  PDescription? // ONE-TO-ONE
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,18 +150,19 @@ model Wishlist {
 }
 
 model Order {
-  id             String        @id @default(cuid())
+  id             String         @id @default(cuid())
   order_address  String?
-  address_type   address_Type  @default(HOME)
+  address_type   address_Type   @default(HOME)
   user_id        String
   product_id     String
   quantity       Float
   date           DateTime
-  status         OrderStatus   @default(PENDING)
-  payment_status PaymentStatus @default(UNPAID)
-  payment_method PaymentMethod @default(CASH)
-  user           User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  status         OrderStatus    @default(PENDING)
+  payment_status PaymentStatus  @default(UNPAID)
+  payment_method PaymentMethod  @default(CASH)
+  user           User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items          OrderItem[]
+  notification   Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -234,7 +245,6 @@ model Conversation {
   @@unique([buyer_id, farmer_id]) // ensures only one conversation per buyer-farmer pair
 }
 
-
 model Message {
   id              String   @id @default(cuid())
   conversation_id String
@@ -246,4 +256,29 @@ model Message {
 
   conversation Conversation @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
   sender       User         @relation("SenderMessages", fields: [sender_id], references: [id], onDelete: Cascade)
+}
+
+// Notification model
+
+model Notification {
+  id      String           @id @default(cuid())
+  user_id String
+  from    String?
+  title   String
+  message String
+  type    NotificationType
+  read    Boolean          @default(false)
+
+  // Optional relations
+  order_id   String?
+  product_id String?
+
+  user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  order   Order?   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  priority  Int       @default(1) // importance level
+  expiresAt DateTime? // auto-hide after date
+
+  createdAt DateTime @default(now())
 }

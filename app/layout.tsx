@@ -7,6 +7,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import ThemeProvider from "@/Providers/LanguageProvider";
 import PopupNotification from "@/components/popupNotification";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +30,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const notification = await getAllUnreadNotifications();
+  
+  notification.data && console.log("notification : ",notification?.data[0])
   return (
     <ClerkProvider>
       <html lang="en">
@@ -37,7 +43,9 @@ export default async function RootLayout({
           
       {/* PopUp notification */}
       <div className="relative">
-      <PopupNotification />
+       {
+        notification.data && <PopupNotification data={notification?.data[0]} />
+       }
       </div>
           <Toaster position="top-right" richColors />
           <ThemeProvider>{children}</ThemeProvider>

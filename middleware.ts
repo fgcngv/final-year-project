@@ -50,6 +50,7 @@ const isProtectedRoute = createRouteMatcher([
   "/orders(.*)",
   "/product(.*)",
   "/user(.*)",
+  "/notifications(.*)",
 ]);
 
 // ---------- Middleware ----------

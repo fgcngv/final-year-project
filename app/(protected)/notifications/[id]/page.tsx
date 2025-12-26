@@ -1,8 +1,24 @@
 import Link from "next/link";
 import { ArrowLeft, Bell } from "lucide-react";
 import Header from "@/components/header";
+import { countUnReadNotifications, getNotificationById, markNotificationAsRead } from "@/utils/services/notification";
+import { timeAgo } from "@/utils/notification_time";
 
-export default function NotificationDetailPage() {
+export default async function NotificationDetailPage(props: { params: Promise<{ id: string }> }) {
+
+    const param = await props?.params;
+    const id = param.id;
+    const res = await getNotificationById(id);
+    console.log("res : ",res)
+    if(!res?.success){
+        return null
+    }
+    const data = res?.data;
+
+    // mark this message as read
+    await markNotificationAsRead(id);
+
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-20">
       <Header />
@@ -21,11 +37,11 @@ export default function NotificationDetailPage() {
           <div className="p-2 bg-blue-100 rounded-full">
             <Bell className="text-blue-600" />
           </div>
-          <h1 className="text-xl font-bold">New Product Added</h1>
+          <h1 className="text-xl font-bold">{data?.title}</h1>
         </div>
 
         <p className="text-gray-700 leading-relaxed">
-          Farmer1 has added new coffee products to the marketplace. Check them
+          {data?.message} Check them
           out before they sell out!
           <Link
             href={``}
@@ -36,7 +52,7 @@ export default function NotificationDetailPage() {
         </p>
 
         <div className="mt-6 text-sm text-gray-500">
-          Received • 2 minutes ago
+           { data && timeAgo(data?.createdAt)}
         </div>
       </div>
     </div>
