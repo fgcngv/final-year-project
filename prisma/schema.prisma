@@ -88,6 +88,7 @@ model User {
   wishlist   Wishlist[]
   order      Order[]
   cart       Cart? // A user has at most one cart
+   payments   Payment[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -158,10 +159,10 @@ model Order {
   quantity       Float
   date           DateTime
   status         OrderStatus    @default(PENDING)
-  payment_status PaymentStatus  @default(UNPAID)
-  payment_method PaymentMethod  @default(CASH)
+
   user           User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   items          OrderItem[]
+  payment      Payment?
   notification   Notification[]
 
   createdAt DateTime @default(now())
@@ -281,4 +282,25 @@ model Notification {
   expiresAt DateTime? // auto-hide after date
 
   createdAt DateTime @default(now())
+}
+
+
+
+// PAYEMENT TABLE
+model Payment {
+  id             String         @id @default(cuid())
+  order_id       String         @unique
+  user_id        String
+  amount         Float
+  method         PaymentMethod
+  status         PaymentStatus  @default(UNPAID)
+  transactionRef String?        // from Chapa / Stripe
+  provider       String?        // "CHAPA", "STRIPE"
+  paidAt         DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  // Relations
+  order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

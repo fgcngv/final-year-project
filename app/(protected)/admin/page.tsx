@@ -20,6 +20,9 @@ export default async function AdminDashboard() {
   const {totalFarmers } = await getAllFarmers();
   const {totalOrders} = await getAllOrders();
 
+  const FarmersData = await getAllFarmers();
+  console.log("FarmersData : ",FarmersData.data)
+
 
   return (
     <div className="p-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">

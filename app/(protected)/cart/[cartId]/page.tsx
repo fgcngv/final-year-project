@@ -2,7 +2,6 @@
 // import { getCart, getCartByUserId } from "@/utils/services/cart";
 // import { auth } from "@clerk/nextjs/server";
 
-
 // async function CartById() {
 //     const {userId} = await auth();
 //     if(!userId){
@@ -10,12 +9,12 @@
 //     }
 
 //     const data = await getCartByUserId(userId);
-    
+
 //     console.log("cartdata : ",data)
 //     if(!data){
 //         return <div>You have no Cart Stored</div>
 //     }
-//     return ( 
+//     return (
 //         <div>
 //             <CartPage cart_id={data?.id} user_id={userId} items={data?.items} total={10}/>
 //         </div>
@@ -23,9 +22,6 @@
 // }
 
 // export default CartById;
-
-
-
 
 import CartPage from "@/components/cart/cartPage";
 import { getCartByUserId } from "@/utils/services/cart";
@@ -38,19 +34,24 @@ async function CartById() {
   if (!userId) return <div>Not Authenticated</div>;
 
   const data = await getCartByUserId(userId);
-   
 
-  if (!data || "error" in data) return <div className="h-screen flex flex-col bg-green-900 text-2xl text-white font-bold justify-center items-center">
-    <h1>You have no Cart Stored</h1>
-    <Link href="/product" className="bg-green-950 p-1 rounded hover:underline ">Buy Products</Link>
-  </div>;
+  if (!data || "error" in data)
+    return (
+      <div className="h-screen flex flex-col bg-green-900 text-2xl text-white font-bold justify-center items-center">
+        <h1>You have no Cart Stored</h1>
+        <Link
+          href="/product"
+          className="bg-green-950 p-1 rounded hover:underline "
+        >
+          Buy Products
+        </Link>
+      </div>
+    );
 
-// calculate cart quantity
-  data?.items?.map((item)=>(
-    cartQuantity += item?.quantity
-  ));
+  // calculate cart quantity
+  data?.items?.map((item) => (cartQuantity += item?.quantity));
 
-  console.log("quantity : ",cartQuantity)
+  console.log("quantity : ", cartQuantity);
 
   return (
     <div>
