@@ -304,3 +304,38 @@ model Payment {
   order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
   user  User  @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
+
+
+
+
+
+
+// this is the address table decide to use it or remove it
+// Add to your Prisma schema
+
+// model Address {
+//   id          String      @id @default(cuid())
+//   userId      String
+//   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+//   // Address details
+//   fullName    String
+//   phone       String
+//   addressLine1 String
+//   addressLine2 String?
+//   city        String
+//   region      String      // e.g., "Addis Ababa", "Oromia"
+//   country     String      @default("Ethiopia")
+//   postalCode  String?
+  
+//   // Type
+//   type        AddressType @default(HOME)
+//   isDefault   Boolean     @default(false)
+  
+//   // Timestamps
+//   createdAt   DateTime    @default(now())
+//   updatedAt   DateTime    @updatedAt
+  
+//   @@index([userId])
+//   @@unique([userId, isDefault], where: { isDefault: true })
+// }
