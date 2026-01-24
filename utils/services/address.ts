@@ -1,15 +1,13 @@
 
 
 // utils/services/address.ts
-// import prisma from "@/lib/prisma";
 
-// export async function getUserAddresses(userId: string) {
-//   return await prisma.address.findMany({
-//     where: { userId },
-//     orderBy: { isDefault: 'desc' }
-//   });
-// }
+import prisma from "@/lib/prisma";
 
-// export async function createAddress(data: any) {
-//   return await prisma.address.create({ data });
-// }
+export async function getUserAddresses(userId: string) {
+  return await prisma.address.findFirst({
+    where: { userId },
+    orderBy: { isDefault: 'desc' }
+  });
+}
+

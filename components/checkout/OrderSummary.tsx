@@ -7,6 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Truck, Package, Shield } from "lucide-react";
 import Image from "next/image";
 import { Product } from "@prisma/client";
+import { createOrder } from "@/app/actions/order";
+import { toast } from "sonner";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 
 interface CartItemProps {
@@ -25,6 +29,35 @@ interface OrderSummaryProps {
 }
 
 export default function OrderSummary({ items, subtotal, shippingFee, total }: OrderSummaryProps) {
+
+  const [loading,setLoading] = useState(false);
+  
+console.log("itrems : ",items)
+  async function handleCreateOrder() {
+    
+    try {
+      setLoading(true)
+
+      const response = await createOrder( items.map(i => ({
+        product_id: i.product_id,
+        quantity: i.quantity,
+        price: i.product.price
+      })));
+
+      if(!response){
+        toast.error("Failed to Store order!")
+      }
+
+      toast.success(response.message);
+      
+      console.log(response.message);
+
+      setLoading(false)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
   return (
     <div className="space-y-6 sticky top-8">
       <Card className="shadow-xl border-2">
@@ -98,21 +131,8 @@ export default function OrderSummary({ items, subtotal, shippingFee, total }: Or
               </p>
             </div>
           </div>
+          <Button disabled={loading} className={cn(` ${loading ? "bg-green-100 text-black" : "cursor-pointer bg-green-700 font-bold"}`)} onClick={handleCreateOrder}>{loading ?"Creating Order... " : "Create Order "}</Button>
 
-          {/* Promo Code */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Promo Code</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Enter code"
-                className="flex-1 h-10 px-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-              />
-              <Button variant="outline" className="whitespace-nowrap">
-                Apply
-              </Button>
-            </div>
-          </div>
         </CardContent>
       </Card>
 

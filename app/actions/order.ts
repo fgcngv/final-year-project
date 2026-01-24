@@ -11,38 +11,39 @@ interface cartProps {
     cart : Cart
 }
 
-export const createOrder = async ()=>{
-    const {userId} = await auth();
-    if(!userId){
-        return null
-    }
 
-   try{
-    const order = await prisma.order.create({
-        data: {
-          user_id: userId,
-          address_id: "addressId",
-          status: "PENDING",
-        },
-      });
+// export const createOrder = async (address_id:string)=>{
+//     const {userId} = await auth();
+//     if(!userId){
+//         return null
+//     }
 
-      if(order){
-        return {
-            success: true,
-            error:false,
-            message: "Order Placed Successfully!"
-        }
-      }
+//    try{
+//     const order = await prisma.order.create({
+//         data: {
+//           user_id: userId,
+//           address_id: address_id,
+//           status: "PENDING",
+//         },
+//       });
+
+//       if(order){
+//         return {
+//             success: true,
+//             error:false,
+//             message: "Order Placed Successfully!"
+//         }
+//       }
     
-   }catch(error){
-    console.log(error)
-    return {
-        success: false,
-        error: true,
-        message: "Failed to Place order!"
-    }
-   }
-}
+//    }catch(error){
+//     console.log(error)
+//     return {
+//         success: false,
+//         error: true,
+//         message: "Failed to Place order!"
+//     }
+//    }
+// }
 
 
 // export const createOrderItems = async({cart}:cartProps)=>{
@@ -66,6 +67,107 @@ export const createOrder = async ()=>{
 //         console.log("Catch Error Occured during creating order items : ",error)
 //     }
 // }
+
+
+// app/actions/order.ts
+
+
+interface CartItem {
+  product_id: string;
+  quantity: number;
+  price: number;
+}
+
+export const createOrder = async (items: CartItem[]) => {
+  const { userId } = await auth();
+  if (!userId) {
+    return {
+      success: false,
+      error: true,
+      message: "User not authenticated",
+    };
+  }
+
+  // get user address
+  const address = await prisma.address.findFirst({ where: { userId } });
+  if (!address) return { success: false, message: "No address found, please save your address information!" };
+
+  try {
+    // 1. Create the order
+    const order = await prisma.order.create({
+      data: {
+        user_id: userId,
+        address_id : address?.id,
+        status: "PENDING",
+      },
+    });
+
+    if (!order) {
+      return {
+        success: false,
+        error: true,
+        message: "Failed to create order",
+      };
+    }
+
+    // 2. Create order items
+    await Promise.all(
+      items.map((item) =>
+        createOrderItem({
+          order_id: order.id,
+          product_id: item.product_id,
+          quantity: item.quantity,
+          price: item.price,
+        })
+      )
+    );
+
+    return {
+      success: true,
+      error: false,
+      message: "Order placed successfully!",
+      order_id: order.id,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: true,
+      message: "Failed to place order",
+    };
+  }
+};
+
+// Server action to create a single order item
+interface OrderItemInput {
+  order_id: string;
+  product_id: string;
+  quantity: number;
+  price: number;
+}
+
+export const createOrderItem = async ({
+  order_id,
+  product_id,
+  quantity,
+  price,
+}: OrderItemInput) => {
+  try {
+    const orderItem = await prisma.orderItem.create({
+      data: {
+        order_id,
+        product_id,
+        quantity,
+        price,
+      },
+    });
+
+    return orderItem;
+  } catch (error) {
+    console.error("Failed to create order item:", error);
+    throw new Error("Failed to create order item");
+  }
+};
 
 
 type AddressInput = z.infer<typeof addressSchema>
