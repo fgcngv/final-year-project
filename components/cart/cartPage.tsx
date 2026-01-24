@@ -285,6 +285,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useTheme } from "../checkTheme";
 import Header from "../header";
+import LoaderBtn from "../loaderBtn";
 
 interface CartItemProps {
   cartQuantity?:number;
@@ -518,16 +519,16 @@ export default function CartPage({
               <span>{total.toFixed(2)} Brr</span>
             </div>
 
-            <Button
-              className="w-full mt-5 py-3 text-lg rounded-xl cursor-pointer"
-              onClick={() => router.push("/check-out")}
-            >
-              {language === "ENGLISH"
+
+            <LoaderBtn btnName={`
+            ${language === "ENGLISH"
                 ? "Checkout"
                 : language === "AFAN_OROMO"
                 ? "Xummuraa"
-                : "ጨርሰው ይውጡ"}
-            </Button>
+                : "ጨርሰው ይውጡ"}`} 
+                className="w-full mt-5 py-3 text-lg rounded-xl cursor-pointer" 
+                linkTo="/check-out"
+                />
           </div>
         </div>
       </div>

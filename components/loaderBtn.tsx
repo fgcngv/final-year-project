@@ -9,6 +9,7 @@ interface LoaderBtnProps {
   btnName: string;
   className?: string;
   linkTo?: string;
+  onClick?:()=>void
 }
 
 function LoaderBtn({ btnName, className, linkTo }: LoaderBtnProps) {
