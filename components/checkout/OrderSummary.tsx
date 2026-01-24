@@ -6,18 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Truck, Package, Shield } from "lucide-react";
 import Image from "next/image";
+import { Product } from "@prisma/client";
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-  farmer: string;
+
+interface CartItemProps {
+  cart_id: string
+  id: string
+  product: Product
+  product_id: string
+  quantity: number
 }
 
 interface OrderSummaryProps {
-  items: CartItem[];
+  items: CartItemProps[];
   subtotal: number;
   shippingFee: number;
   total: number;
@@ -36,20 +37,18 @@ export default function OrderSummary({ items, subtotal, shippingFee, total }: Or
             {items.map((item) => (
               <div key={item.id} className="flex items-center gap-4 p-3 rounded-lg bg-gray-50">
                 <div className="relative h-16 w-16 rounded-lg overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-700" />
-                  <div className="absolute inset-0 flex items-center justify-center text-white text-sm">
-                    ☕
-                  </div>
+                  {/* <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-700" /> */}
+                  <img src={item?.product?.image} alt={item?.product?.product_name} />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-semibold">{item.name}</h4>
-                  <p className="text-sm text-gray-600">{item.farmer}</p>
+                  <h4 className="font-semibold">{item.product.product_name}</h4>
+                  <p className="text-sm text-gray-600">{item.product.farmer_id}</p>
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-sm text-gray-500">
                       Qty: {item.quantity}
                     </span>
                     <span className="font-bold">
-                      {(item.price * item.quantity).toFixed(2)} Brr
+                      {(item.product.price * item.quantity).toFixed(2)} Brr
                     </span>
                   </div>
                 </div>

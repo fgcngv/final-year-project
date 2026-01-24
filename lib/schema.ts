@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { address_Type } from "@prisma/client";
 import z, { email } from "zod";
 
 // export const AddProductSchema = z.object({
@@ -41,3 +42,20 @@ export const ContactFormSchema = z.object({
     .min(10, { message: "Message must be at least 10 characters long" })
     .max(1000, { message: "Message must be less than 1000 characters" }),
 });
+
+
+// address schema 
+
+export const addressSchema = z.object({
+  fullName: z.string().min(2),
+  phone: z.string().min(9),
+  addressLine1: z.string().min(3),
+  addressLine2: z.string().optional(),
+  city: z.string().min(2),
+  region: z.string().min(2),
+  country: z.string().default("Ethiopia"),
+  postalCode: z.string().optional(),
+  // type: z.enum(["HOME", "WORK"]),
+  type: z.nativeEnum(address_Type), 
+  isDefault: z.boolean().default(false),
+})

@@ -50,16 +50,7 @@ export default function AddProduct() {
     },
   });
 
-  // const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
-  //   values
-  // ) => {
-  //   setLoading(true);
-  //   console.log("values : ", values);
-  //   const added = await addProduct({ farmer_id: id, values });
-  //   toast(added.message);
 
-  //   setLoading(false);
-  // };
 
   // updated onsubmit function
   const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
@@ -94,7 +85,7 @@ export default function AddProduct() {
   
       // 4. Send data to server action
       const added = await addProduct({
-        farmer_id: id,
+        farmer_id: id, 
         values: {
           ...values,
           image: imageUrl,

@@ -5,37 +5,61 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MapPin, Home, Building, Plus, Check } from "lucide-react";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import type { z } from "zod";
+import { addressSchema } from "@/lib/schema";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createAddress } from "@/app/actions/order";
+import { toast } from "sonner";
+import { address_Type } from "@prisma/client";
 
-interface AddressStepProps {
-  onNext: () => void;
-}
-
-export default function AddressStep({ onNext }: AddressStepProps) {
+export default function AddressStep() {
   const [selectedAddress, setSelectedAddress] = useState("home");
   const [showNewAddress, setShowNewAddress] = useState(false);
 
-  const savedAddresses = [
-    {
-      id: "home",
-      type: "Home",
-      name: "Tesfaye Lemma",
-      address: "Bole, Addis Ababa, Ethiopia",
-      phone: "+251 91 234 5678",
-      icon: <Home className="h-5 w-5" />
+  type AddressFormValues = z.input<typeof addressSchema>;
+
+  const form = useForm<AddressFormValues>({
+    resolver: zodResolver(addressSchema),
+    defaultValues: {
+      fullName: "",
+      phone: "",
+      addressLine1: "",
+      addressLine2: "",
+      city: "",
+      region: "",
+      country: "Ethiopia",
+      postalCode: "",
+      type: address_Type.HOME,
+      isDefault: false,
     },
-    {
-      id: "office",
-      type: "Office",
-      name: "Tesfaye Lemma",
-      address: "Mexico Square, Kirkos, Addis Ababa",
-      phone: "+251 92 345 6789",
-      icon: <Building className="h-5 w-5" />
+  });
+
+ const onSubmit:  SubmitHandler<AddressFormValues>  = async (values) => {
+  try{
+    const parsedValues = addressSchema.parse(values);
+    const res = await createAddress(parsedValues);
+    if(res.error){
+      toast.error(res?.message);
     }
-  ];
+
+    toast.success(res?.message);
+  }catch(error){
+    console.log("Catch error : ",error);
+
+  }
+  console.log(values)
+  }
 
   return (
     <Card className="border-2 shadow-lg">
@@ -48,42 +72,6 @@ export default function AddressStep({ onNext }: AddressStepProps) {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {/* Saved Addresses */}
-        <div className="space-y-4">
-          <h3 className="font-semibold text-lg">Select an address</h3>
-          <RadioGroup value={selectedAddress} onValueChange={setSelectedAddress}>
-            {savedAddresses.map((addr) => (
-              <div key={addr.id} className="flex items-center space-x-3">
-                <RadioGroupItem value={addr.id} id={addr.id} />
-                <Label
-                  htmlFor={addr.id}
-                  className="flex-1 cursor-pointer p-4 border rounded-lg hover:border-green-500 transition-colors"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      {addr.icon}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold">{addr.type}</span>
-                        {selectedAddress === addr.id && (
-                          <span className="inline-flex items-center gap-1 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                            <Check className="h-3 w-3" />
-                            Selected
-                          </span>
-                        )}
-                      </div>
-                      <p className="font-medium">{addr.name}</p>
-                      <p className="text-gray-600">{addr.address}</p>
-                      <p className="text-gray-500 text-sm">{addr.phone}</p>
-                    </div>
-                  </div>
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
-        </div>
-
         {/* Add New Address Toggle */}
         <Button
           type="button"
@@ -97,48 +85,116 @@ export default function AddressStep({ onNext }: AddressStepProps) {
 
         {/* New Address Form */}
         {showNewAddress && (
-          <div className="space-y-4 p-4 border rounded-lg bg-gray-50 animate-in fade-in">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input id="fullName" placeholder="Tesfaye Lemma" />
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4 p-4 border rounded-lg bg-gray-50 animate-in fade-in"
+            >
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="fullName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Tesfaye Lemma" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Phone Number</FormLabel>
+                        <FormControl>
+                          <Input placeholder="+251 91 234 5678" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" placeholder="+251 91 234 5678" />
-              </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="address">Street Address</Label>
-              <Input id="address" placeholder="Bole, Addis Ababa" />
-            </div>
+              <div className="space-y-2">
+                <FormField
+                    control={form.control}
+                    name="addressLine1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Street Address</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex. Bole arabsa..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+              </div>
 
-            <div className="grid grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
-                <Input id="city" placeholder="Addis Ababa" />
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="city"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>City</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex. Addis Abeba" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />                </div>
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="region"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>region</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex. Amhara/Oromia..." {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />                 </div>
+                <div className="space-y-2">
+                  <FormField
+                    control={form.control}
+                    name="postalCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Postal Code</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Ex. 1000" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="region">Region</Label>
-                <Input id="region" placeholder="Oromia" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="postalCode">Postal Code</Label>
-                <Input id="postalCode" placeholder="1000" />
-              </div>
-            </div>
 
-            <Button type="button" className="w-full">
-              Save Address
-            </Button>
-          </div>
+              <Button type="submit" className="w-full">
+                Save Address
+              </Button>
+            </form>
+          </Form>
         )}
 
         {/* Action Buttons */}
         <div className="flex justify-end pt-6 border-t">
           <Button
-            onClick={onNext}
+            // onClick={onNext}
             size="lg"
             className="px-8 py-6 text-lg"
           >
