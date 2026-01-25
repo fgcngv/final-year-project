@@ -8,6 +8,7 @@ import "./globals.css";
 import ThemeProvider from "@/Providers/LanguageProvider";
 import PopupNotification from "@/components/popupNotification";
 import { getAllUnreadNotifications } from "@/utils/services/notification";
+import Footer from "@/components/footer";
 
 
 const geistSans = Geist({
@@ -49,6 +50,8 @@ export default async function RootLayout({
       </div>
           <Toaster position="top-right" richColors />
           <ThemeProvider>{children}</ThemeProvider>
+
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

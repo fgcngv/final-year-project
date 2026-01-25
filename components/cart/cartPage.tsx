@@ -274,8 +274,7 @@
 
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Minus, Plus, Trash } from "lucide-react";
