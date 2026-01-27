@@ -194,7 +194,7 @@ const farmerSideBarLinks = (userId: string) => [
     links: [
       {
         name: "Orders",
-        link: `farmer/orders/${userId}`,
+        link: `/farmer/orders`,
         key2: "orders",
       },
       {

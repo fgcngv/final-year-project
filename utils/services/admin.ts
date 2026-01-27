@@ -142,7 +142,10 @@ export const getAllOrders = async () => {
     const [orders, totalOrders] = await Promise.all([
       prisma.order.findMany({
         include:{
+          notification:true,
+          address:true,
           user:true,
+          payment:true
           // product:true
         }
       }),
@@ -169,6 +172,47 @@ export const getAllOrders = async () => {
 
   } catch (error) {
     console.error("Error while fetching Orders:", error);
+    return {
+      success: false,
+      error: true,
+      message: "Something went wrong!"
+    };
+  }
+};
+
+
+export const getAllOrderItems = async () => {
+  try {
+    // Fetch users and count at the same time
+    const [orderItems] = await Promise.all([
+      prisma.orderItem.findMany({
+        include:{
+          order:true,
+          product:true,
+          // product:true
+        }
+      }),
+
+
+    ]);
+
+    if (orderItems.length === 0) {
+      return {
+        success: false,
+        error: true,
+        message: "No OrdeItem found!"
+      };
+    }
+
+    return {
+      success: true,
+      error: false,
+      message: "All OrderItems fetched!",
+      data: orderItems,
+    };
+
+  } catch (error) {
+    console.error("Error while fetching OrderItems:", error);
     return {
       success: false,
       error: true,
