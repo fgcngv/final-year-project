@@ -1,3 +1,5 @@
+"use server"
+
 import prisma from "@/lib/prisma";
 
 export const getAllProducts= async ()=>{
@@ -52,3 +54,77 @@ export const getProductById = async(id:string)=>{
 
     return {success:true,error:false,data:data,message:"Product Fetched Successfuly!"}
 }
+
+
+
+// export const deleteProductById = async (id: string) => {
+//     try {
+//       const deletedProduct = await prisma.product.delete({
+//         where: { id }
+//       });
+  
+//       return {
+//         success: true,
+//         error: false,
+//         data: deletedProduct
+//       };
+//     } catch (error) {
+//       console.error("Error deleting product:", error);
+//       return {
+//         success: false,
+//         error: true,
+//         message: "Error while deleting product"
+//       };
+//     }
+//   };
+  
+
+
+export const deleteProductById = async (id: string) => {
+  try {
+    // 1️⃣ Check if product is in any cart
+    const inCart = await prisma.cartItem.findFirst({
+      where: { product_id: id },
+    });
+
+    if (inCart) {
+      return {
+        success: false,
+        error: true,
+        message: "Cannot delete: Product is in someone's cart!",
+      };
+    }
+
+    // 2️⃣ Check if product exists in any order (optional, recommended)
+    const inOrder = await prisma.orderItem.findFirst({
+      where: { product_id: id },
+    });
+
+    if (inOrder) {
+      return {
+        success: false,
+        error: true,
+        message: "Cannot delete: Product is part of an order!",
+      };
+    }
+
+    // 3️⃣ Safe to delete
+    const deletedProduct = await prisma.product.delete({
+      where: { id },
+    });
+
+    return {
+      success: true,
+      error: false,
+      data: deletedProduct,
+      message: "Product deleted successfully!",
+    };
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    return {
+      success: false,
+      error: true,
+      message: "Error while deleting product",
+    };
+  }
+};

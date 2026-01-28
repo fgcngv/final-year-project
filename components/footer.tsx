@@ -92,13 +92,13 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm text-emerald-200">
               <li className="flex items-center gap-2">
-                <MapPin size={16} /> Addis Ababa, Ethiopia
+                <MapPin size={16} />Bahir Dar, Ethiopia
               </li>
               <li className="flex items-center gap-2">
-                <Phone size={16} /> +251 9XX XXX XXX
+                <Phone size={16} /> +251 96 106 43 70
               </li>
               <li className="flex items-center gap-2">
-                <Mail size={16} /> info@ethiogreen.com
+                <Mail size={16} /> finalyear@ethiogreen.com
               </li>
             </ul>
             <div className="flex gap-4 pt-2">

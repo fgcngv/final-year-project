@@ -25,6 +25,10 @@ import {
 import { Package, MoreVertical, Plus, Truck } from "lucide-react";
 import { Status } from "@prisma/client";
 import type { Product } from "@/types/product";
+import DeleteProductPopup from "./deleteProductPopup";
+import Link from "next/link";
+import LoaderBtn from "../loaderBtn";
+import AddProduct from "../form/add-product";
 
 
 
@@ -37,6 +41,7 @@ interface ProductRowProps {
   qty: number
   price: number
   status: Status
+  p_id:string
 }
 
 function ProductRow({
@@ -47,7 +52,10 @@ function ProductRow({
   qty,
   price,
   status,
+  p_id
 }: ProductRowProps) {
+
+
   return (
     <TableRow>
       <TableCell className="font-medium">
@@ -81,12 +89,12 @@ function ProductRow({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>View</DropdownMenuItem>
-            <DropdownMenuItem className="text-red-600">
-              Delete
+            <DropdownMenuItem>
+              <LoaderBtn btnName="View" linkTo={`/product/${p_id}`} className="bg-green-700" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <DeleteProductPopup productId={p_id} />
       </TableCell>
     </TableRow>
   );
@@ -158,9 +166,7 @@ export default function FarmerOrdersProducts({
               Manage your coffee lots and buyer orders
             </p>
           </div>
-          <Button className="bg-emerald-700 hover:bg-emerald-800">
-            <Plus className="mr-2 h-4 w-4" /> Add Product
-          </Button>
+              <AddProduct />
         </div>
 
         {/* Products */}
@@ -170,8 +176,8 @@ export default function FarmerOrdersProducts({
             <Input placeholder="Search lots..." className="max-w-xs" />
           </CardHeader>
 
-          <CardContent>
-            <Table>
+          <CardContent className="overflow-x-auto">
+            <Table className="min-w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead>Image</TableHead>
@@ -181,6 +187,7 @@ export default function FarmerOrdersProducts({
                   <TableHead>Quantity</TableHead>
                   <TableHead>Price / kg</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Action</TableHead>
                   <TableHead />
                 </TableRow>
               </TableHeader>
@@ -204,6 +211,7 @@ export default function FarmerOrdersProducts({
         qty={qty}
         price={product.price}
         status={product.status}
+        p_id={product.id}
       />
     );
   })}

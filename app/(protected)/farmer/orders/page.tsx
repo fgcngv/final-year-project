@@ -1,16 +1,22 @@
+import BuyerPopup from "@/components/farmer/buyerPopup";
 import BuyerModalShadcn from "@/components/farmer/buyerPopup";
 import FarmerOrdersProducts from "@/components/farmer/farmerOrdersProduct";
 import Header from "@/components/header";
-import { getAllOrderItems } from "@/utils/services/admin";
+import { getAllOrderItems, getUserById } from "@/utils/services/admin";
 import { getAllProductByFarmerId } from "@/utils/services/product";
 import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
 
 async function OrdersPage() {
   const { userId } = await auth();
 
+
   if (!userId) {
-    return <div>Not Authenticated!</div>;
+    return <div>Not Authenticated! please <Link href={"../sign-in"}>Login</Link> to access this page!!</div>;
   }
+  const buyer = await getUserById(userId)
+console.log("buyer by id : ",buyer)
+
 
   const orderItems = await getAllOrderItems();
   const orderItemsData = orderItems?.data;
@@ -23,9 +29,7 @@ async function OrdersPage() {
   return (
     <div>
       <Header />
-      <div className="pt-18">
-        orders page
-        <div></div>
+      <div className=" ">
         <FarmerOrdersProducts products={FarmerProduct} />
         {/* <table>
           <thead>
@@ -130,7 +134,7 @@ async function OrdersPage() {
                       : "-"}
                   </td>
                   <td>
-                    <BuyerModalShadcn />
+                    <BuyerPopup />
                   </td>
                 </tr>
               ))}

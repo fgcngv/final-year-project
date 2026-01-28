@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 
-export default function BuyerModalShadcn() {
+export default function BuyerPopup() {
   const [open, setOpen] = useState(false);
 
   // Example static buyer data

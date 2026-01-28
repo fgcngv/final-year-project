@@ -77,6 +77,7 @@ import { redirect } from "next/navigation";
 import { getAllProducts } from "./actions/products";
 import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
 import { getAllUnreadNotifications } from "@/utils/services/notification";
+import { getAllUsers } from "@/utils/services/admin";
 
 export default async function Home() {
   // ✅ auth() is synchronous
@@ -103,6 +104,7 @@ export default async function Home() {
 
   const productsData = await getAllProducts();
   const role = sessionClaims?.metadata?.role;
+
 
   const email =
     user.primaryEmailAddress?.emailAddress ||

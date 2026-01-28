@@ -30,6 +30,7 @@ import z from "zod";
 import { addProduct } from "@/app/actions/general";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
+import { Plus } from "lucide-react";
 // import { supabase } from "@/lib/supabaseClient"; // MAKE SURE THIS EXISTS
 
 export default function AddProduct() {
@@ -103,7 +104,8 @@ export default function AddProduct() {
   
   return (
     <Dialog>
-      <DialogTrigger className="px-4 py-2 bg-green-600 font-bold text-white rounded-md">
+      <DialogTrigger className="px-4 py-2 bg-green-600 font-bold text-white flex justify-center items-center cursor-pointer hover:bg-green-700 active:bg-green-800 rounded-md">
+      <Plus className="mr-2 h-4 w-4" /> 
         Add New Product
       </DialogTrigger>
 
