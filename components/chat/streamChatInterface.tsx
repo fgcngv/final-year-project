@@ -1,18 +1,13 @@
-"use client"
+"use client";
 
 // import { UserProfile } from "@/app/profile/page";
 import {
   createOrGetChannel,
-
   getStreamUserToken,
 } from "@/lib/chatActions/stream";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 import { Channel, Event, StreamChat } from "stream-chat";
 import { text } from "stream/consumers";
 // import VideoCall from "./VideoCall";
@@ -26,29 +21,27 @@ interface Message {
 }
 
 export interface UserProfile {
-    id: string;
-    full_name: string;
-    username: string;
-    email: string;
-    gender: "male" | "female" | "other";
-    birthdate: string;
-    bio: string;
-    avatar_url: string;
-    location_lat?: number;
-    location_lng?: number;
-    last_active: string;
-    is_verified: boolean;
-    is_online: boolean;
-    created_at: string;
-    updated_at: string;
-  }
-
+  id: string;
+  full_name: string;
+  username: string;
+  email: string;
+  gender: "male" | "female" | "other";
+  birthdate: string;
+  bio: string;
+  avatar_url: string;
+  location_lat?: number;
+  location_lng?: number;
+  last_active: string;
+  is_verified: boolean;
+  is_online: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 export default function StreamChatInterface({
   otherUser,
 }: {
   otherUser: User;
-
 }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -118,9 +111,7 @@ export default function StreamChatInterface({
           await getStreamUserToken();
         setCurrentUserId(userId!);
 
-        const chatClient = StreamChat.getInstance(
-          process.env.STREAM_API_KEY!
-        );
+        const chatClient = StreamChat.getInstance(process.env.STREAM_API_KEY!);
 
         await chatClient.connectUser(
           {
@@ -222,7 +213,6 @@ export default function StreamChatInterface({
       }
     };
   }, [otherUser]);
-
 
   async function handleSendMessage(e: React.FormEvent) {
     e.preventDefault();
