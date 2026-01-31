@@ -134,7 +134,7 @@ console.log("buyer by id : ",buyer)
                       : "-"}
                   </td>
                   <td>
-                    <BuyerPopup />
+                    <BuyerPopup user={items.order.user} />
                   </td>
                 </tr>
               ))}

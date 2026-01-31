@@ -90,7 +90,7 @@ function ProductRow({
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem>
-              <LoaderBtn btnName="View" linkTo={`/product/${p_id}`} className="bg-green-700" />
+              <LoaderBtn btnName="View" linkTo={`orders/product/${p_id}`} className="bg-green-700" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

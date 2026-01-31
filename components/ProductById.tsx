@@ -4,7 +4,7 @@ import { Product } from "@prisma/client";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { motion } from "framer-motion";
-import { Heart, ShoppingCart, Leaf, Star } from "lucide-react";
+import { Heart, Leaf, Star } from "lucide-react";
 import { useState } from "react";
 import { addToCart } from "@/utils/services/cartItem";
 import { toast } from "sonner";
@@ -14,9 +14,10 @@ import Link from "next/link";
 
 interface ProductProps {
   product: Product;
+  isDashboard?:boolean
 }
 
-export default function ProductById({ product }: {product:any}) {
+export default function ProductById({ product,isDashboard }: {product:any,isDashboard?:boolean}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const { theme, toggleTheme } = useTheme();
@@ -91,23 +92,27 @@ export default function ProductById({ product }: {product:any}) {
               <h2 className="text-2xl font-semibold mt-2">
                 {product?.product_name}
               </h2>
-                <div className="flex items-center bg-gray-400 p-2 max-w-75 rounded-2xl gap-1">
-                  <div className="bg-pink-400 p-2 rounded-full text-green-600 font-bold" >
-                      {product?.farmer?.first_name.charAt(0)}
-                      {product?.farmer?.last_name.charAt(0)}
+                {
+                  !isDashboard && (
+                    <div className="flex items-center bg-gray-400 p-2 max-w-75 rounded-2xl gap-1">
+                    <div className="bg-pink-400 p-2 rounded-full text-green-600 font-bold" >
+                        {product?.farmer?.first_name.charAt(0)}
+                        {product?.farmer?.last_name.charAt(0)}
+                    </div>
+                    <div>
+                    <p className="text-gray-600 text-md mt-1">
+                  Farmer:{" "}
+                  <span className="font-medium">
+                    {product?.farmer?.first_name} {product?.farmer?.last_name}
+                  </span>
+                </p>
+                    </div>
+                    <div className="bg-green-800 p-1 rounded text-pink-400 font-bold">
+                      <Link href={`/chats`}>Chat</Link>
+                    </div>
                   </div>
-                  <div>
-                  <p className="text-gray-600 text-md mt-1">
-                Farmer:{" "}
-                <span className="font-medium">
-                  {product?.farmer?.first_name} {product?.farmer?.last_name}
-                </span>
-              </p>
-                  </div>
-                  <div className="bg-green-800 p-1 rounded text-pink-400 font-bold">
-                    <Link href={`/chat`}>Chat</Link>
-                  </div>
-                </div>
+                  )
+                }
             </div>
 
             {/* DETAILS */}
@@ -120,38 +125,50 @@ export default function ProductById({ product }: {product:any}) {
             </p>
 
             {/* BUTTONS */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button className="flex items-center gap-2 rounded-xl px-6 py-3 text-base shadow-md hover:shadow-lg">
-                <Heart size={18} />
-                {language === "ENGLISH"
-                  ? " Add to Wishlist "
-                  : language === "AFAN_OROMO"
-                  ? " Tarree fedhitti dabali ."
-                  : language === "AMHARIC"
-                  ? "ወደ ፍላጎት ዝርዝር ጨምር"
-                  : ""}
-              </Button>
+                {
+                  !isDashboard && (
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Button className="flex items-center gap-2 rounded-xl px-6 py-3 text-base shadow-md hover:shadow-lg">
+                      <Heart size={18} />
+                      {language === "ENGLISH"
+                        ? " Add to Wishlist "
+                        : language === "AFAN_OROMO"
+                        ? " Tarree fedhitti dabali ."
+                        : language === "AMHARIC"
+                        ? "ወደ ፍላጎት ዝርዝር ጨምር"
+                        : ""}
+                    </Button>
+      
+                    <Button
+                      className=" rounded-xl cursor-pointer bg-green-600 hover:bg-green-700"
+                      onClick={() => handleAddToCart(product.id)}
+                      disabled={loadingId === product.id}
+                    >
+                      {language === "ENGLISH"
+                        ? loadingId === product.id
+                          ? "Adding..."
+                          : "Add to Cart"
+                        : language === "AFAN_OROMO"
+                        ? loadingId === product.id
+                          ? "Dabalaa Jira..."
+                          : "Kuusaatti Dabali"
+                        : language === "AMHARIC"
+                        ? loadingId === product.id
+                          ? "እየጨመሩ ነው..."
+                          : "ወደ ግዢው ቅርጫት ጨምር"
+                        : ""}
+                    </Button>
+                  </div>
+                  )
+                }
 
-              <Button
-                className=" rounded-xl cursor-pointer bg-green-600 hover:bg-green-700"
-                onClick={() => handleAddToCart(product.id)}
-                disabled={loadingId === product.id}
-              >
-                {language === "ENGLISH"
-                  ? loadingId === product.id
-                    ? "Adding..."
-                    : "Add to Cart"
-                  : language === "AFAN_OROMO"
-                  ? loadingId === product.id
-                    ? "Dabalaa Jira..."
-                    : "Kuusaatti Dabali"
-                  : language === "AMHARIC"
-                  ? loadingId === product.id
-                    ? "እየጨመሩ ነው..."
-                    : "ወደ ግዢው ቅርጫት ጨምር"
-                  : ""}
-              </Button>
-            </div>
+                {
+                  isDashboard && (
+                    <Button
+                    className=" rounded-xl cursor-pointer bg-green-600 hover:bg-green-700"
+                  >Edit </Button>
+                  )
+                }
           </motion.div>
         </CardContent>
       </Card>

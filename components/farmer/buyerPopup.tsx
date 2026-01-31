@@ -14,8 +14,13 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
+import { User } from "@prisma/client";
 
-export default function BuyerPopup() {
+interface BuyerPopup {
+  user: User
+}
+
+export default function BuyerPopup({user}:BuyerPopup) {
   const [open, setOpen] = useState(false);
 
   // Example static buyer data
@@ -51,19 +56,19 @@ export default function BuyerPopup() {
           <div className="space-y-3 mt-4">
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Name:</span>
-              <span className="text-gray-800">{buyer.name}</span>
+              <span className="text-gray-800">{user.first_name} {user.last_name}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Email:</span>
-              <span className="text-gray-800">{buyer.email}</span>
+              <span className="text-gray-800">{user.email}</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Phone:</span>
-              <span className="text-gray-800">{buyer.phone}</span>
+              <span className="text-gray-800">No</span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Address:</span>
-              <span className="text-gray-800">{buyer.address}</span>
+              <span className="text-gray-800">{user.address}</span>
             </div>
           </div>
 

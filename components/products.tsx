@@ -9,6 +9,7 @@ import { addToCart } from "@/utils/services/cartItem";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
+import LoaderBtn from "./loaderBtn";
 
 interface Product {
   id: string;
@@ -18,11 +19,14 @@ interface Product {
 }
 
 interface ProductsProps {
-  cartQuantity?: number,
+  cartQuantity?: number;
   products: Product[];
 }
 
-export default function ProductsPage({ products,cartQuantity }: ProductsProps) {
+export default function ProductsPage({
+  products,
+  cartQuantity,
+}: ProductsProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
   const { theme, toggleTheme } = useTheme();
@@ -161,19 +165,19 @@ export default function ProductsPage({ products,cartQuantity }: ProductsProps) {
                         : "ወደ ግዢው ቅርጫት ጨምር"
                       : ""}
                   </Button>
-                  <Button
+                  <LoaderBtn
+                    btnName={
+                      language === "ENGLISH"
+                        ? "Detail "
+                        : language === "AFAN_OROMO"
+                        ? " Odeeffannoo Bal'aa "
+                        : language === "AMHARIC"
+                        ? " ዝርዝር"
+                        : ""
+                    }
+                    linkTo={`/product/${product.id}`}
                     className=" rounded-xl cursor-pointer bg-green-600 font-bold text-white hover:bg-green-700"
-                    variant="secondary"
-                    onClick={() => router.push(`/product/${product.id}`)}
-                  >
-                    {language === "ENGLISH"
-                      ? "Detail "
-                      : language === "AFAN_OROMO"
-                      ? " Odeeffannoo Bal'aa "
-                      : language === "AMHARIC"
-                      ? " ዝርዝር"
-                      : ""}
-                  </Button>
+                  />
                 </div>
               </CardFooter>
             </Card>
