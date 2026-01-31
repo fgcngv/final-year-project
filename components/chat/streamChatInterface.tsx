@@ -1,6 +1,5 @@
 "use client";
 
-// import { UserProfile } from "@/app/profile/page";
 import {
   createOrGetChannel,
   getStreamUserToken,
@@ -10,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Channel, Event, StreamChat } from "stream-chat";
 import { text } from "stream/consumers";
-// import VideoCall from "./VideoCall";
 
 interface Message {
   id: string;
@@ -193,11 +191,9 @@ export default function StreamChatInterface({
         setClient(chatClient);
         setChannel(chatChannel);
       } catch (error) {
-        // ////////////
-        // router.push("/chats");
+
         console.error("Stream error:", error);
         setError("Failed to initialize chat");
-        // //////////////////
       } finally {
         setLoading(false);
       }

@@ -238,6 +238,7 @@ import { toast } from "sonner";
 import { useTheme } from "../checkTheme";
 import { Product } from "@prisma/client";
 import PopupNotification from "../popupNotification";
+import LoaderBtn from "../loaderBtn";
 
 interface roleProps {
   role: "ADMIN" | "BUYER" | "SELLER" | "LAB_TECHNICIAN" | "CASHIER" | "/";
@@ -456,15 +457,16 @@ export default function HomePage({ role, products }: roleProps) {
                     </Button>
 
                     <Link href={`/product/${product.id}`} className="w-full">
-                      <Button className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition">
-                        {language === "ENGLISH"
+                      <LoaderBtn
+                         btnName={language === "ENGLISH"
                           ? "View Detail"
                           : language === "AFAN_OROMO"
                           ? "Bal'ina isaa ilaalaa"
                           : language === "AMHARIC"
                           ? " ዝርዝሮችን ይመልከቱ"
                           : ""}
-                      </Button>
+                          className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+                       />
                     </Link>
                   </CardFooter>
                 </Card>

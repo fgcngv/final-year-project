@@ -11,11 +11,8 @@ import { toast } from "sonner";
 import { useTheme } from "./checkTheme";
 import Header from "./header";
 import Link from "next/link";
+import LoaderBtn from "./loaderBtn";
 
-interface ProductProps {
-  product: Product;
-  isDashboard?:boolean
-}
 
 export default function ProductById({ product,isDashboard }: {product:any,isDashboard?:boolean}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -108,7 +105,7 @@ export default function ProductById({ product,isDashboard }: {product:any,isDash
                 </p>
                     </div>
                     <div className="bg-green-800 p-1 rounded text-pink-400 font-bold">
-                      <Link href={`/chats`}>Chat</Link>
+                    <LoaderBtn btnName="Chat" linkTo="/chats" className="bg-green-800 p-1 rounded text-pink-400 font-bold"/>
                     </div>
                   </div>
                   )
