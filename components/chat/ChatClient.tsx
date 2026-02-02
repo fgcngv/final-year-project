@@ -1,223 +1,3 @@
-// "use client";
-
-// import { useEffect, useState, useRef } from "react";
-// import { User } from "@prisma/client";
-// import { StreamChat, Channel, Event } from "stream-chat";
-// import {
-//   getStreamUserToken,
-//   createOrGetChannel,
-// } from "@/lib/chatActions/stream";
-// import { ArrowRight, Video } from "lucide-react";
-// import Header from "../header";
-// import { toast } from "sonner";
-
-// interface ChatClientProps {
-//   otherUser: User;
-// }
-
-// interface Message {
-//   id: string;
-//   text: string;
-//   sender: "me" | "other";
-//   timestamp: Date;
-//   user_id: string;
-// }
-
-// export default function ChatClient({ otherUser }: ChatClientProps) {
-//   const [messages, setMessages] = useState<Message[]>([]);
-//   const [newMessage, setNewMessage] = useState("");
-//   const [client, setClient] = useState<StreamChat | null>(null);
-//   const [channel, setChannel] = useState<Channel | null>(null);
-//   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-//   const scrollToBottom = () => {
-//     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-//   };
-
-//   useEffect(() => {
-//     scrollToBottom();
-//   }, [messages]);
-
-//   async function handleSendMessage(e: React.FormEvent) {
-//     e.preventDefault();
-//     if (!newMessage.trim() || !channel) return;
-
-//     try {
-//       await channel.sendMessage({ text: newMessage.trim() });
-//       setNewMessage(""); // ⬅️ that's it
-//     } catch (err) {
-//       console.error("Failed to send message:", err);
-//     }
-//   }
-
-//   useEffect(() => {
-//     async function initChat() {
-//       try {
-//         const { token, userId, userName, userImage } =
-//           await getStreamUserToken();
-//         const chatClient = StreamChat.getInstance("v58enct5fzhv");
-
-//         await chatClient.connectUser(
-//           { id: userId!, name: userName, image: userImage },
-//           token
-//         );
-
-//         const { channelType, channelId } = await createOrGetChannel(
-//           otherUser.id
-//         );
-//         const chatChannel = chatClient.channel(channelType!, channelId);
-
-//         await chatChannel.watch();
-
-//         const state = await chatChannel.query({ messages: { limit: 50 } });
-//         const loadedMessages: Message[] = state.messages.map((msg) => ({
-//           id: msg.id,
-//           text: msg.text || "",
-//           sender: msg.user?.id === userId ? "me" : "other",
-//           timestamp: new Date(msg.created_at || new Date()),
-//           user_id: msg.user?.id || "",
-//         }));
-
-//         setMessages(loadedMessages);
-//         setClient(chatClient);
-//         setChannel(chatChannel);
-
-//         // chatChannel.on("message.new", (event: Event) => {
-//         //   if (!event.message) return;
-
-//         //   const message: Message = {
-//         //     id: event.message.id,
-//         //     text: event.message.text || "",
-//         //     sender: event.message.user?.id === userId ? "me" : "other",
-//         //     timestamp: new Date(event.message.created_at || new Date()),
-//         //     user_id: event.message.user?.id || "",
-//         //   };
-
-//         //   setMessages((prev) => [...prev, message]);
-//         // });
-
-//         chatChannel.on("message.new", (event: Event) => {
-//           if (!event.message) return;
-        
-//           // 🔑 Ignore messages sent by me (already handled by Stream UI flow)
-//           if (event.message.user?.id === userId) return;
-        
-//           const message: Message = {
-//             id: event.message.id,
-//             text: event.message.text || "",
-//             sender: "other",
-//             timestamp: new Date(event.message.created_at || new Date()),
-//             user_id: event.message.user?.id || "",
-//           };
-        
-//           // setMessages((prev) => [...prev, message]);
-//           setMessages((prev) =>
-//             prev.some((m) => m.id === message.id) ? prev : [...prev, message]
-//           );
-          
-//         });
-        
-//       } catch (err) {
-//         console.error("Failed to initialize chat:", err);
-//       }
-//     }
-
-//     initChat();
-//     return () => {
-//       client?.disconnectUser();
-//     };
-//   }, [otherUser]);
-
-//   return (
-//     <div>
-//       <Header />
-
-//       <div className="flex justify-center items-center min-h-screen bg-[#F5EFE6] p-4 pt-20">
-//         <div className="flex flex-col w-full max-w-2xl h-[90vh] bg-[#FFFDF8] rounded-2xl shadow-lg border border-[#D6C7B0] overflow-hidden">
-//           {/* Header */}
-//           <div className="flex items-center gap-3 px-5 py-4 bg-[#4B2E1E] text-[#FAF7F2] shadow justify-between">
-//             <div className="flex items-center justify-center gap-1">
-//               <div className="h-10 w-10 rounded-full bg-[#7A4A2E] flex items-center justify-center text-lg">
-//                 ☕
-//               </div>
-//               <div>
-//                 <p className="font-semibold leading-tight">
-//                   {otherUser.first_name}
-//                 </p>
-//                 <p className="text-xs text-[#E7D8C6]">Coffee Partner</p>
-//               </div>
-//             </div>
-
-//             <button
-//               onClick={() =>
-//                 toast.success("Hid kezi video call min yiseralehal!!")
-//               }
-//               className="p-3 rounded-full bg-[#4B2E1E] text-[#FAF7F2] hover:bg-[#3B2316] transition shadow-lg"
-//               title="Start video call"
-//             >
-//               <Video className="w-6 h-6" />
-//             </button>
-//           </div>
-
-//           {/* Messages */}
-//           <div className="flex-1 overflow-y-auto px-4 py-5 space-y-4 bg-[#FBF7F2]">
-//             {messages.map((msg) => (
-//               <div
-//                 key={msg.id}
-//                 className={`flex ${
-//                   msg.sender === "me" ? "justify-end" : "justify-start"
-//                 }`}
-//               >
-//                 <div
-//                   className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm shadow-sm ${
-//                     msg.sender === "me"
-//                       ? "bg-[#6F4E37] text-[#FAF7F2] rounded-br-none"
-//                       : "bg-[#EDE4D5] text-[#3B2A1A] rounded-bl-none"
-//                   }`}
-//                 >
-//                   <p>{msg.text}</p>
-//                   <p className="mt-1 text-[11px] opacity-70 text-right">
-//                     {msg.timestamp.toLocaleTimeString([], {
-//                       hour: "2-digit",
-//                       minute: "2-digit",
-//                     })}
-//                   </p>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-
-//           {/* Input */}
-//           <form
-//             onSubmit={handleSendMessage}
-//             className="flex items-center gap-3 px-4 py-3 border-t border-[#D6C7B0] bg-[#FFFDF8]"
-//           >
-//             <input
-//               className="flex-1 px-4 py-2 rounded-full border border-[#CBB89D] focus:outline-none focus:ring-2 focus:ring-[#7A4A2E] bg-[#FBF7F2]"
-//               placeholder="Type a message about harvest, price, or delivery…"
-//               value={newMessage}
-//               onChange={(e) => setNewMessage(e.target.value)}
-//             />
-//             <button
-//               type="submit"
-//               className=" flex gap-1 px-2 py-3 rounded-full bg-[#4B2E1E] text-[#FAF7F2] font-medium hover:bg-[#3B2316] transition"
-//             >
-//               <ArrowRight />
-//               Send
-//             </button>
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-
-
-
 
 "use client";
 
@@ -257,7 +37,7 @@ export default function ChatClient({ otherUser }: ChatClientProps) {
 
   useEffect(scrollToBottom, [messages]);
 
-  // ✅ SEND MESSAGE (optimistic)
+  // SEND MESSAGE (optimistic)
   async function handleSendMessage(e: React.FormEvent) {
     e.preventDefault();
     if (!newMessage.trim() || !channel) return;
@@ -304,7 +84,7 @@ export default function ChatClient({ otherUser }: ChatClientProps) {
     }
   }
 
-  // ✅ INIT CHAT
+  // INIT CHAT
   useEffect(() => {
     let chatClient: StreamChat;
     let chatChannel: Channel;
@@ -339,30 +119,31 @@ export default function ChatClient({ otherUser }: ChatClientProps) {
           }))
         );
 
-        // ✅ Receiver-only listener
+        // Receiver-only listener
         const onNewMessage = (event: Event) => {
           if (!event.message) return;
-
-          // Ignore my own messages
-          if (event.message.user?.id === userId) return;
-
+        
+          const msg = event.message; // ✅ local variable now known to exist
+        
+          // Ignore own messages
+          if (msg.user?.id === userId) return;
+        
           setMessages((prev) =>
-            prev.some((m) => m.id === event.message!.id)
+            prev.some((m) => m.id === msg.id)
               ? prev
               : [
                   ...prev,
                   {
-                    id: event.message.id,
-                    text: event.message.text || "",
+                    id: msg.id,
+                    text: msg.text || "",
                     sender: "other",
-                    timestamp: new Date(
-                      event.message.created_at || new Date()
-                    ),
-                    user_id: event.message.user?.id || "",
+                    timestamp: new Date(msg.created_at || new Date()),
+                    user_id: msg.user?.id || "",
                   },
                 ]
           );
         };
+        
 
         chatChannel.on("message.new", onNewMessage);
 
