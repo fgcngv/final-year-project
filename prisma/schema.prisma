@@ -10,9 +10,14 @@
 
 // Region/Origin table for geographical indication protection
 
+// generator client {
+//   provider = "prisma-client-js"
+//   // output   = "../app/generated/prisma"
+// }
+
 generator client {
-  provider = "prisma-client-js"
-  // output   = "../app/generated/prisma"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -57,7 +62,6 @@ enum PaymentStatus {
   UNPAID
   PART
 }
-
 
 enum address_Type {
   HOME
