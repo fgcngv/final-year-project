@@ -1,8 +1,4 @@
-
-
-
 "use client";
-
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,18 +26,15 @@ import Link from "next/link";
 import LoaderBtn from "../loaderBtn";
 import AddProduct from "../form/add-product";
 
-
-
-
 interface ProductRowProps {
-  image: string
-  name:string
-  origin: string
-  grade?: string
-  qty: number
-  price: number
-  status: Status
-  p_id:string
+  image: string;
+  name: string;
+  origin: string;
+  grade?: string;
+  qty: number;
+  price: number;
+  status: Status;
+  p_id: string;
 }
 
 function ProductRow({
@@ -52,10 +45,8 @@ function ProductRow({
   qty,
   price,
   status,
-  p_id
+  p_id,
 }: ProductRowProps) {
-
-
   return (
     <TableRow>
       <TableCell className="font-medium">
@@ -68,7 +59,7 @@ function ProductRow({
       <TableCell>${price.toFixed(2)}</TableCell>
       <TableCell>
         <Badge
-        className={status === Status.ACTIVE ? " bg-green-500 " : " "}
+          className={status === Status.ACTIVE ? " bg-green-500 " : " "}
           variant={
             status === Status.ACTIVE
               ? "secondary"
@@ -90,7 +81,11 @@ function ProductRow({
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Edit</DropdownMenuItem>
             <DropdownMenuItem>
-              <LoaderBtn btnName="View" linkTo={`orders/product/${p_id}`} className="bg-green-700" />
+              <LoaderBtn
+                btnName="View"
+                linkTo={`orders/product/${p_id}`}
+                className="bg-green-700"
+              />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -100,13 +95,11 @@ function ProductRow({
   );
 }
 
-
-
 interface OrderRowProps {
-  buyer: string
-  lot: string
-  qty: number
-  status: "Pending" | "Processing" | "Shipped"
+  buyer: string;
+  lot: string;
+  qty: number;
+  status: "Pending" | "Processing" | "Shipped";
 }
 
 function OrderRow({ buyer, lot, qty, status }: OrderRowProps) {
@@ -143,9 +136,6 @@ function OrderRow({ buyer, lot, qty, status }: OrderRowProps) {
   );
 }
 
-
-
-
 interface FarmerOrdersProductsProps {
   products: Product[];
 }
@@ -166,7 +156,10 @@ export default function FarmerOrdersProducts({
               Manage your coffee lots and buyer orders
             </p>
           </div>
-              <AddProduct />
+          {/* <AddProduct /> */}
+          <div className="fixed bottom-4 left-4 right-4 ">
+            <AddProduct />
+          </div>
         </div>
 
         {/* Products */}
@@ -175,61 +168,133 @@ export default function FarmerOrdersProducts({
             <CardTitle>Your Products</CardTitle>
             <Input placeholder="Search lots..." className="max-w-xs" />
           </CardHeader>
+          <CardContent>
+            {/* MOBILE View PRODUCTS */}
 
-          <CardContent className="overflow-x-auto">
-            <Table className="min-w-full">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Image</TableHead>
-                  <TableHead>Product_Name</TableHead>
-                  <TableHead>Origin</TableHead>
-                  <TableHead>Grade</TableHead>
-                  <TableHead>Quantity</TableHead>
-                  <TableHead>Price / kg</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Action</TableHead>
-                  <TableHead />
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-  {products.map((product) => {
-    const origin =
-      product.description?.origion ?? "Unknown origin";
+            <div className="space-y-4 md:hidden">
+              {products.map((product) => {
+                const qty = product.orderItems.reduce(
+                  (sum, item) => sum + item.quantity,
+                  0
+                );
 
-    const qty = product.orderItems.reduce(
-      (sum, item) => sum + item.quantity,
-      0
-    );
+                return (
+                  <div
+                    key={product.id}
+                    className="rounded-xl border bg-white p-4 shadow-sm"
+                  >
+                    <div className="flex gap-4">
+                      <img
+                        src={product.image}
+                        className="h-16 w-16 rounded-lg object-cover"
+                        alt=""
+                      />
 
-    return (
-      <ProductRow
-        key={product.id}
-        image={product.image}
-        name={product.product_name}
-        origin={origin}
-        grade="-"
-        qty={qty}
-        price={product.price}
-        status={product.status}
-        p_id={product.id}
-      />
-    );
-  })}
-</TableBody>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-800">
+                          {product.product_name}
+                        </p>
+                        <p className="text-sm text-gray-500">Qty: {qty} kg</p>
+                        <p className="text-sm text-gray-500">
+                          Price: ${product.price}/kg
+                        </p>
+                      </div>
+                    </div>
 
-            </Table>
+                    <div className="mt-3 flex items-center justify-between">
+                      <Badge
+                        className={
+                          product.status === "ACTIVE"
+                            ? "bg-green-100 text-green-800"
+                            : ""
+                        }
+                      >
+                        {product.status}
+                      </Badge>
+
+                      <div className="flex gap-2">
+                        <LoaderBtn
+                          btnName="View"
+                          linkTo={`orders/product/${product.id}`}
+                          className="bg-green-700"
+                        />
+                        <DeleteProductPopup productId={product.id} />
+                      </div>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <LoaderBtn
+                            btnName="View"
+                            linkTo={`orders/product/${product.id}`}
+                            className="bg-green-700"
+                          />
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  ////////////////////
+                );
+              })}
+            </div>
+
+            {/* DESKTOP TABLE */}
+            <div className="hidden overflow-x-auto md:block">
+              <Table className="min-w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Image</TableHead>
+                    <TableHead>Product_Name</TableHead>
+                    <TableHead>Origin</TableHead>
+                    <TableHead>Grade</TableHead>
+                    <TableHead>Quantity</TableHead>
+                    <TableHead>Price / kg</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                <TableBody>
+                  {products.map((product) => {
+                    const origin =
+                      product.description?.origion ?? "Unknown origin";
+
+                    const qty = product.orderItems.reduce(
+                      (sum, item) => sum + item.quantity,
+                      0
+                    );
+
+                    return (
+                      <ProductRow
+                        key={product.id}
+                        image={product.image}
+                        name={product.product_name}
+                        origin={origin}
+                        grade="-"
+                        qty={qty}
+                        price={product.price}
+                        status={product.status}
+                        p_id={product.id}
+                      />
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
-
-
 
         {/* Incoming Orders */}
         <Card>
           <CardHeader>
             <CardTitle>Incoming Orders</CardTitle>
           </CardHeader>
-
-
         </Card>
       </div>
     </div>

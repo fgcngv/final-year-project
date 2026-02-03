@@ -94,7 +94,7 @@ export default function Header({ cartQuantity,notification }: { cartQuantity?: n
             </Button>
           </div>
 
-          <div className="relative cursor-pointer">
+          <div className="relative active:text-green-500 hover:text-green-700 p-1 cursor-pointer">
             <Link href={userId ? `/cart/${userId}` : "/cart"}>
               <ShoppingCart className="w-7 h-7" />
             </Link>

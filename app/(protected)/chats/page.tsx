@@ -1,7 +1,3 @@
-
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -62,7 +58,6 @@ export default function ChatPage() {
       return date.toLocaleDateString();
     }
   }
-
 
   if (loading) {
     return (
