@@ -4,19 +4,7 @@ import AboutPage from "@/components/aboutPage";
 import { getCartByUserId } from "@/utils/services/cart";
 import { auth } from "@clerk/nextjs/server";
 
-// function AboutPage() {
-//     return ( 
-//         <div>
-//             <Header />
-//             <div className="pt-18">
-//             about page
 
-//             </div>
-//         </div>
-//      );
-// }
-
-// export default AboutPage;
 
 
 async function About() {
