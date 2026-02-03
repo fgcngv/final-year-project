@@ -9,7 +9,6 @@ import { addToCart } from "@/utils/services/cartItem";
 import { toast } from "sonner";
 import { useTheme } from "./checkTheme";
 import Header from "./header";
-import Link from "next/link";
 import LoaderBtn from "./loaderBtn";
 
 
@@ -51,6 +50,7 @@ export default function ProductById({ product,isDashboard }: {product:any,isDash
               : language === "AMHARIC"
               ? "የምርት ዝርዝር "
               : ""}
+              
           </CardTitle>
         </CardHeader>
 

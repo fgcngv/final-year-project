@@ -156,7 +156,7 @@ console.log("buyer by id : ",buyer)
   // console.log("farmer products : ",FarmerProduct)
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <div className=" ">
         <FarmerOrdersProducts products={FarmerProduct} />
 

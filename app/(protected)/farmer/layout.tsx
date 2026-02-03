@@ -1,40 +1,40 @@
 import DashboardHeader from "@/components/dashboardHeader";
-import Header from "@/components/header";
-import Sidebar from "@/components/sidebar";
+import MobileNav from "@/components/farmer/MobileNav";
+import { FarmerSidebar } from "@/components/sidebar";
 import { auth } from "@clerk/nextjs/server";
 
 async function AdminLayout({ children }: { children: React.ReactNode }) {
 
-const { sessionClaims } = await auth();
+
+const { sessionClaims, userId} = await auth();
 let role = sessionClaims?.metadata?.role;
 
 if(!role || role === null || role === "BUYER"){
   const role = "user";
 }
 
-
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/* DESKTOP SIDEBAR */}
+      <aside className="hidden md:flex w-64 flex-shrink-0 border-r bg-white">
+        <FarmerSidebar />
+      </aside>
 
-      {/* Sidebar */}
-      <div className="hidden md:flex w-64 bg-white border-r border-gray-200 shadow-sm">
-        <Sidebar />
-      </div>
+      {/* MAIN */}
+      <div className="flex flex-1 flex-col">
+        {/* HEADER */}
+        <header className="sticky top-0 z-40">
+          {role && (
+          <DashboardHeader role={role} />
+          )}
+        </header>
 
-      {/* Main content wrapper */}
-      <div className="flex flex-col flex-1">
-
-        {/* Header */}
-        <div className="w-full sticky top-0 z-40">
-         {role && (
-                <DashboardHeader role={role} />
-         )} 
-        </div>
-
-        {/* Page content container */}
-        <main className="flex-1 p-6 overflow-y-auto">
-          <div className="max-w-7xl mx-auto">{children}</div>
+        {/* CONTENT */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <div className="mx-auto max-w-7xl">{children}</div>
         </main>
+                {/* MOBILE NAV */}
+                {userId && <MobileNav userId={userId} />}
 
       </div>
     </div>
@@ -42,6 +42,3 @@ if(!role || role === null || role === "BUYER"){
 }
 
 export default AdminLayout;
-
-
-
