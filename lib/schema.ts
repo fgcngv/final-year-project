@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { address_Type } from "@prisma/client";
 import z, { email } from "zod";
 
-// export const AddProductSchema = z.object({
-//     product_name:z.string().min(3,"product name should be greater than 2 character").trim(),
+
 //     // farmer_id:z.string(),
 //     price: z.coerce.number().positive(),
 //     image:z.string(),
@@ -16,7 +15,7 @@ export const AddProductSchema = z.object({
   product_name:z.string().min(3,"product name should be greater than 2 character").trim(),
   // farmer_id:z.string(),
   price: z.coerce.number().positive(),
-  image: z
+  quantity: z.coerce.number().min(0, "Quantity cannot be negative"),  image: z
   .any()
   .refine((file) => file instanceof File, "Image is required"),
   product_detail:z.string().max(500,"detail would be at most 500 character"),

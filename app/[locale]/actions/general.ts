@@ -116,6 +116,7 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
       data: {
         product_name: values.product_name,
         price: values.price,
+        stock: values.quantity,
         image: values.image,
         product_detail: values.product_detail || null,
         farmer_id: farmer_id!, // foreign key
