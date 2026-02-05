@@ -461,7 +461,7 @@ export default function HomePage({ role, products }: roleProps) {
 
     return (
       <motion.div key={product.id} variants={item}>
-        <Card className="rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300 bg-white/95 backdrop-blur-md overflow-hidden flex flex-col">
+        <Card className={`rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300${product.stock === 0 ? " bg-red-300" : " bg-white/95"} backdrop-blur-md overflow-hidden flex flex-col`}>
           {/* IMAGE */}
           <div className="relative group">
             <img
@@ -535,6 +535,7 @@ export default function HomePage({ role, products }: roleProps) {
 
             <Link href={`/product/${product.id}`} className="w-full">
               <LoaderBtn
+                 disable={product.stock === 0}
                 btnName={tb('detail')}
                 className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
               />
