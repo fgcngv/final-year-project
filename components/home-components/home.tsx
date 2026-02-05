@@ -363,12 +363,15 @@ export default function HomePage({ role, products }: roleProps) {
     let language = theme;
  console.log("theme : ",theme)
 
-  const handleAddToCart = async (id: string) => {
+  const handleAddToCart = async (id: string, quantity: number) => {
     setLoadingId(id);
-    await addToCart(id);
+    const result = await addToCart(id, quantity);
     setLoadingId(null);
-    toast.success(tc('added'));
+  
+    if (result.success) toast.success(tc('added'));
+    else toast.error(result.message);
   };
+  
 
   const handleBuyNow = (id: string) => {
     alert(`Redirecting to checkout for product ${id}`);
@@ -448,71 +451,101 @@ export default function HomePage({ role, products }: roleProps) {
           <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/90" />
 
           <motion.div
-            className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-6 sm:p-10"
-            variants={container}
-            initial="hidden"
-            animate="show"
-          >
-            {products.map((product) => (
-              <motion.div key={product.id} variants={item}>
-                <Card className="rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300 bg-white/95 backdrop-blur-md overflow-hidden flex flex-col">
-                  {/* IMAGE */}
-                  <div className="relative group">
-                    <img
-                      // src={product.image}
-                      src={`${product?.image}`}
-                      alt={product.product_name}
-                      className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
-                      loading="lazy"
-                    />
+  className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-6 sm:p-10"
+  variants={container}
+  initial="hidden"
+  animate="show"
+>
+  {products.map((product) => {
+    const [qty, setQty] = useState(1); // quantity state for each product
 
-                    {/* Floating Buy Now Button */}
-                    <Button
-                      onClick={() => handleBuyNow(product.id)}
-                      variant="secondary"
-                      className="absolute cursor-pointer bottom-3 right-3 px-4 py-2 rounded-xl bg-blue-700 text-white font-semibold shadow-md hover:bg-blue-600 transition-all"
-                    >
-                      {tb('buy')}
-                    </Button>
-                  </div>
+    return (
+      <motion.div key={product.id} variants={item}>
+        <Card className="rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300 bg-white/95 backdrop-blur-md overflow-hidden flex flex-col">
+          {/* IMAGE */}
+          <div className="relative group">
+            <img
+              src={`${product?.image}`}
+              alt={product.product_name}
+              className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
+              loading="lazy"
+            />
 
-                  {/* CONTENT */}
-                  <CardContent className="p-5 flex flex-col gap-2 flex-grow">
-                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800 tracking-tight">
-                      {product.product_name}
-                    </h2>
+            {/* Floating Buy Now Button */}
+            <Button
+              onClick={() => handleBuyNow(product.id)}
+              variant="secondary"
+              className="absolute cursor-pointer bottom-3 right-3 px-4 py-2 rounded-xl bg-blue-700 text-white font-semibold shadow-md hover:bg-blue-600 transition-all"
+              disabled={product.stock === 0}
+            >
+              {tb('buy')}
+            </Button>
+          </div>
 
-                    <p className="text-2xl font-bold text-green-700">
-                       {product.price} Brr
-                    </p>
-                  </CardContent>
+          {/* CONTENT */}
+          <CardContent className="p-5 flex flex-col gap-2 flex-grow">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 tracking-tight">
+              {product.product_name}
+            </h2>
 
-                  {/* FOOTER BUTTONS */}
-                  <CardFooter className="p-5 pt-0 flex flex-col gap-3">
-                    <Button
-                      onClick={() => handleAddToCart(product.id)}
-                      disabled={loadingId === product.id}
-                      className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
-                    >
-                      <ShoppingCart size={18} />
-                      {
-                        loadingId ? tc('adding') : tb('add')
-                      }
+            <p className="text-2xl font-bold text-green-700">
+              {product.price} Brr
+            </p>
 
-                    </Button>
+            {/* Quantity selector */}
+            <div className="flex items-center gap-2 mt-2">
+              <Button
+                onClick={() => setQty(Math.max(1, qty - 1))}
+                size="sm"
+                className="bg-red-700 font-bold text-2xl hover:bg-red-800 active:bg-red-500 cursor-pointer"
+              >
+                -
+              </Button>
+              <span>{qty}</span>
+              <Button
+                onClick={() =>
+                  setQty(Math.min(qty + 1, product.stock || 1))
+                }
+                size="sm"
+                disabled={product.stock === 0}
+                className="bg-green-700 font-bold text-2xl hover:bg-green-800 active:bg-green-500 cursor-pointer"
+              >
+                +
+              </Button>
+            </div>
 
-                    <Link href={`/product/${product.id}`} className="w-full">
-                      <LoaderBtn
-                         btnName={tb('detail')}
-                          className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
-                       />
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
+            {/* Stock info */}
+            <p className="text-sm text-gray-500 mt-1">
+              {product.stock > 0
+                ? `${product.stock} left in stock`
+                : "Out of stock"}
+            </p>
+          </CardContent>
 
-          </motion.div>
+          {/* FOOTER BUTTONS */}
+          <CardFooter className="p-5 pt-0 flex flex-col gap-3">
+            <Button
+              onClick={() => handleAddToCart(product.id, qty)}
+              disabled={loadingId === product.id || product.stock === 0}
+              className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
+            >
+              <ShoppingCart size={18} />
+              {loadingId === product.id ? tc('adding') : tb('add')}
+            </Button>
+
+            <Link href={`/product/${product.id}`} className="w-full">
+              <LoaderBtn
+                btnName={tb('detail')}
+                className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+              />
+            </Link>
+          </CardFooter>
+        </Card>
+      </motion.div>
+    );
+  })}
+</motion.div>
+
         </div>
       </section>
     </div>

@@ -1,3 +1,5 @@
+"use server"
+
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
@@ -199,3 +201,29 @@ export const markNotificationAsRead = async (notificationId: string) => {
 };
 
 
+export const deleteNotification = async (id: string) => {
+  const {userId} = await auth();
+
+  if(!userId) return null;
+
+  try {
+    const deletedNotification = await prisma.notification.delete({
+      where: { id },
+    });
+
+    return {
+      success: true,
+      error: false,
+      message: "Notification deleted successfully!",
+      notification: deletedNotification, // optional, useful for frontend updates
+    };
+  } catch (error: any) {
+    console.error("Failed to delete notification:", error);
+
+    return {
+      success: false,
+      error: true,
+      message: error.message || "Failed to delete notification!",
+    };
+  }
+};

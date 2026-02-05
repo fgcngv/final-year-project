@@ -129,6 +129,7 @@ model Product {
   product_name   String
   farmer_id      String // FIXED
   price          Float
+  stock          Int     @default(0)
   image          String
   product_detail String?
   status         Status  @default(ACTIVE)

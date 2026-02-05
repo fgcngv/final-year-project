@@ -20,7 +20,7 @@ async function Products() {
 
   return (
     <div>
-      <ProductsPage cartQuantity={23} products={data} />
+      <ProductsPage  products={data} />
     </div>
   );
 }
