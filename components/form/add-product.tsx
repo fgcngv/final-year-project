@@ -27,7 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AddProductSchema } from "@/lib/schema";
 import { useRouter } from "next/navigation";
 import z from "zod";
-import { addProduct } from "@/app/actions/general";
+import { addProduct } from "@/app/[locale]/actions/general";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
 import { Plus } from "lucide-react";
@@ -51,48 +51,46 @@ export default function AddProduct() {
     },
   });
 
-
-
-  // updated onsubmit function
+  //  updated onsubmit function
   const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
     values
   ) => {
     if (!id) return;
-  
+
     setLoading(true);
-  
+
     try {
       const file = values.image;
-  
+
       // 1. Generate unique file name
       const fileExt = file.name.split(".").pop();
       const fileName = `${id}-${Date.now()}.${fileExt}`;
-  
+
       // 2. Upload to Supabase Storage
       const { error } = await supabase.storage
         .from("Ethiopian-green-coffee-product-images")
         .upload(fileName, file);
-  
+
       if (error) {
         throw new Error(error.message);
       }
-  
+
       // 3. Get public URL
       const { data } = supabase.storage
         .from("Ethiopian-green-coffee-product-images")
         .getPublicUrl(fileName);
-  
+
       const imageUrl = data.publicUrl;
-  
+
       // 4. Send data to server action
       const added = await addProduct({
-        farmer_id: id, 
+        farmer_id: id,
         values: {
           ...values,
           image: imageUrl,
         },
       });
-  
+
       toast.success(added.message);
       router.refresh();
     } catch (err: any) {
@@ -101,11 +99,11 @@ export default function AddProduct() {
       setLoading(false);
     }
   };
-  
+
   return (
     <Dialog>
       <DialogTrigger className="px-4 py-2 bg-green-600 font-bold text-white flex justify-center items-center cursor-pointer hover:bg-green-700 active:bg-green-800 rounded-md">
-      <Plus className="mr-2 h-4 w-4" /> 
+        <Plus className="mr-2 h-4 w-4" />
         Add New Product
       </DialogTrigger>
 

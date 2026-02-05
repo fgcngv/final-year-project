@@ -8,10 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/checkTheme";
 import Header from "@/components/header";
+import { useTranslations } from "next-intl";
 
 export default function AboutPage({cartQuantity}:{cartQuantity?:number}) {
         const { theme, toggleTheme } = useTheme();
         let language = theme;
+
+        const t = useTranslations('home');
 
   return (
     <div className="bg-gradient-to-b from-[#f5f3ef] to-white text-gray-800">
@@ -27,6 +30,7 @@ export default function AboutPage({cartQuantity}:{cartQuantity?:number}) {
           className="text-center space-y-6"
         >
           <h1 className="text-4xl md:text-6xl font-extrabold text-green-900">
+            
             {
                 language === "ENGLISH" ? "Ethiopian Green Coffee Marketplace " :
                 language === "AMHARIC" ? "የኢትዮጵያ አረንጓዴ ቡና ገበያ " :

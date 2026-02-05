@@ -1,0 +1,45 @@
+{
+  "button": {
+    "add": "Add to Cart",
+    "buy": "Buy Now",
+    "dashboardbtn": "Go To Dashboard",
+    "detail": "View Detail",
+    "getstarted": "Get Started",
+    "submit": "Submit",
+    "submitting": "Submitting..."
+  },
+  "cart": {
+    "added": "Added to cart!"
+  },
+  "contact": {
+    "contactus": "Contact Us",
+    "helps": "Whether you’re a farmer or buyer, our platform helps you grow sustainably and profitably.",
+    "hour": "Mon – Fri, 9:00 AM – 6:00 PM (EAT)",
+    "location": "Location",
+    "partner": "Partner With Ethiopian Coffee Farmers",
+    "phone": "Phone",
+    "place": " Bahir Dar, Ethiopia",
+    "question": "Have questions about Ethiopian green coffee, partnerships, or our platform? We’re here to help.",
+    "sendmes": "Send us a message",
+    "success": "Your message was submitted successfully!",
+    "talk": "Let’s Talk Coffee",
+    "weconnect": "We connect Ethiopian farmers with global buyers through transparency,quality, and trust",
+    "workinghours": "Working Hours"
+  },
+  "form": {
+    "email": "Your Email",
+    "message": "Write your message...",
+    "name": "Your Name",
+    "subject": "Subject"
+  },
+  "home": {
+    "adding": "Adding...",
+    "featured": "Featured Coffee Products",
+    "greeting": "Discover Ethiopian Green Coffee",
+    "header": "Welcome to the Demo!",
+    "info": "Fresh, premium, directly from smallholder Ethiopian farms.",
+    "shopnnowbtn": "Shop Now",
+    "signoption": "Sign-In or Sign-Up",
+    "subheader": "This is a multilingual Next.js site using next-intl."
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "button": {
+    "add": "Kaarra Dabalata",
+    "buy": "Amma Bitadhu",
+    "dashboardbtn": "Gara Dashboard deemi",
+    "detail": "Faayidaa Ilaali",
+    "getstarted": "Jalqabu",
+    "submit": "Ergaa",
+    "submitting": "Ergaa..."
+  },
+  "cart": {
+    "added": "Kaarra irratti dabalame!"
+  },
+  "contact": {
+    "contactus": "Nu qunnamaa",
+    "helps": "Yoo ati qonnaan bultii ykn bitataa taate, piroojektii keenya si gargaara akka si dabalata qabeenyaan fi bu'aa qabeessa ta'ee guddattu.",
+    "hour": "Dilbata – Jimaata, sa'aa 9:00 AM – 6:00 PM (EAT)",
+    "location": "Bakka",
+    "partner": "Waliigaltee Qonnaan Bultoota Buna Itoophiyaa",
+    "phone": "Bilbila",
+    "place": "Bahir Dar, Itoophiyaa",
+    "question": "Gaaffiiwwan qabduu dhangala'aa bunaa magariisaa Itoophiyaa, walitti dhufeenya, yookaan piroojektii keenya irratti? Nuuf gargaara.",
+    "sendmes": "Nuuf ergaa ergi",
+    "success": "Ergaa kee milkaa'inaan ergame!",
+    "talk": "Kaffaa Haasofna",
+    "weconnect": "Nuti qonnaan bultoota Itoophiyaa bittoota addunyaa waliin walqunnamti goona, iftoomina, qulqullina, fi amanamummaa irratti.",
+    "workinghours": "Sa'aatii Hojii"
+  },
+  "form": {
+    "email": "Imeelii Kee",
+    "message": "Ergaa kee barreessi...",
+    "name": "Maqaa Kee",
+    "subject": "Mata-duree"
+  },
+  "home": {
+    "adding": "Dabaluu...",
+    "featured": "Kofii Ijaaramuu",
+    "greeting": "Buna Magariisa Itoophiyaa Argadhaa",
+    "header": "Baga nagaan dhuftan Demo!",
+    "info": "Buna Qulqulluu, gatii Gad'aanaa, qonnaan bultoota Itoophiyaa xiqqaa irraa dhufee .",
+    "shopnnowbtn": "Amma Bitadhu",
+    "signoption": "Seenaa Galchuu yookaan Seenaa Haaraa",
+    "subheader": "Kun marsariitii Next.js afaan hedduu fayyadamu kan next-intl ti."
+  }
+}

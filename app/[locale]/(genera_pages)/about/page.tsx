@@ -1,11 +1,7 @@
-// import Header from "@/components/header";
 
 import AboutPage from "@/components/aboutPage";
 import { getCartByUserId } from "@/utils/services/cart";
 import { auth } from "@clerk/nextjs/server";
-
-
-
 
 async function About() {
   let cartQuantity = 0;

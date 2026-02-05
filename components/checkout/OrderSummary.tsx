@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,18 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Truck, Package, Shield } from "lucide-react";
 import Image from "next/image";
 import { Product } from "@prisma/client";
-import { createOrder } from "@/app/actions/order";
+import { createOrder } from "@/app/[locale]/actions/order";
 import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-
 interface CartItemProps {
-  cart_id: string
-  id: string
-  product: Product
-  product_id: string
-  quantity: number
+  cart_id: string;
+  id: string;
+  product: Product;
+  product_id: string;
+  quantity: number;
 }
 
 interface OrderSummaryProps {
@@ -28,36 +25,41 @@ interface OrderSummaryProps {
   total: number;
 }
 
-export default function OrderSummary({ items, subtotal, shippingFee, total }: OrderSummaryProps) {
+export default function OrderSummary({
+  items,
+  subtotal,
+  shippingFee,
+  total,
+}: OrderSummaryProps) {
+  const [loading, setLoading] = useState(false);
 
-  const [loading,setLoading] = useState(false);
-  
-console.log("itrems : ",items)
+  console.log("itrems : ", items);
   async function handleCreateOrder() {
-    
     try {
-      setLoading(true)
+      setLoading(true);
 
-      const response = await createOrder( items.map(i => ({
-        product_id: i.product_id,
-        quantity: i.quantity,
-        price: i.product.price
-      })));
+      const response = await createOrder(
+        items.map((i) => ({
+          product_id: i.product_id,
+          quantity: i.quantity,
+          price: i.product.price,
+        }))
+      );
 
-      if(!response){
-        toast.error("Failed to Store order!")
+      if (!response) {
+        toast.error("Failed to Store order!");
       }
 
       toast.success(response.message);
-      
+
       console.log(response.message);
 
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
   }
-  
+
   return (
     <div className="space-y-6 sticky top-8">
       <Card className="shadow-xl border-2">
@@ -68,14 +70,22 @@ console.log("itrems : ",items)
           {/* Order Items */}
           <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
             {items.map((item) => (
-              <div key={item.id} className="flex items-center gap-4 p-3 rounded-lg bg-gray-50">
+              <div
+                key={item.id}
+                className="flex items-center gap-4 p-3 rounded-lg bg-gray-50"
+              >
                 <div className="relative h-16 w-16 rounded-lg overflow-hidden">
                   {/* <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-700" /> */}
-                  <img src={item?.product?.image} alt={item?.product?.product_name} />
+                  <img
+                    src={item?.product?.image}
+                    alt={item?.product?.product_name}
+                  />
                 </div>
                 <div className="flex-1">
                   <h4 className="font-semibold">{item.product.product_name}</h4>
-                  <p className="text-sm text-gray-600">{item.product.farmer_id}</p>
+                  <p className="text-sm text-gray-600">
+                    {item.product.farmer_id}
+                  </p>
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-sm text-gray-500">
                       Qty: {item.quantity}
@@ -97,7 +107,9 @@ console.log("itrems : ",items)
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Shipping</span>
-              <span className="font-semibold">{shippingFee.toFixed(2)} Brr</span>
+              <span className="font-semibold">
+                {shippingFee.toFixed(2)} Brr
+              </span>
             </div>
             <div className="flex justify-between items-center border-t pt-3">
               <span className="text-lg font-bold">Total</span>
@@ -131,8 +143,19 @@ console.log("itrems : ",items)
               </p>
             </div>
           </div>
-          <Button disabled={loading} className={cn(` ${loading ? "bg-green-100 text-black" : "cursor-pointer bg-green-700 font-bold"}`)} onClick={handleCreateOrder}>{loading ?"Creating Order... " : "Create Order "}</Button>
-
+          <Button
+            disabled={loading}
+            className={cn(
+              ` ${
+                loading
+                  ? "bg-green-100 text-black"
+                  : "cursor-pointer bg-green-700 font-bold"
+              }`
+            )}
+            onClick={handleCreateOrder}
+          >
+            {loading ? "Creating Order... " : "Create Order "}
+          </Button>
         </CardContent>
       </Card>
 

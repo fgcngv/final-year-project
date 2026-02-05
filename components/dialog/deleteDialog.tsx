@@ -1,5 +1,3 @@
-
-
 // "use client";
 
 // import * as React from "react";
@@ -43,7 +41,6 @@
 //     }
 //   };
 
-
 //   return (
 //     <Dialog open={open} onOpenChange={setOpen}>
 //       <DialogTrigger asChild>
@@ -62,24 +59,36 @@
 //   );
 // }
 
-
-
-
-
 "use client";
 
 import * as React from "react";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
-import { deleteData } from "@/app/actions/admin";
+import { deleteData } from "@/app/[locale]/actions/admin";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { deleteDataById } from "@/app/actions/general";
+import { deleteDataById } from "@/app/[locale]/actions/general";
 
 interface DeleteDialogProps {
   id: string;
-  deleteType: "user" | "farmer" | "product" | "order" | "order_item" | "cart" | "cart_item" | "wishlist";
+  deleteType:
+    | "user"
+    | "farmer"
+    | "product"
+    | "order"
+    | "order_item"
+    | "cart"
+    | "cart_item"
+    | "wishlist";
 }
 
 export default function DeleteDialog({ id, deleteType }: DeleteDialogProps) {
@@ -124,15 +133,18 @@ export default function DeleteDialog({ id, deleteType }: DeleteDialogProps) {
         </DialogHeader>
 
         <div className="text-center py-4">
-          Are you sure you want to delete this record? This action cannot be undone.
+          Are you sure you want to delete this record? This action cannot be
+          undone.
         </div>
 
         <DialogFooter className="flex justify-end gap-2">
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>
-          <Button variant="destructive"  disabled={loading}
-           onClick={handleDelete}
+          <Button
+            variant="destructive"
+            disabled={loading}
+            onClick={handleDelete}
           >
             {loading ? "Deleting..." : "Delete"}
           </Button>

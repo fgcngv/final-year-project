@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState } from "react";
@@ -19,7 +17,7 @@ import type { z } from "zod";
 import { addressSchema } from "@/lib/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createAddress } from "@/app/actions/order";
+import { createAddress } from "@/app/[locale]/actions/order";
 import { toast } from "sonner";
 import { address_Type } from "@prisma/client";
 
@@ -45,21 +43,20 @@ export default function AddressStep() {
     },
   });
 
- const onSubmit:  SubmitHandler<AddressFormValues>  = async (values) => {
-  try{
-    const parsedValues = addressSchema.parse(values);
-    const res = await createAddress(parsedValues);
-    if(res.error){
-      toast.error(res?.message);
+  const onSubmit: SubmitHandler<AddressFormValues> = async (values) => {
+    try {
+      const parsedValues = addressSchema.parse(values);
+      const res = await createAddress(parsedValues);
+      if (res.error) {
+        toast.error(res?.message);
+      }
+
+      toast.success(res?.message);
+    } catch (error) {
+      console.log("Catch error : ", error);
     }
-
-    toast.success(res?.message);
-  }catch(error){
-    console.log("Catch error : ",error);
-
-  }
-  console.log(values)
-  }
+    console.log(values);
+  };
 
   return (
     <Card className="border-2 shadow-lg">
@@ -125,18 +122,18 @@ export default function AddressStep() {
 
               <div className="space-y-2">
                 <FormField
-                    control={form.control}
-                    name="addressLine1"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Street Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Ex. Bole arabsa..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  control={form.control}
+                  name="addressLine1"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Street Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Ex. Bole arabsa..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
@@ -153,7 +150,8 @@ export default function AddressStep() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />                </div>
+                  />{" "}
+                </div>
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
@@ -162,12 +160,16 @@ export default function AddressStep() {
                       <FormItem>
                         <FormLabel>region</FormLabel>
                         <FormControl>
-                          <Input placeholder="Ex. Amhara/Oromia..." {...field} />
+                          <Input
+                            placeholder="Ex. Amhara/Oromia..."
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
-                  />                 </div>
+                  />{" "}
+                </div>
                 <div className="space-y-2">
                   <FormField
                     control={form.control}
@@ -181,7 +183,8 @@ export default function AddressStep() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />                 </div>
+                  />{" "}
+                </div>
               </div>
 
               <Button type="submit" className="w-full">

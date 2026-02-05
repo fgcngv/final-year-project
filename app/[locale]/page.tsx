@@ -9,8 +9,11 @@ import { getAllProducts } from "./actions/products";
 import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
 import { getAllUnreadNotifications } from "@/utils/services/notification";
 import { getAllUsers } from "@/utils/services/admin";
+import { useTranslations } from "next-intl";
+
 
 export default async function Home() {
+  // const t = useTranslations('home');
   // ✅ auth() is synchronous
   const { userId, sessionClaims } = await auth();
 
@@ -61,11 +64,15 @@ export default async function Home() {
   }
 
   const unread = await getAllUnreadNotifications();
-
   return (
     <div className="pt-2">
+      <div>
+        hello
+      </div>
       <Header notification={unread?.data?.length} cartQuantity={cartQuantity} />
       <HomePage products={productsData.data ?? []} role={role || "/"} />
     </div>
   );
 }
+
+

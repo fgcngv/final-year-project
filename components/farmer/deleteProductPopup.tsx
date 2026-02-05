@@ -1,10 +1,8 @@
-
-
 "use client";
 
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { deleteProductById } from "@/app/actions/products";
+import { deleteProductById } from "@/app/[locale]/actions/products";
 import { AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -44,9 +42,8 @@ export default function DeleteProductPopup({ productId }: Props) {
               Delete Product?
             </h2>
 
-
             <p className="text-sm flex  text-amber-400  font-bold mb-6 text-center">
-            <AlertTriangle className="w-5 h-5 text-yellow-500" />
+              <AlertTriangle className="w-5 h-5 text-yellow-500" />
               This action cannot be undone.
             </p>
 
