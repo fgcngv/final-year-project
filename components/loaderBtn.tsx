@@ -9,10 +9,11 @@ interface LoaderBtnProps {
   btnName: string;
   className?: string;
   linkTo?: string;
-  onClick?:()=>void
+  onClick?:()=>void;
+  disable?:boolean
 }
 
-function LoaderBtn({ btnName, className, linkTo }: LoaderBtnProps) {
+function LoaderBtn({ btnName, className, linkTo,disable }: LoaderBtnProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -26,7 +27,7 @@ function LoaderBtn({ btnName, className, linkTo }: LoaderBtnProps) {
     <Button
       onClick={handleNavigation}
       className={cn("cursor-pointer font-bold", className)}
-      disabled={loading}
+      disabled={loading || disable}
     >
       {loading ? (
         <div className="flex items-center justify-center">

@@ -331,8 +331,8 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Card className="rounded-2xl relative shadow-md hover:shadow-xl transition border">
-              <CardContent className="p-4 flex flex-col gap-2">
+            <Card className={`rounded-2xl relative shadow-md hover:shadow-xl transition border ${product.stock === 0 ? " bg-red-300" : " "}`}>
+              <CardContent  className={`p-4 flex flex-col gap-2 `}>
                 <img
                   src={`${product?.image}`}
                   alt={product.product_name || "Product image"}
@@ -353,12 +353,15 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
                     }
                     className="w-20 p-1 rounded border text-center"
                   />
-                  <span className="text-sm text-gray-500">
-                    {language === "ENGLISH"
-                      ? `Stock: ${product.stock}`
-                      : language === "AFAN_OROMO"
-                      ? `Qabeenya: ${product.stock}`
-                      : `እቃ ቀሪ: ${product.stock}`}
+                  <span className="text-sm text-gray-500"> 
+                      {
+                        product.stock === 0 ? "Finished Product!" :
+                        language === "ENGLISH"
+                          ? `Stock: ${product.stock}`
+                          : language === "AFAN_OROMO"
+                          ? `Qabeenya: ${product.stock}`
+                          : `እቃ ቀሪ: ${product.stock}`
+                      }
                   </span>
                 </div>
               </CardContent>
@@ -368,7 +371,7 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
                   <Button
                     className="rounded-xl cursor-pointer"
                     onClick={() => handleAddToCart(product)}
-                    disabled={loadingId === product.id}
+                    disabled={loadingId === product.id || product.stock === 0}
                   >
                     {loadingId === product.id
                       ? language === "ENGLISH"
@@ -393,12 +396,14 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
                     }
                     linkTo={`/product/${product.id}`}
                     className="rounded-xl cursor-pointer bg-green-600 font-bold text-white hover:bg-green-700"
+                    disable={product.stock === 0}
                   />
                 </div>
               </CardFooter>
               <Button
                   className="rounded-xl bg-blue-600 absolute top-10 left-10 text-white font-bold"
                   onClick={() => handleBuyNow(product)}
+                  disabled={product.stock === 0}
                 >
                   {language === "ENGLISH"
                     ? "Buy Now"
