@@ -166,6 +166,105 @@ interface CartItem {
 // };
 
 ///////////////////////////////////////////////
+// export const createOrder = async (items: CartItem[]) => {
+//   const { userId } = await auth();
+//   if (!userId) {
+//     return { success: false, error: true, message: "User not authenticated" };
+//   }
+
+//   const address = await prisma.address.findFirst({
+//     where: { userId },
+//   });
+
+//   if (!address) {
+//     return {
+//       success: false,
+//       error: true,
+//       message: "No address found, please save your address information!",
+//     };
+//   }
+
+//   try {
+//     const order = await prisma.$transaction(async (tx) => {
+//       // 1️⃣ Create order
+//       const order = await tx.order.create({
+//         data: {
+//           user_id: userId,
+//           address_id: address.id,
+//           status: "PENDING",
+//         },
+//       });
+
+//       // 2️⃣ Process each cart item safely
+//       for (const item of items) {
+//         const product = await tx.product.findUnique({
+//           where: { id: item.product_id },
+//         });
+
+//         if (!product) {
+//           throw new Error("Product not found");
+//         }
+
+//         if (product.status !== "ACTIVE") {
+//           throw new Error(`${product.product_name} is not available`);
+//         }
+
+//         if (product.stock < item.quantity) {
+//           throw new Error(`Insufficient stock for ${product.product_name}`);
+//         }
+
+//         // 3️⃣ Create order item
+//         await tx.orderItem.create({
+//           data: {
+//             order_id: order.id,
+//             product_id: item.product_id,
+//             quantity: item.quantity,
+//             price: product.price, // trust DB, not client
+//           },
+//         });
+
+//         // 4️⃣ Reduce stock
+//         await tx.product.update({
+//           where: { id: product.id },
+//           data: {
+//             stock: {
+//               decrement: item.quantity,
+//             }, 
+//             status: product.stock - item.quantity === 0 ? "PAUSED" : "ACTIVE",
+//           },
+//         });
+
+//         // 5️⃣ Create notification for farmer
+//         await tx.notification.create({
+//           data: {
+//             user_id: product.farmer_id, // farmer gets notified
+//             title: "Product Sold",
+//             message: `${product.product_name} was purchased (${item.quantity})`,
+//             type: "ORDER",
+//             product_id: product.id,
+//           },
+//         });
+//       }
+
+//       return order;
+//     });
+
+//     return {
+//       success: true,
+//       error: false,
+//       message: "Order placed successfully!",
+//       order_id: order.id,
+//     };
+//   } catch (error: any) {
+//     console.error("Order creation failed:", error.message);
+//     return {
+//       success: false,
+//       error: true,
+//       message: error.message || "Failed to place order",
+//     };
+//   }
+// };
+
 export const createOrder = async (items: CartItem[]) => {
   const { userId } = await auth();
   if (!userId) {
@@ -185,8 +284,8 @@ export const createOrder = async (items: CartItem[]) => {
   }
 
   try {
-    const order = await prisma.$transaction(async (tx) => {
-      // 1️⃣ Create order
+    const result = await prisma.$transaction(async (tx) => {
+      // 1️⃣ Create Order
       const order = await tx.order.create({
         data: {
           user_id: userId,
@@ -195,75 +294,64 @@ export const createOrder = async (items: CartItem[]) => {
         },
       });
 
-      // 2️⃣ Process each cart item safely
+      let totalAmount = 0;
+
+      // 2️⃣ Create OrderItems (NO stock deduction here)
       for (const item of items) {
         const product = await tx.product.findUnique({
           where: { id: item.product_id },
         });
 
-        if (!product) {
-          throw new Error("Product not found");
-        }
-
+        if (!product) throw new Error("Product not found");
         if (product.status !== "ACTIVE") {
           throw new Error(`${product.product_name} is not available`);
         }
-
         if (product.stock < item.quantity) {
           throw new Error(`Insufficient stock for ${product.product_name}`);
         }
 
-        // 3️⃣ Create order item
         await tx.orderItem.create({
           data: {
             order_id: order.id,
-            product_id: item.product_id,
-            quantity: item.quantity,
-            price: product.price, // trust DB, not client
-          },
-        });
-
-        // 4️⃣ Reduce stock
-        await tx.product.update({
-          where: { id: product.id },
-          data: {
-            stock: {
-              decrement: item.quantity,
-            },
-            status: product.stock - item.quantity === 0 ? "PAUSED" : "ACTIVE",
-          },
-        });
-
-        // 5️⃣ Create notification for farmer
-        await tx.notification.create({
-          data: {
-            user_id: product.farmer_id, // farmer gets notified
-            title: "Product Sold",
-            message: `${product.product_name} was purchased (${item.quantity})`,
-            type: "ORDER",
             product_id: product.id,
+            quantity: item.quantity,
+            price: product.price,
           },
         });
+
+        totalAmount += product.price * item.quantity;
       }
 
-      return order;
+      // 3️⃣ Create Payment (UNPAID)
+      const payment = await tx.payment.create({
+        data: {
+          order_id: order.id,
+          user_id: userId,
+          amount: totalAmount,
+          method: "CARD",
+          status: "UNPAID",
+          provider: "CHAPA",
+        },
+      });
+
+      return { order, payment };
     });
 
     return {
       success: true,
-      error: false,
-      message: "Order placed successfully!",
-      order_id: order.id,
+      order_id: result.order.id,
+      payment_id: result.payment.id,
+      amount: result.payment.amount,
     };
   } catch (error: any) {
-    console.error("Order creation failed:", error.message);
+    console.error(error);
     return {
       success: false,
-      error: true,
-      message: error.message || "Failed to place order",
+      message: error.message || "Order creation failed",
     };
   }
 };
+
 
 type AddressInput = z.infer<typeof addressSchema>;
 

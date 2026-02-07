@@ -116,7 +116,7 @@ export async function FarmerSidebar() {
       : [{ name: "Dashboard", link: "/admin" }];
 
   return (
-    <div className="flex h-full flex-col p-4">
+    <div className="flex h-full flex-col p-4 fixed">
       {/* LOGO */}
       <div className="mb-6 rounded-lg bg-green-800 py-3 text-center text-xl font-bold text-green-200">
         Green Coffee

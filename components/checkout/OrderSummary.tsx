@@ -1,5 +1,19 @@
 "use client";
 
+
+// Create Order (PENDING)
+// ↓
+// Create Payment (UNPAID)
+// ↓
+// Initialize Chapa
+// ↓
+// Redirect user to Chapa
+// ↓
+// Chapa Callback (SUCCESS)
+// ↓
+// Confirm payment → Reduce stock → Mark order PAID
+
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Truck, Package, Shield } from "lucide-react";
@@ -9,6 +23,7 @@ import { createOrder } from "@/app/[locale]/actions/order";
 import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface CartItemProps {
   cart_id: string;
@@ -34,10 +49,36 @@ export default function OrderSummary({
   const [loading, setLoading] = useState(false);
 
   console.log("itrems : ", items);
+  // async function handleCreateOrder() {
+  //   try {
+  //     setLoading(true);
+
+  //     const response = await createOrder(
+  //       items.map((i) => ({
+  //         product_id: i.product_id,
+  //         quantity: i.quantity,
+  //         price: i.product.price,
+  //       }))
+  //     );
+
+  //     if (!response) {
+  //       toast.error("Failed to Store order!");
+  //     }
+
+  //     toast.success(response.message);
+
+  //     console.log(response.message);
+
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
   async function handleCreateOrder() {
     try {
       setLoading(true);
-
+  
       const response = await createOrder(
         items.map((i) => ({
           product_id: i.product_id,
@@ -45,21 +86,57 @@ export default function OrderSummary({
           price: i.product.price,
         }))
       );
-
-      if (!response) {
-        toast.error("Failed to Store order!");
+  
+      if (!response?.success) {
+        toast.error(response.message);
+        return;
       }
+  
+      // response.order_id is returned from createOrder
+const paymentResponse = await fetch(`/api/payment/create`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    order_id: response.order_id,
+    amount: total, // total amount
+    method: "CARD" // or "CASH"
+  }),
+});
 
-      toast.success(response.message);
+const paymentData = await paymentResponse.json();
 
-      console.log(response.message);
+if (!paymentData?.success) {
+  toast.error("Failed to create payment record");
+  return;
+}
 
+// Now we have the payment ID
+const payment_id = paymentData.payment_id;
+
+      // 2️⃣ Initialize Chapa
+      const locale =  "en"; // fallback if missing
+      const res = await fetch(`/${locale}/api/chapa/initialize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payment_id }),
+      });
+      
+      const data = await res.json();
+      
+      if (!data.checkout_url) {
+        toast.error("Payment initialization failed");
+        return;
+      }
+      
+      window.location.href = data.checkout_url;
+      
+    } catch (err) {
+      toast.error("Catch Error : Payment initialization failed");
+    } finally {
       setLoading(false);
-    } catch (error) {
-      console.error(error);
     }
   }
-
+  
   return (
     <div className="space-y-6 sticky top-8">
       <Card className="shadow-xl border-2">
