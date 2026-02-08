@@ -41,5 +41,31 @@
     "shopnnowbtn": "Shop Now",
     "signoption": "Sign-In or Sign-Up",
     "subheader": "This is a multilingual Next.js site using next-intl."
+  },
+  "products":{
+    "title":"All Products"
+  },
+  "about":{
+    "title":"Ethiopian Green Coffee Marketplace ",
+    "definition":"Connecting Ethiopian coffee farmers directly with global buyers-transparent, ethical, and traceable from farm to market.",
+    "connection":"Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
+    "find":"Explore Coffee Origins",
+    "longDef":"Ethiopia is the birthplace of Arabica coffee. For centuries,smallholder farmers have cultivated coffee in rich soils and unique microclimates. Our platform preserves this heritage while openingdirect digital access to global markets.",
+    "sourcing":"🌍 Origin-based sourcing ",
+    "quality":"☕ High-quality green beans",
+    "relations":"🤝 Direct farmer relationships",
+    "builtfor":"Built for Farmers. Trusted by Buyers.",
+    "cardtitle1":"Transparent Pricing",
+    "carddes1":"Farmers set fair prices. Buyers see full cost breakdowns.",
+    "cardtitle2":"Traceability",
+    "carddes2":"Track coffee from farm, region, and harvest season.",
+    "cardtitle3":"Secure Transactions",
+    "carddes3":"Modern payment systems with buyer & seller protection.",
+    "empower":"Empowering Ethiopian Farmers",
+    "digitaltools":"We give farmers digital tools to list coffee, manage orders, and reach international buyers — increasing income and sustainability.",
+    "join":"Join the Ethiopian Coffee Revolution ",
+    "forb":"Whether you’re a farmer or a buyer — start your journey with us. ",
+    "btn1":"Become a Farmer",
+    "btn2":"Browse Coffee "
   }
 }

@@ -218,6 +218,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
 import LoaderBtn from "./loaderBtn";
+import { useTranslations } from "next-intl";
 
 interface Product {
   id: string;
@@ -239,6 +240,11 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
   const language = theme;
 
   const router = useRouter();
+
+  // translation
+  const tp = useTranslations("products");
+  const tb = useTranslations("button");
+  const tc = useTranslations("cart");
 
   if (!products || products.length === 0) {
     return (
@@ -291,12 +297,7 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
     if (!data?.success) {
       toast.error(data?.message || "Failed to add cart item!");
     } else {
-      toast.success(
-        language === "ENGLISH"
-          ? "Product Added to Cart Successfully!"
-          : language === "AFAN_OROMO"
-          ? "Oomisha Kuusaatti Dabaleera!"
-          : "ምርቱ ወደ ግዢው ቅርጫት ተጨምሯል!"
+      toast.success(tc("added")
       );
     }
     setLoadingId(null);
@@ -316,11 +317,7 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
     <div className="min-h-screen px-4 md:px-12 py-16">
       <Header cartQuantity={cartQuantity} />
       <h1 className="text-3xl font-bold mb-8 text-center">
-        {language === "ENGLISH"
-          ? "All Products"
-          : language === "AFAN_OROMO"
-          ? "Oomishaalee Hunda"
-          : "ሁሉም ምርቶች"}
+        {tp('title')}
       </h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -373,27 +370,15 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
                     onClick={() => handleAddToCart(product)}
                     disabled={loadingId === product.id || product.stock === 0}
                   >
-                    {loadingId === product.id
-                      ? language === "ENGLISH"
-                        ? "Adding..."
-                        : language === "AFAN_OROMO"
-                        ? "Dabalaa Jira..."
-                        : "እየጨመሩ ነው..."
-                      : language === "ENGLISH"
-                      ? "Add to Cart"
-                      : language === "AFAN_OROMO"
-                      ? "Kuusaatti Dabali"
-                      : "ወደ ግዢው ቅርጫት ጨምር"}
+                    {
+                      loadingId === product.id ?
+                      "loading..." :tb("add")
+                    }
+
                   </Button>
 
                   <LoaderBtn
-                    btnName={
-                      language === "ENGLISH"
-                        ? "Detail"
-                        : language === "AFAN_OROMO"
-                        ? "Odeeffannoo Bal'aa"
-                        : "ዝርዝር"
-                    }
+                    btnName={tb("detail")}
                     linkTo={`/product/${product.id}`}
                     className="rounded-xl cursor-pointer bg-green-600 font-bold text-white hover:bg-green-700"
                     disable={product.stock === 0}
@@ -405,11 +390,7 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
                   onClick={() => handleBuyNow(product)}
                   disabled={product.stock === 0}
                 >
-                  {language === "ENGLISH"
-                    ? "Buy Now"
-                    : language === "AFAN_OROMO"
-                    ? "Amma Biti"
-                    : "አሁን ግዛ"}
+                  {tb("buy")}
                 </Button>
             </Card>
           </motion.div>

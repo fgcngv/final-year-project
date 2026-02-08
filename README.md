@@ -55,3 +55,20 @@ the original package.json scripts before adding i18nexus
     "lint": "eslint",
     "postinstall": "prisma generate"
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- “Write a creative ecommerce product description for a [product name] with features: [features list].” 
+  
+  Include important keywords in your prompt (e.g., “SEO optimized”).
+  -->

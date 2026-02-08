@@ -1,15 +1,15 @@
 {
   "button": {
-    "add": "Kaarra Dabalata",
+    "add": "Gara kuusaatti dabali",
     "buy": "Amma Bitadhu",
     "dashboardbtn": "Gara Dashboard deemi",
-    "detail": "Faayidaa Ilaali",
-    "getstarted": "Jalqabu",
-    "submit": "Ergaa",
-    "submitting": "Ergaa..."
+    "detail": "Ilaali",
+    "getstarted": "Jalqabi",
+    "submit": "Ergi",
+    "submitting": "Ergaajira..."
   },
   "cart": {
-    "added": "Kaarra irratti dabalame!"
+    "added": "Kuusaa keetitti dabalameera!"
   },
   "contact": {
     "contactus": "Nu qunnamaa",
@@ -41,5 +41,31 @@
     "shopnnowbtn": "Amma Bitadhu",
     "signoption": "Seenaa Galchuu yookaan Seenaa Haaraa",
     "subheader": "Kun marsariitii Next.js afaan hedduu fayyadamu kan next-intl ti."
+  },  
+"products":{
+    "title":"Oomishaalee Hunda"
+  },
+  "about":{
+    "title":"Gabaa Buna Magariisa Itiyoophiyaa ",
+    "definition":" Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
+    "connection":"Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
+    "find":"Maddoota Bunaa Barbaadaa",
+    "longDef":"Itoophiyaan bakka dhaloota buna Arabicaati. Jaarraa hedduudhaaf qonnaan bultoonni xixiqqaa biyyee badhaadhaa fi haala qilleensaa xiqqaa adda ta’e keessatti buna misoomsaa turaniiru. Waltajjiin keenya hambaa kana kan eegu yoo ta’u, gabaa addunyaatiif kallattiin dijitaalaa banaadha. ",
+    "sourcing":"🌍 Iddoo Itti oomishamee kallattiidhan argattu! ",
+    "quality":"☕ Buna Magariisa Qulqullina Ol'aanadhaan! ",
+    "relations":"🤝 Qoteebultoota Waliin Hariiroo Kallattii qabna",
+    "builtfor":"Qotee bultootaf kan hojjetame! Bitattootaf Amanamaa kan ta'e!",
+    "cardtitle1":"Kenniinsa gatii ifa ta'e ",
+    "carddes1":"Qoteebultoonni gatii ifa ta'e kaa'u. Bitattoonni ammoo rakkoo jiru ni argu!",
+    "cardtitle2":"Hordoffii cimaa",
+    "carddes2":"Buna qotee bulaa irraa naannoo ati barbaadduu waqtii ati barbaaddutti argachuu dandeessa",
+    "cardtitle3":"Kanfaltii Naga qabeessa",
+    "carddes3":"Sirna kanfaltii ammayyaawaa, karaa qotee bulaas ta'ee butataan hin miidhamneen ",
+    "empower":"Qonnaan Bultoota Itoophiyaa jajjabeessuu",
+    "digitaltools":"Qonnaan bultoonni buna galmeessuuf, ajaja isaanii akka bulchan, fi bitoota addunyaa waliin mari’achuuf meeshaalee dijitaalaa ni kennina — galii fi deeggarsa hawaasaa raabsame dabalatee.",
+    "join":"Nu waliin warraaqsa bunaa addunyaadhaf jedhutti dabalamaa!",
+    "forb":"Qotee bulaas taatan Bitataas taatan Nu waliin imala Eegalaa!!. ",
+    "btn1":"Qotee Bulaa ta'aa",
+    "btn2":"Buna ilaalaa "
   }
 }
