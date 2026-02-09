@@ -41,6 +41,7 @@
     "stream-chat": "^9.30.1",
     "stream-chat-react": "^13.13.6",
     "tailwind-merge": "^3.4.0",
+    "uuid": "^13.0.0",
     "yet-another-react-lightbox": "^3.28.0",
     "zod": "^4.1.13"
   },

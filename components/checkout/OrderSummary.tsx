@@ -22,7 +22,6 @@ import { createOrder } from "@/app/[locale]/actions/order";
 import { toast } from "sonner";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 
 interface CartItemProps {
   cart_id: string;
@@ -92,42 +91,29 @@ export default function OrderSummary({
       }
   
       // response.order_id is returned from createOrder
-const paymentResponse = await fetch(`/api/payment/create`, {
+// createOrder already created the payment
+const payment_id = response.payment_id;
+
+// Initialize Chapa
+const locale = "en";
+
+const res = await fetch(`/${locale}/api/chapa/initialize`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    order_id: response.order_id,
-    amount: total, // total amount
-    method: "CARD" // or "CASH"
-  }),
+  body: JSON.stringify({ payment_id }),
 });
 
-const paymentData = await paymentResponse.json();
+// Read JSON directly
+const data = await res.json();
+console.log("CHAPA RESPONSE FULL:", data);
 
-if (!paymentData?.success) {
-  toast.error("Failed to create payment record");
+if (!data.checkout_url) {
+  toast.error("Payment initialization failed");
   return;
 }
 
-// Now we have the payment ID
-const payment_id = paymentData.payment_id;
+window.location.href = data.checkout_url;
 
-      // 2️⃣ Initialize Chapa
-      const locale =  "en"; // fallback if missing
-      const res = await fetch(`/${locale}/api/chapa/initialize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ payment_id }),
-      });
-      
-      const data = await res.json();
-      
-      if (!data.checkout_url) {
-        toast.error("Payment initialization failed");
-        return;
-      }
-      
-      window.location.href = data.checkout_url;
       
     } catch (err) {
       toast.error("Catch Error : Payment initialization failed");
