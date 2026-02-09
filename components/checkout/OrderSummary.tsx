@@ -17,7 +17,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Truck, Package, Shield } from "lucide-react";
-import Image from "next/image";
 import { Product } from "@prisma/client";
 import { createOrder } from "@/app/[locale]/actions/order";
 import { toast } from "sonner";

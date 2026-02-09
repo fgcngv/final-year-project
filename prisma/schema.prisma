@@ -47,6 +47,7 @@ enum Gender {
 
 enum OrderStatus {
   PENDING
+  PAID
   SCHEDULED
   CANCELLED
   DELIVERED
@@ -60,7 +61,7 @@ enum PaymentMethod {
 enum PaymentStatus {
   PAID
   UNPAID
-  PART
+  FAILED
 }
 
 enum address_Type {
