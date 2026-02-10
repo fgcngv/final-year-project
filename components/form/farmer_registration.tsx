@@ -35,8 +35,11 @@ import { Language, Role, Status } from "@prisma/client";
 
 export default function FarmerRegistrationForm() {
   const { user } = useUser();
-  const id = user?.id;
   const router = useRouter();
+
+  const id = user?.id;
+  if(!id)return router.push('/sign-in');
+  
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
