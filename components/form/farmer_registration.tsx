@@ -38,7 +38,6 @@ export default function FarmerRegistrationForm() {
   const router = useRouter();
 
   const id = user?.id;
-  if(!id)return router.push('/sign-in');
   
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +58,7 @@ export default function FarmerRegistrationForm() {
     z.infer<typeof FarmerRegistrationSchema>
   > = async (values) => {
     if (!id) return;
-
+    
     setLoading(true);
 
     try {
@@ -102,7 +101,7 @@ export default function FarmerRegistrationForm() {
 
       toast.success("Farmer registered successfully 🌱");
       form.reset();
-      router.refresh();
+      router.push('/');
     } catch (err: any) {
       toast.error(err.message || "Registration failed");
     } finally {

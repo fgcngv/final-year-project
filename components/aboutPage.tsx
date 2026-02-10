@@ -7,10 +7,13 @@ import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/checkTheme";
 import Header from "@/components/header";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import LoaderBtn from "./loaderBtn";
 
 export default function AboutPage({ cartQuantity }: { cartQuantity?: number }) {
   const { theme, toggleTheme } = useTheme();
   let language = theme;
+  const router = useRouter();
 
   const ta = useTranslations("about");
 
@@ -33,12 +36,8 @@ export default function AboutPage({ cartQuantity }: { cartQuantity?: number }) {
           <p className="max-w-3xl mx-auto text-lg text-gray-600">
             {ta("definition")}
           </p>
-          <Button
-            size="lg"
-            className="bg-green-800 cursor-pointer hover:bg-green-900"
-          >
-            {ta("find")}
-          </Button>
+          <LoaderBtn btnName={ta("find")} linkTo="/product" className="bg-green-800 cursor-pointer hover:bg-green-900 active:bg-green-400 "/>
+
         </motion.div>
       </section>
 
@@ -135,12 +134,9 @@ export default function AboutPage({ cartQuantity }: { cartQuantity?: number }) {
           <h2 className="text-3xl font-bold text-green-900">{ta("join")}</h2>
           <p className="text-gray-600">{ta("forb")}</p>
           <div className="flex justify-center gap-4">
-            <Button className="bg-green-800 cursor-pointer hover:bg-green-900">
-              {ta("btn1")}
-            </Button>
-            <Button variant="outline" className="cursor-pointer">
-              {ta("btn2")}
-            </Button>
+          <LoaderBtn btnName={ta("btn1")} linkTo="/registration/farmer" className="bg-green-800 cursor-pointer hover:bg-green-900 active:bg-green-400 "/>
+          <LoaderBtn btnName={ta("btn2")} linkTo="/product" className="bg-gray-100 border text-black cursor-pointer hover:bg-gray-300 active:bg-green-400 "/>
+
           </div>
         </motion.div>
       </section>

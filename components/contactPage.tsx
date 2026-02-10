@@ -380,6 +380,7 @@ import { useState } from "react";
 import { AddContact } from "@/app/[locale]/actions/contact";
 import { useTheme } from "./checkTheme";
 import { useTranslations } from "next-intl";
+import LoaderBtn from "./loaderBtn";
 
 export default function ContactForm({
   cartQuantity,
@@ -606,14 +607,7 @@ export default function ContactForm({
           <p className="text-green-100 max-w-2xl mx-auto">
             {t('helps')}
           </p>
-          <Button
-            disabled={loading}
-            onClick={() => router.push("/")}
-            variant="outline"
-            className="text-black cursor-pointer border-black"
-          >
-            {tb('getstarted')}
-          </Button>
+          <LoaderBtn btnName={tb('getstarted')} className="text-black cursor-pointer hover:bg-gray-300 active:bg-gray-400  bg-gray-200 border-black" linkTo="/"/>
         </motion.div>
       </section>
     </div>
