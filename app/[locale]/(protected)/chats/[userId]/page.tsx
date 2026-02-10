@@ -18,6 +18,7 @@ export default async function Page({ params }: { params: Promise<{ userId: strin
     // Find the "other" user
     const otherUserId = match.user1_id === userId ? match.user2_id : match.user1_id;
     const otherUser = await prisma.user.findUnique({ where: { id: otherUserId } });
+    // if (!otherUser) redirect("/chats");
     if (!otherUser) redirect("/chats");
   
     return <ChatClient otherUser={otherUser} />;

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { User } from "@prisma/client";
 import { getUserMatches } from "@/lib/supabase/action/matches";
+import { useUser } from "@clerk/nextjs";
 
 interface ChatData {
   id: string;
@@ -17,10 +18,18 @@ export default function ChatPage() {
   const [chats, setChats] = useState<ChatData[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const {user} = useUser();
+
   useEffect(() => {
     async function loadMatches() {
       try {
         const userMatches = await getUserMatches();
+        console.log("userMatches : ",userMatches);
+        user && (
+          userMatches.map((match)=>(
+            match.user1_id === user.id || match.user2_id ===user.id
+          ))
+        )
         const chatData: ChatData[] = userMatches.map((match) => ({
           id: match.id,
           user: match,
@@ -29,7 +38,7 @@ export default function ChatPage() {
           unreadCount: 0,
         }));
         setChats(chatData);
-        console.log(userMatches);
+        console.log("userMatches : ",userMatches);
       } catch (error) {
         console.error(error);
       } finally {
@@ -39,6 +48,9 @@ export default function ChatPage() {
 
     loadMatches();
   }, []);
+
+  if(!user || !user.id) return <div>Not authenticated!</div>;
+
 
   function formatTime(timestamp: string) {
     const date = new Date(timestamp);

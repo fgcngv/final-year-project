@@ -95,6 +95,9 @@ model User {
   order      Order[]
   cart       Cart? // A user has at most one cart
   payments   Payment[]
+ 
+  matchesAsUser1 ChatMatches[] @relation("User1Matches")
+  matchesAsUser2 ChatMatches[] @relation("User2Matches")
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -354,4 +357,18 @@ model Address {
   updatedAt DateTime @updatedAt
 
   @@index([userId])
+}
+
+
+model ChatMatches {
+  id         String   @id @default(cuid())
+  user1_id   String
+  user2_id   String
+  isActive   Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user1 User @relation("User1Matches", fields: [user1_id], references: [id], onDelete: Cascade)
+  user2 User @relation("User2Matches", fields: [user2_id], references: [id], onDelete: Cascade)
+
+  @@unique([user1_id, user2_id])
 }
