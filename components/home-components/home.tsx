@@ -411,6 +411,7 @@ export default function HomePage({ role, products }: roleProps) {
           transition={{ delay: 0.3, duration: 1 }}
         >
           {tc('info')}
+          
         </motion.p>
 
         {/* HERO BUTTON */}
@@ -424,6 +425,14 @@ export default function HomePage({ role, products }: roleProps) {
             user ? tc('shopnnowbtn') : tc('signoption')
           }
           <ArrowRight />
+        </motion.button>
+        <motion.button
+          onClick={()=>router.push('/registration/farmer')}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.97 }}
+          className="relative cursor-pointer mt-10 px-8 py-4 bg-[#6A4325]/90 hover:bg-[#6A4325] text-white font-semibold rounded-xl shadow-xl backdrop-blur-md flex items-center gap-2"
+        >
+         Be a farmer
         </motion.button>
 
         {user && (

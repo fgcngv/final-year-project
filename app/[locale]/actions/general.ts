@@ -1,6 +1,7 @@
 "use server"
 
 import prisma from "@/lib/prisma";
+import { Language, Role, Status } from "@prisma/client";
 
 
 export async function deleteDataById(
@@ -161,7 +162,86 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
     return {
       success: false,
       error: true,
-      message: "Failed to add product. Please try again.",
+      message: "Failed to add product. You may not approved by Admin! please contact them!",
+    };
+  }
+};
+
+
+
+
+interface FarmerRegistrationProps {
+  id:string
+  first_name:string
+  last_name: string
+  email:string
+  address?:string | null
+  language:Language
+  role: Role
+  status:Status
+}
+
+
+
+
+
+
+
+export const registerFarmer = async ({
+  id,
+  first_name,
+  last_name,
+  email,
+  address,
+  language,
+  role,
+  status,
+}: FarmerRegistrationProps) => {
+  try {
+    const farmer = await prisma.farmer.create({
+      data: {
+        id,
+        first_name,
+        last_name,
+        email,
+        address: address || null,
+
+        language:
+          Language[language as keyof typeof Language] ??
+          Language.ENGLISH,
+
+        role:
+          Role[role as keyof typeof Role] ??
+          Role.SELLER,
+
+        status:
+          Status[status as keyof typeof Status] ??
+          Status.ACTIVE,
+      },
+    });
+
+    return {
+      success: true,
+      error: false,
+      data: farmer,
+      message: "Farmer registered successfully 🌱",
+    };
+  } catch (error: any) {
+    console.error("Error while registering farmer:", error);
+
+    // Handle duplicate email nicely
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        error: true,
+        message: "A farmer with this email already exists.",
+      };
+    }
+
+    return {
+      success: false,
+      error: true,
+      message: "Failed to register farmer. Please try again.",
     };
   }
 };

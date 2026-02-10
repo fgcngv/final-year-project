@@ -58,3 +58,20 @@ export const addressSchema = z.object({
   type: z.nativeEnum(address_Type), 
   isDefault: z.boolean().default(false),
 })
+
+
+export const FarmerRegistrationSchema = z.object({
+  first_name:z.string().min(2," name should be greater than 1 character").trim(),
+  last_name:z.string().min(2," name should be greater than 1 character").trim(),  
+  email: z
+    .string()
+    .min(1, { message: "Email is required" })
+    .email({ message: "Please enter a valid email address" }),
+    address:z.string().min(2," address should be greater than 1 character").trim(), 
+   image: z
+  .any()
+  .refine((file) => file instanceof File, "Image is required"),
+  language: z.string().default("ENGLISH"), 
+  role: z.string().default("SELLER"), 
+  status: z.string().default("ACTIVE"),
+});
