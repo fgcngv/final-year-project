@@ -5,14 +5,32 @@
 import AddressStep from "@/components/checkout/AddressStep";
 import SeePage from "./seepage/page";
 import Header from "@/components/header";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
+import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 
 
 
-function CheckoutPage() {
+async function CheckoutPage() {
+ const {userId} = await auth();
+ if (!userId) {
+  redirect("/sign-in");
+}
+
+    const cart = await getCartByUserIdForCartQuantity(userId);
+  
+    let cartQuantity = 0;
+    cart?.items?.forEach(item => {
+      cartQuantity += item.quantity;
+    });
+    
+    const unread = await getAllUnreadNotifications();
+  
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-      <Header />
+            <Header notification={unread?.data?.length} cartQuantity={cartQuantity} />
       <h1 className="text-3xl font-bold mb-6 mt-20 text-center md:text-left">
         Checkout
       </h1>

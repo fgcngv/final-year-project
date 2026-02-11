@@ -1,5 +1,6 @@
 "use client";
 
+// order sequence
 
 // Create Order (PENDING)
 // ↓
@@ -12,7 +13,6 @@
 // Chapa Callback (SUCCESS)
 // ↓
 // Confirm payment → Reduce stock → Mark order PAID
-
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -46,37 +46,12 @@ export default function OrderSummary({
 }: OrderSummaryProps) {
   const [loading, setLoading] = useState(false);
 
-  console.log("itrems : ", items);
-  // async function handleCreateOrder() {
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await createOrder(
-  //       items.map((i) => ({
-  //         product_id: i.product_id,
-  //         quantity: i.quantity,
-  //         price: i.product.price,
-  //       }))
-  //     );
-
-  //     if (!response) {
-  //       toast.error("Failed to Store order!");
-  //     }
-
-  //     toast.success(response.message);
-
-  //     console.log(response.message);
-
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+  // console.log("itrems : ", items);
 
   async function handleCreateOrder() {
     try {
       setLoading(true);
-  
+
       const response = await createOrder(
         items.map((i) => ({
           product_id: i.product_id,
@@ -84,44 +59,42 @@ export default function OrderSummary({
           price: i.product.price,
         }))
       );
-  
+
       if (!response?.success) {
         toast.error(response.message);
         return;
       }
-  
+
       // response.order_id is returned from createOrder
-// createOrder already created the payment
-const payment_id = response.payment_id;
+      // createOrder already created the payment
+      const payment_id = response.payment_id;
 
-// Initialize Chapa
-const locale = "en";
+      // Initialize Chapa
+      const locale = "en";
 
-const res = await fetch(`/${locale}/api/chapa/initialize`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ payment_id }),
-});
+      const res = await fetch(`/${locale}/api/chapa/initialize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ payment_id }),
+      });
 
-// Read JSON directly
-const data = await res.json();
-console.log("CHAPA RESPONSE FULL:", data);
+      // Read JSON directly
+      const data = await res.json();
+      console.log("CHAPA RESPONSE FULL:", data);
 
-if (!data.checkout_url) {
-  toast.error("Payment initialization failed");
-  return;
-}
+      if (!data.checkout_url) {
+        toast.error("Payment initialization failed");
+        return;
+      }
 
-window.location.href = data.checkout_url;
-
-      
+      window.location.href = data.checkout_url;
     } catch (err) {
       toast.error("Catch Error : Payment initialization failed");
     } finally {
       setLoading(false);
     }
   }
-  
+
   return (
     <div className="space-y-6 sticky top-8">
       <Card className="shadow-xl border-2">
@@ -146,7 +119,7 @@ window.location.href = data.checkout_url;
                 <div className="flex-1">
                   <h4 className="font-semibold">{item.product.product_name}</h4>
                   <p className="text-sm text-gray-600">
-                    {item.product.farmer_id}
+                    {item.product.product_detail}
                   </p>
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-sm text-gray-500">

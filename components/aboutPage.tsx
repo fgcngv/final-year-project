@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import LoaderBtn from "./loaderBtn";
 
-export default function AboutPage({ cartQuantity }: { cartQuantity?: number }) {
+export default function AboutPage({ cartQuantity,notification }: { cartQuantity?: number,notification?:number }) {
   const { theme, toggleTheme } = useTheme();
   let language = theme;
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function AboutPage({ cartQuantity }: { cartQuantity?: number }) {
     <div className="bg-gradient-to-b from-[#f5f3ef] to-white text-gray-800">
       {/* HERO */}
 
-      <Header cartQuantity={cartQuantity} />
+      <Header notification={notification} cartQuantity={cartQuantity} />
 
       <section className="max-w-7xl mx-auto px-6 py-20">
         <motion.div

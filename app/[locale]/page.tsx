@@ -22,7 +22,7 @@ export default async function Home() {
     redirect("/sign-in");
   }
 
-  // ✅ Now it is safe to query Prisma
+  //  Now it is safe to query Prisma
   const cart = await getCartByUserIdForCartQuantity(userId);
 
   let cartQuantity = 0;

@@ -193,17 +193,6 @@ export default function AddressStep() {
             </form>
           </Form>
         )}
-
-        {/* Action Buttons */}
-        <div className="flex justify-end pt-6 border-t">
-          <Button
-            // onClick={onNext}
-            size="lg"
-            className="px-8 py-6 text-lg"
-          >
-            Continue to Payment
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );

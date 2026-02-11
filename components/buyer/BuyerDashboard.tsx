@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -49,7 +48,7 @@ export default function BuyerDashboardPage() {
   const { user } = useUser();
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cancelLoading,setCancelLoading] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
 
   useEffect(() => {
     if (!user || !user.id) return;
@@ -93,11 +92,13 @@ export default function BuyerDashboardPage() {
 
   return (
     <div className="min-h-screen bg-green-50 ">
-
       <main className="p-4 space-y-6 max-w-5xl mx-auto mt-20">
         {/* Greeting */}
         <section className="space-y-1">
-          <h2 className="text-xl font-semibold text-green-800"> Welcome back</h2>
+          <h2 className="text-xl font-semibold text-green-800">
+            {" "}
+            Welcome back
+          </h2>
           <p className="text-sm text-muted-foreground">
             Discover fresh coffee directly from farmers
           </p>
@@ -105,9 +106,7 @@ export default function BuyerDashboardPage() {
 
         {/* Featured Products */}
         <section>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-
-          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
         </section>
 
         {/* Orders */}
@@ -186,7 +185,7 @@ export default function BuyerDashboardPage() {
                         className="mt-2 w-full"
                         disabled={cancelLoading}
                       >
-                        {cancelLoading ? "Cancelling...": "Cancel Order"}
+                        {cancelLoading ? "Cancelling..." : "Cancel Order"}
                       </Button>
                     )}
                   </CardContent>

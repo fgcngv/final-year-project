@@ -33,6 +33,7 @@ interface CartItemProps {
       updatedAt: Date;
     };
   }[];
+  notification?:number
 }
 
 export default function CartPage({
@@ -41,10 +42,11 @@ export default function CartPage({
   user_id,
   items,
   total,
+  notification
 }: CartItemProps) {
   const router = useRouter();
   const [cartItems, setCartItems] = useState(items);
-  const [deleteloading, setDeleteLoading] = useState(false);
+  const [deleteloading, setDeleteLoading] = useState<string>("");
 
   const { theme } = useTheme();
 
@@ -56,7 +58,6 @@ export default function CartPage({
       ? "AFAN_OROMO"
       : "ENGLISH";
 
-  console.log("language:", language);
 
   const handleIncrement = async (
     id: string,
@@ -83,24 +84,44 @@ export default function CartPage({
     router.refresh();
   };
 
+  // const handleDelete = async (id: string) => {
+  //   setDeleteLoading(id);
+
+  //   const deleteData = await deleteCartItemById(id, user_id);
+
+  //   if (!deleteData) {
+  //     toast.error("Failed to delete Cart Item!");
+  //   }
+
+  //   toast.success("Cart Item Deleted Successfully!");
+  //   setDeleteLoading("");
+  //   router.refresh();
+  // };
   const handleDelete = async (id: string) => {
-    setDeleteLoading(true);
-
+    setDeleteLoading(id);
+  
     const deleteData = await deleteCartItemById(id, user_id);
-
+  
     if (!deleteData) {
       toast.error("Failed to delete Cart Item!");
+      setDeleteLoading("");
+      return;
     }
-
+  
+    // Update local state immediately
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  
     toast.success("Cart Item Deleted Successfully!");
-    setDeleteLoading(false);
+    setDeleteLoading("");
+    
     router.refresh();
   };
 
+  
   return (
     <div className="flex flex-col gap-4">
       {/* <Header language={language} /> */}
-      <Header cartQuantity={cartQuantity} />
+      <Header cartQuantity={cartQuantity} notification={notification} />
       <div className="w-full min-h-screen p-4 md:p-8 bg-gray-50">
         <div className="h-8 p-10"></div>
 
@@ -165,25 +186,26 @@ export default function CartPage({
                   <Button
                     variant="destructive"
                     size="icon"
+                    disabled={deleteloading === item.id}
                     className={cn(
                       "cursor-pointer hover:bg-red-900",
-                      deleteloading ? "" : "rounded-full"
+                      deleteloading === item.id ? "" : ""
                     )}
                     onClick={() => handleDelete(item.id)}
                   >
                     {language === "ENGLISH" ? (
-                      deleteloading ? (
-                        "Deleting..."
+                      deleteloading === item.id ? (
+                        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
                       ) : (
                         <Trash className="h-4 w-4" />
                       )
                     ) : language === "AFAN_OROMO" ? (
-                      deleteloading ? (
+                      deleteloading === item.id ? (
                         "Balleessaa Jira..."
                       ) : (
                         <Trash className="h-4 w-4" />
                       )
-                    ) : deleteloading ? (
+                    ) : deleteloading === item.id ? (
                       "በመሰረዝ ላይ..."
                     ) : (
                       <Trash className="h-4 w-4" />
@@ -200,12 +222,15 @@ export default function CartPage({
                   : language === "AFAN_OROMO"
                   ? "Kuusan keessan duwwaadha."
                   : "ጋሪዎ ባዶ ነው።"}
+                  <LoaderBtn btnName="Browse Coffee" className="bg-gray-300 hover:bg-gray-400 active:bg-gray-500 border text-black font-bold" linkTo="/product"/>
               </div>
             )}
           </div>
 
           {/* RIGHT: TOTAL SUMMARY */}
-          <div className="bg-white rounded-2xl shadow-md p-6 h-fit sticky top-6">
+          {
+            cartItems.length > 0 ? 
+            <div className="bg-white rounded-2xl shadow-md p-6 h-fit sticky top-6">
             <h2 className="text-xl font-bold mb-4">
               {language === "ENGLISH"
                 ? "Order Summary"
@@ -258,6 +283,8 @@ export default function CartPage({
                 linkTo="/check-out"
                 />
           </div>
+            : null
+          }
         </div>
       </div>
     </div>

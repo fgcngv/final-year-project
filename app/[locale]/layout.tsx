@@ -139,7 +139,7 @@ export default async function RootLayout({
                 />
               )}
             </div>
-            <Toaster position="top-right" richColors />
+            <Toaster position="bottom-right" richColors />
             <ThemeProvider>{children}</ThemeProvider>
 
             <Footer />

@@ -1,6 +1,7 @@
 
 import AboutPage from "@/components/aboutPage";
 import { getCartByUserId } from "@/utils/services/cart";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
 import { auth } from "@clerk/nextjs/server";
 
 async function About() {
@@ -15,10 +16,11 @@ async function About() {
     cartQuantity += item?.quantity
   ));
   
-  console.log(cartQuantity)
+       const unread = await getAllUnreadNotifications();
+ 
   return ( 
     <div>
-      <AboutPage cartQuantity={cartQuantity} />
+      <AboutPage notification={unread?.data?.length} cartQuantity={cartQuantity} />
     </div>
    );
 }

@@ -2,6 +2,7 @@
 
 import CartPage from "@/components/cart/cartPage";
 import { getCartByUserId } from "@/utils/services/cart";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 
@@ -11,6 +12,9 @@ async function CartById() {
   if (!userId) return <div>Not Authenticated</div>;
 
   const data = await getCartByUserId(userId);
+
+      const unread = await getAllUnreadNotifications();
+  
 
   if (!data || "error" in data)
     return (
@@ -34,6 +38,7 @@ async function CartById() {
     <div>
       <CartPage
         cartQuantity={cartQuantity}
+        notification={unread?.data?.length}
         cart_id={data.id}
         user_id={userId}
         items={data.items}

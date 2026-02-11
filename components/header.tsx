@@ -94,13 +94,6 @@ export default function Header({
           {/* Language Option*/}
           <div>
             <LocaleSwitcher />
-            {/* HERE OLD LANGUAGE BTN */}
-            {/* <Button
-              onClick={toggleTheme}
-              className="cursor-pointer font-bold bg-green-600 hover:bg-green-700 active:bg-green-800"
-            >
-              {theme}
-            </Button> */}
           </div>
 
           <div className="relative active:text-green-500 hover:text-green-700 p-1 cursor-pointer">
@@ -115,7 +108,7 @@ export default function Header({
           {/* notification */}
           {notification && notification > 0 ? (
             <div className="relative hidden min-[330px]:block ">
-              <Link href={`/notifications`}>
+              <Link href={`/notifications`} className="hover:text-red-400 active:text-red-600">
                 <Bell size={22} />
               </Link>
               <span className="absolute  w-6 -top-5 -right-3 items-center justify-center flex bg-red-500 rounded-full">

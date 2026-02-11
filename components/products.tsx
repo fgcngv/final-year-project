@@ -231,9 +231,10 @@ interface Product {
 interface ProductsProps {
   cartQuantity?: number;
   products: Product[];
+  notification?:number
 }
 
-export default function ProductsPage({ products, cartQuantity }: ProductsProps) {
+export default function ProductsPage({ products, cartQuantity,notification }: ProductsProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [quantityMap, setQuantityMap] = useState<Record<string, number>>({});
   const { theme } = useTheme();
@@ -315,7 +316,7 @@ export default function ProductsPage({ products, cartQuantity }: ProductsProps) 
 
   return (
     <div className="min-h-screen px-4 md:px-12 py-16">
-      <Header cartQuantity={cartQuantity} />
+                  <Header notification={notification} cartQuantity={cartQuantity} />
       <h1 className="text-3xl font-bold mb-8 text-center">
         {tp('title')}
       </h1>

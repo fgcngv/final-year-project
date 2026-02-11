@@ -2,6 +2,7 @@ import { getAllProducts } from "@/app/[locale]/actions/products";
 import { useTheme } from "@/components/checkTheme";
 import ProductsPage from "@/components/products";
 import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
 import { auth } from "@clerk/nextjs/server";
 
 async function Products() {
@@ -18,9 +19,12 @@ async function Products() {
     return <div>No Product Found</div>;
   }
 
+      const unread = await getAllUnreadNotifications();
+  
+
   return (
     <div>
-      <ProductsPage  products={data} />
+      <ProductsPage cartQuantity={cartQuantity} notification={unread?.data?.length}  products={data} />
     </div>
   );
 }

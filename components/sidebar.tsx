@@ -67,7 +67,7 @@ async function Sidebar() {
 
   // Choose links based on role
   const linksToRender =
-    role === "farmer" && userId
+    (role === "farmer" || role === "seller" || role === "SELLER") && userId
       ? farmerSideBarLinks(userId)
       : sidebarLinks;
 
@@ -107,7 +107,7 @@ export async function FarmerSidebar() {
   const role = await getRole();
 
   const links =
-    role === "farmer" && userId
+   ( role === "farmer" || role === "seller" || role === "SELLER") && userId
       ? [
           { name: "Dashboard", link: "/farmer" },
           { name: "Orders", link: "/farmer/orders" },
