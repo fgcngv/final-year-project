@@ -1,6 +1,7 @@
 import FarmerProfile from "@/components/farmer/FarmerProfile";
 import Header from "@/components/header";
 import { getFarmerById } from "@/utils/services/admin";
+import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
 import { getAllNotification } from "@/utils/services/notification";
 import { auth } from "@clerk/nextjs/server";
 
@@ -16,9 +17,18 @@ async function FarmerProfileById(props: {
     const farmerData = await getFarmerById(param.id);
     const unread = await getAllNotification();
 
+        const cart = await getCartByUserIdForCartQuantity(userId);
+      
+        let cartQuantity = 0;
+        cart?.items?.forEach(item => {
+          cartQuantity += item.quantity;
+        });
+    
+      
+
     return ( 
         <div>
-          <Header notification={unread?.data?.length} />
+          <Header cartQuantity={cartQuantity} notification={unread?.data?.length} />
             <FarmerProfile isOwnPage={false} farmer={farmerData.data} />
         </div>
      );

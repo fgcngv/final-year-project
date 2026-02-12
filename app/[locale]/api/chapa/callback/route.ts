@@ -7,6 +7,8 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const tx_ref = searchParams.get("tx_ref");
 
+  console.log("Search Params:", searchParams.toString());
+
   if (!tx_ref) {
     return NextResponse.redirect("/check-out/failed");
   }
@@ -26,14 +28,11 @@ export async function GET(req: Request) {
 
   console.log("CHAPA VERIFY RESULT:", result);
 
-if (result.status !== "success") {
+if (result.status !== "success" || result.data?.status !== "success") {
   console.error("Chapa payment failed:", result);
   return NextResponse.redirect("/check-out/failed");
 }
 
-  if (result.status !== "success") {
-    return NextResponse.redirect("/check-out/failed");
-  }
 
   const payment = await prisma.payment.findFirst({
     where: { transactionRef: tx_ref },
@@ -45,7 +44,7 @@ if (result.status !== "success") {
   });
 
   if (!payment || payment.status === "PAID") {
-    return NextResponse.redirect("/check-out/success");
+    return NextResponse.redirect("/check-out/failed");
   }
 
   await prisma.$transaction(async (tx) => {

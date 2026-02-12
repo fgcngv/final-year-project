@@ -161,7 +161,8 @@ console.log("buyer by id : ",buyer)
         <FarmerOrdersProducts products={FarmerProduct} />
 
         {/* MOBILE VIEW */}
-<div className="space-y-4 md:hidden">
+<div className="space-y-4 p-1 md:hidden mt-10  border-green-800 border-4 rounded-2xl mt-20">
+  <h1 className="text-2xl p-2 text-green-700 font-bold text-center">All  Orders</h1>
   {orderItemsData?.map((items) => (
     <div
       key={items.id}
@@ -211,7 +212,8 @@ console.log("buyer by id : ",buyer)
 </div>
 
         {/* Desktop View */}
-        <div className="hidden overflow-x-auto md:block">
+        <div className="hidden overflow-x-auto md:block  border-green-800 border-4 rounded-2xl mt-20">
+        <h1 className="text-2xl p-2 text-green-700 font-bold text-center">All  Orders</h1>
           <table className="min-w-full divide-y divide-gray-200 shadow-sm rounded-lg">
             <thead className="bg-emerald-100">
               <tr>

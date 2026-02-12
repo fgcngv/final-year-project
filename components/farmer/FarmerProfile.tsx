@@ -214,6 +214,7 @@ export default function FarmerProfile({ farmer,isOwnPage=true }: FarmerProfilePr
 
   const [displayCoffee,setDisplayCoffee] = useState(false);
   const router = useRouter();
+  
 
   return (
     <div className="mt-12 min-h-screen bg-gray-50 px-4 md:px-10 py-8">

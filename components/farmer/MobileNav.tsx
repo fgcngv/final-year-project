@@ -1,36 +1,9 @@
 
 
-// "use client";
-
-// import Link from "next/link";
-// import { Home, ShoppingCart, Package } from "lucide-react";
-
-// export default function MobileNav({ userId }: { userId: string }) {
-//   return (
-//     <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-around border-t bg-white p-2 md:hidden">
-//       <Link href="/farmer" className="flex flex-col items-center text-sm">
-//         <Home />
-//         Home
-//       </Link>
-//       <Link href="/farmer/orders" className="flex flex-col items-center text-sm">
-//         <Package />
-//         Orders
-//       </Link>
-//       <Link href={`/cart/${userId}`} className="flex flex-col items-center text-sm">
-//         <ShoppingCart />
-//         Cart
-//       </Link>
-//     </div>
-//   );
-// }
-
-
-
-
 "use client";
 
 import Link from "next/link";
-import { Home, Package, ShoppingCart } from "lucide-react";
+import { Home, Package,User, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +14,7 @@ export default function MobileNav({ userId }: { userId: string }) {
     { name: "Home", href: "/farmer", icon: Home },
     { name: "Orders", href: "/farmer/orders", icon: Package },
     { name: "Cart", href: `/cart/${userId}`, icon: ShoppingCart },
+    { name: "Profile", href: `/farmer/profile/${userId}`, icon: User },
   ];
 
   return (
@@ -53,7 +27,7 @@ export default function MobileNav({ userId }: { userId: string }) {
             key={name}
             href={href}
             className={cn(
-              "flex flex-col items-center gap-1 text-xs",
+              "flex flex-col items-center gap-1 text-xs hover:text-green-600 active:text-green-700 font-bold",
               active ? "text-green-700" : "text-gray-500"
             )}
           >

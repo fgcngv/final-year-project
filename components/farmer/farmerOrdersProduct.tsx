@@ -25,6 +25,7 @@ import DeleteProductPopup from "./deleteProductPopup";
 import Link from "next/link";
 import LoaderBtn from "../loaderBtn";
 import AddProduct from "../form/add-product";
+import { useState } from "react";
 
 interface ProductRowProps {
   image: string;
@@ -143,8 +144,10 @@ interface FarmerOrdersProductsProps {
 export default function FarmerOrdersProducts({
   products,
 }: FarmerOrdersProductsProps) {
+  const [actionBtn, setActionBtn] = useState(false);
+
   return (
-    <div className="min-h-screen bg-emerald-50 p-6">
+    <div className=" bg-emerald-50 p-6">
       <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -163,139 +166,145 @@ export default function FarmerOrdersProducts({
         </div>
 
         {/* Products */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Your Products</CardTitle>
-            <Input placeholder="Search lots..." className="max-w-xs" />
-          </CardHeader>
-          <CardContent>
-            {/* MOBILE View PRODUCTS */}
 
-            <div className="space-y-4 md:hidden">
-              {products.map((product) => {
-                const qty = product.orderItems.reduce(
-                  (sum, item) => sum + item.quantity,
-                  0
-                );
+        <Button onClick={() => setActionBtn(!actionBtn)}>
+          {!actionBtn ? " View Products" : " Hide Products"}
+        </Button>
 
-                return (
-                  <div
-                    key={product.id}
-                    className="rounded-xl border bg-white p-4 shadow-sm"
-                  >
-                    <div className="flex gap-4">
-                      <img
-                        src={product.image}
-                        className="h-16 w-16 rounded-lg object-cover"
-                        alt=""
-                      />
+        {actionBtn && (
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>Your Products</CardTitle>
+              <Input placeholder="Search lots..." className="max-w-xs" />
+            </CardHeader>
+            <CardContent>
+              {/* MOBILE View PRODUCTS */}
 
-                      <div className="flex-1">
-                        <p className="font-semibold text-gray-800">
-                          {product.product_name}
-                        </p>
-                        <p className="text-sm text-gray-500">Qty: {qty} kg</p>
-                        <p className="text-sm text-gray-500">
-                          Price: ${product.price}/kg
-                        </p>
-                      </div>
-                    </div>
+              <div className="space-y-4 md:hidden">
+                {products.map((product) => {
+                  const qty = product.orderItems.reduce(
+                    (sum, item) => sum + item.quantity,
+                    0
+                  );
 
-                    <div className="mt-3 flex items-center justify-between">
-                      <Badge
-                        className={
-                          product.status === "ACTIVE"
-                            ? "bg-green-100 text-green-800"
-                            : ""
-                        }
-                      >
-                        {product.status}
-                      </Badge>
-
-                      <div className="flex gap-2">
-                        <LoaderBtn
-                          btnName="View"
-                          linkTo={`orders/product/${product.id}`}
-                          className="bg-green-700"
+                  return (
+                    <div
+                      key={product.id}
+                      className="rounded-xl border bg-white p-4 shadow-sm"
+                    >
+                      <div className="flex gap-4">
+                        <img
+                          src={product.image}
+                          className="h-16 w-16 rounded-lg object-cover"
+                          alt=""
                         />
-                        <DeleteProductPopup productId={product.id} />
+
+                        <div className="flex-1">
+                          <p className="font-semibold text-gray-800">
+                            {product.product_name}
+                          </p>
+                          <p className="text-sm text-gray-500">Qty: {qty} kg</p>
+                          <p className="text-sm text-gray-500">
+                            Price: ${product.price}/kg
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>
+
+                      <div className="mt-3 flex items-center justify-between">
+                        <Badge
+                          className={
+                            product.status === "ACTIVE"
+                              ? "bg-green-100 text-green-800"
+                              : ""
+                          }
+                        >
+                          {product.status}
+                        </Badge>
+
+                        <div className="flex gap-2">
                           <LoaderBtn
                             btnName="View"
                             linkTo={`orders/product/${product.id}`}
                             className="bg-green-700"
                           />
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                  ////////////////////
-                );
-              })}
-            </div>
+                          <DeleteProductPopup productId={product.id} />
+                        </div>
+                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <LoaderBtn
+                              btnName="View"
+                              linkTo={`orders/product/${product.id}`}
+                              className="bg-green-700"
+                            />
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                    ////////////////////
+                  );
+                })}
+              </div>
 
-            {/* DESKTOP TABLE */}
-            <div className="hidden overflow-x-auto md:block">
-              <Table className="min-w-full">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Image</TableHead>
-                    <TableHead>Product_Name</TableHead>
-                    <TableHead>Origin</TableHead>
-                    <TableHead>Grade</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead>Price / kg</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Action</TableHead>
-                  </TableRow>
-                </TableHeader>
+              {/* DESKTOP TABLE */}
+              <div className="hidden overflow-x-auto md:block">
+                <Table className="min-w-full">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Image</TableHead>
+                      <TableHead>Product_Name</TableHead>
+                      <TableHead>Origin</TableHead>
+                      <TableHead>Grade</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Price / kg</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
 
-                <TableBody>
-                  {products.map((product) => {
-                    const origin =
-                      product.description?.origion ?? "Unknown origin";
+                  <TableBody>
+                    {products.map((product) => {
+                      const origin =
+                        product.description?.origion ?? "Unknown origin";
 
-                    const qty = product.orderItems.reduce(
-                      (sum, item) => sum + item.quantity,
-                      0
-                    );
+                      const qty = product.orderItems.reduce(
+                        (sum, item) => sum + item.quantity,
+                        0
+                      );
 
-                    return (
-                      <ProductRow
-                        key={product.id}
-                        image={product.image}
-                        name={product.product_name}
-                        origin={origin}
-                        grade="-"
-                        qty={qty}
-                        price={product.price}
-                        status={product.status}
-                        p_id={product.id}
-                      />
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
+                      return (
+                        <ProductRow
+                          key={product.id}
+                          image={product.image}
+                          name={product.product_name}
+                          origin={origin}
+                          grade="-"
+                          qty={qty}
+                          price={product.price}
+                          status={product.status}
+                          p_id={product.id}
+                        />
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
-        {/* Incoming Orders */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Incoming Orders</CardTitle>
-          </CardHeader>
-        </Card>
+        {actionBtn && (
+          <Button onClick={() => setActionBtn(!actionBtn)}>
+            {!actionBtn ? " View Products" : " Hide Products"}
+          </Button>
+        )}
       </div>
     </div>
   );

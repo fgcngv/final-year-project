@@ -13,7 +13,7 @@ import { useTheme } from "./checkTheme";
 import Header from "./header";
 import LoaderBtn from "./loaderBtn";
 
-export default function ProductById({ product, isDashboard }: { product: any; isDashboard?: boolean }) {
+export default function ProductById({ product, isDashboard,cartQuantity,notification}: { product: any; isDashboard?: boolean, cartQuantity?:number,notification?:number}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
 
@@ -56,7 +56,7 @@ export default function ProductById({ product, isDashboard }: { product: any; is
       transition={{ duration: 0.4 }}
       className="max-w-5xl mx-auto p-6"
     >
-      <Header />
+      <Header notification={notification} cartQuantity={cartQuantity} />
       <Card className="shadow-2xl rounded-3xl overflow-hidden border border-gray-200 bg-white mt-5">
         <CardHeader className="border-b bg-gradient-to-r from-green-100 to-green-50 py-6">
           <CardTitle className="text-4xl font-bold text-center flex items-center justify-center gap-2">
