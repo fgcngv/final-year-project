@@ -195,17 +195,6 @@
 // //   ? " " : ""
 // // }
 
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -219,6 +208,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
 import LoaderBtn from "./loaderBtn";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -231,10 +221,14 @@ interface Product {
 interface ProductsProps {
   cartQuantity?: number;
   products: Product[];
-  notification?:number
+  notification?: number;
 }
 
-export default function ProductsPage({ products, cartQuantity,notification }: ProductsProps) {
+export default function ProductsPage({
+  products,
+  cartQuantity,
+  notification,
+}: ProductsProps) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [quantityMap, setQuantityMap] = useState<Record<string, number>>({});
   const { theme } = useTheme();
@@ -298,8 +292,7 @@ export default function ProductsPage({ products, cartQuantity,notification }: Pr
     if (!data?.success) {
       toast.error(data?.message || "Failed to add cart item!");
     } else {
-      toast.success(tc("added")
-      );
+      toast.success(tc("added"));
     }
     setLoadingId(null);
   };
@@ -316,10 +309,8 @@ export default function ProductsPage({ products, cartQuantity,notification }: Pr
 
   return (
     <div className="min-h-screen px-4 md:px-12 py-16">
-                  <Header notification={notification} cartQuantity={cartQuantity} />
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        {tp('title')}
-      </h1>
+      <Header notification={notification} cartQuantity={cartQuantity} />
+      <h1 className="text-3xl font-bold mb-8 text-center">{tp("title")}</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {products.map((product) => (
@@ -329,16 +320,29 @@ export default function ProductsPage({ products, cartQuantity,notification }: Pr
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <Card className={`rounded-2xl relative shadow-md hover:shadow-xl transition border ${product.stock === 0 ? " bg-red-300" : " "}`}>
-              <CardContent  className={`p-4 flex flex-col gap-2 `}>
-                <img
-                  src={`${product?.image}`}
-                  alt={product.product_name || "Product image"}
-                  className="w-full h-48 object-cover rounded-xl"
-                  loading="lazy"
-                />
-                <h2 className="text-lg font-semibold">{product.product_name}</h2>
-                <p className="text-xl font-bold text-green-600">{product.price} Brr</p>
+            <Card
+              className={`rounded-2xl relative shadow-md hover:shadow-xl transition border ${
+                product.stock === 0 ? " bg-red-300" : " "
+              }`}
+            >
+              <CardContent className={`p-4 flex flex-col gap-2 `}>
+                <Link href={`product/${product.id}`} className="cursor-pointer">
+                  <div className="relative group">
+                    <img
+                      src={`${product?.image}`}
+                      alt={product.product_name || "Product image"}
+                      // className="w-full h-48 object-cover rounded-xl"
+                      className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
+                      loading="lazy"
+                    />
+                  </div>
+                </Link>
+                <h2 className="text-lg font-semibold">
+                  {product.product_name}
+                </h2>
+                <p className="text-xl font-bold text-green-600">
+                  {product.price} Brr
+                </p>
 
                 <div className="flex items-center gap-2 mt-2">
                   <input
@@ -351,15 +355,14 @@ export default function ProductsPage({ products, cartQuantity,notification }: Pr
                     }
                     className="w-20 p-1 rounded border text-center"
                   />
-                  <span className="text-sm text-gray-500"> 
-                      {
-                        product.stock === 0 ? "Finished Product!" :
-                        language === "ENGLISH"
-                          ? `Stock: ${product.stock}`
-                          : language === "AFAN_OROMO"
-                          ? `Qabeenya: ${product.stock}`
-                          : `እቃ ቀሪ: ${product.stock}`
-                      }
+                  <span className="text-sm text-gray-500">
+                    {product.stock === 0
+                      ? "Finished Product!"
+                      : language === "ENGLISH"
+                      ? `Stock: ${product.stock}`
+                      : language === "AFAN_OROMO"
+                      ? `Qabeenya: ${product.stock}`
+                      : `እቃ ቀሪ: ${product.stock}`}
                   </span>
                 </div>
               </CardContent>
@@ -371,11 +374,7 @@ export default function ProductsPage({ products, cartQuantity,notification }: Pr
                     onClick={() => handleAddToCart(product)}
                     disabled={loadingId === product.id || product.stock === 0}
                   >
-                    {
-                      loadingId === product.id ?
-                      "loading..." :tb("add")
-                    }
-
+                    {loadingId === product.id ? "loading..." : tb("add")}
                   </Button>
 
                   <LoaderBtn
@@ -387,12 +386,12 @@ export default function ProductsPage({ products, cartQuantity,notification }: Pr
                 </div>
               </CardFooter>
               <Button
-                  className="rounded-xl bg-blue-600 absolute top-10 left-10 text-white font-bold"
-                  onClick={() => handleBuyNow(product)}
-                  disabled={product.stock === 0}
-                >
-                  {tb("buy")}
-                </Button>
+                className="rounded-xl bg-blue-600 absolute top-10 left-10 text-white font-bold"
+                onClick={() => handleBuyNow(product)}
+                disabled={product.stock === 0}
+              >
+                {tb("buy")}
+              </Button>
             </Card>
           </motion.div>
         ))}

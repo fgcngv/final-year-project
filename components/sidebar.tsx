@@ -112,6 +112,7 @@ export async function FarmerSidebar() {
           { name: "Dashboard", link: "/farmer" },
           { name: "Orders", link: "/farmer/orders" },
           { name: "Cart", link: `/cart/${userId}` },
+          { name: "Profile", link: `/farmer/profile/${userId}` },
         ]
       : [{ name: "Dashboard", link: "/admin" }];
 

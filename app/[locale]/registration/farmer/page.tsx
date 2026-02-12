@@ -14,7 +14,8 @@ async function FarmerRegistration() {
     if(role === "seller" || role=== "SELLER" || role === "farmer") redirect('/farmer');
     return ( 
         <div>
-            <FarmerRegistrationForm />
+            {/* <FarmerRegistrationForm /> */}
+            farmer profile page
         </div>
      );
 }

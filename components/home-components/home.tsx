@@ -1,5 +1,3 @@
-
-
 // // Recommended Home Page Sections
 
 // // A good home page for your project could include:
@@ -38,14 +36,9 @@
 
 // Enhanced, premium UI version of your HomePage component
 
-
-
-
-
 // old code before adding language translation by i18nexus
 
 // "use client";
-
 
 // import { useUser } from "@clerk/nextjs";
 // import { motion } from "framer-motion";
@@ -85,7 +78,6 @@
 //   const [loadingId, setLoadingId] = useState<string | null>(null);
 //   const router = useRouter();
 //   const { user } = useUser();
-
 
 //   // language option
 //     const { theme, toggleTheme } = useTheme();
@@ -303,16 +295,9 @@
 //   );
 // }
 
-
-
-
-
-
-
 // new code after language translation by i18nexus
 
 "use client";
-
 
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
@@ -354,24 +339,22 @@ export default function HomePage({ role, products }: roleProps) {
   const router = useRouter();
   const { user } = useUser();
 
-  const tc = useTranslations('home');
-  const tb = useTranslations('button');
-
+  const tc = useTranslations("home");
+  const tb = useTranslations("button");
 
   // language option
-    const { theme, toggleTheme } = useTheme();
-    let language = theme;
- console.log("theme : ",theme)
+  const { theme, toggleTheme } = useTheme();
+  let language = theme;
+  console.log("theme : ", theme);
 
   const handleAddToCart = async (id: string, quantity: number) => {
     setLoadingId(id);
     const result = await addToCart(id, quantity);
     setLoadingId(null);
-  
-    if (result.success) toast.success(tc('added'));
+
+    if (result.success) toast.success(tc("added"));
     else toast.error(result.message);
   };
-  
 
   const handleBuyNow = (id: string) => {
     alert(`Redirecting to checkout for product ${id}`);
@@ -384,7 +367,6 @@ export default function HomePage({ role, products }: roleProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf7f2] to-[#f4efe7]">
-
       {/* HERO SECTION */}
       <motion.section
         className="relative min-h-[90vh] flex flex-col justify-center items-center text-center bg-[url('/cup_coffee.png')] bg-cover bg-center bg-fixed shadow-inner"
@@ -401,7 +383,7 @@ export default function HomePage({ role, products }: roleProps) {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          {tc('greeting')}
+          {tc("greeting")}
         </motion.h1>
 
         <motion.p
@@ -410,8 +392,7 @@ export default function HomePage({ role, products }: roleProps) {
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          {tc('info')}
-          
+          {tc("info")}
         </motion.p>
 
         {/* HERO BUTTON */}
@@ -421,18 +402,16 @@ export default function HomePage({ role, products }: roleProps) {
           whileTap={{ scale: 0.97 }}
           className="relative cursor-pointer mt-10 px-8 py-4 bg-[#6A4325]/90 hover:bg-[#6A4325] text-white font-semibold rounded-xl shadow-xl backdrop-blur-md flex items-center gap-2"
         >
-          {
-            user ? tc('shopnnowbtn') : tc('signoption')
-          }
+          {user ? tc("shopnnowbtn") : tc("signoption")}
           <ArrowRight />
         </motion.button>
         <motion.button
-          onClick={()=>router.push('/registration/farmer')}
+          onClick={() => router.push("/registration/farmer")}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.97 }}
           className="relative cursor-pointer mt-10 px-8 py-4 bg-[#6A4325]/90 hover:bg-[#6A4325] text-white font-semibold rounded-xl shadow-xl backdrop-blur-md flex items-center gap-2"
         >
-         Be a farmer
+          Be a farmer
         </motion.button>
 
         {user && (
@@ -440,7 +419,7 @@ export default function HomePage({ role, products }: roleProps) {
             href={`/${role}`}
             className="relative mt-3 text-white hover:underline"
           >
-            {tb('dashboardbtn')}
+            {tb("dashboardbtn")}
           </Link>
         )}
       </motion.section>
@@ -449,7 +428,7 @@ export default function HomePage({ role, products }: roleProps) {
       <section className="py-20 px-6 md:px-20">
         <h2 className="text-4xl font-bold text-center text-[#4b2e16] mb-12 flex items-center justify-center gap-3">
           <Coffee className="text-green-700" />
-          {tc('featured')}
+          {tc("featured")}
         </h2>
 
         <div
@@ -460,102 +439,109 @@ export default function HomePage({ role, products }: roleProps) {
           <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/90" />
 
           <motion.div
-  className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-6 sm:p-10"
-  variants={container}
-  initial="hidden"
-  animate="show"
->
-  {products.map((product) => {
-    const [qty, setQty] = useState(1); // quantity state for each product
+            className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 p-6 sm:p-10"
+            variants={container}
+            initial="hidden"
+            animate="show"
+          >
+            {products.map((product) => {
+              const [qty, setQty] = useState(1); // quantity state for each product
 
-    return (
-      <motion.div key={product.id} variants={item}>
-        <Card className={`rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300${product.stock === 0 ? " bg-red-300" : " bg-white/95"} backdrop-blur-md overflow-hidden flex flex-col`}>
-          {/* IMAGE */}
-          <div className="relative group">
-            <img
-              src={`${product?.image}`}
-              alt={product.product_name}
-              className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
-              loading="lazy"
-            />
+              return (
+                <motion.div key={product.id} variants={item}>
+                  <Card
+                    className={`rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300${
+                      product.stock === 0 ? " bg-red-300" : " bg-white/95"
+                    } backdrop-blur-md overflow-hidden flex flex-col`}
+                  >
+                    {/* IMAGE */}
+                    <div className="relative group">
+                      <Link href={`product/${product.id}`}>
+                        <img
+                          src={`${product?.image}`}
+                          alt={product.product_name}
+                          className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
+                          loading="lazy"
+                        />
+                      </Link>
 
-            {/* Floating Buy Now Button */}
-            <Button
-              onClick={() => handleBuyNow(product.id)}
-              variant="secondary"
-              className="absolute cursor-pointer bottom-3 right-3 px-4 py-2 rounded-xl bg-blue-700 text-white font-semibold shadow-md hover:bg-blue-600 transition-all"
-              disabled={product.stock === 0}
-            >
-              {tb('buy')}
-            </Button>
-          </div>
+                      {/* Floating Buy Now Button */}
+                      <Button
+                        onClick={() => handleBuyNow(product.id)}
+                        variant="secondary"
+                        className="absolute cursor-pointer bottom-3 right-3 px-4 py-2 rounded-xl bg-blue-700 text-white font-semibold shadow-md hover:bg-blue-600 transition-all"
+                        disabled={product.stock === 0}
+                      >
+                        {tb("buy")}
+                      </Button>
+                    </div>
 
-          {/* CONTENT */}
-          <CardContent className="p-5 flex flex-col gap-2 flex-grow">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 tracking-tight">
-              {product.product_name}
-            </h2>
+                    {/* CONTENT */}
+                    <CardContent className="p-5 flex flex-col gap-2 flex-grow">
+                      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 tracking-tight">
+                        {product.product_name}
+                      </h2>
 
-            <p className="text-2xl font-bold text-green-700">
-              {product.price} Brr
-            </p>
+                      <p className="text-2xl font-bold text-green-700">
+                        {product.price} Brr
+                      </p>
 
-            {/* Quantity selector */}
-            <div className="flex items-center gap-2 mt-2">
-              <Button
-                onClick={() => setQty(Math.max(1, qty - 1))}
-                size="sm"
-                className="bg-red-700 font-bold text-2xl hover:bg-red-800 active:bg-red-500 cursor-pointer"
-              >
-                -
-              </Button>
-              <span>{qty}</span>
-              <Button
-                onClick={() =>
-                  setQty(Math.min(qty + 1, product.stock || 1))
-                }
-                size="sm"
-                disabled={product.stock === 0}
-                className="bg-green-700 font-bold text-2xl hover:bg-green-800 active:bg-green-500 cursor-pointer"
-              >
-                +
-              </Button>
-            </div>
+                      {/* Quantity selector */}
+                      <div className="flex items-center gap-2 mt-2">
+                        <Button
+                          onClick={() => setQty(Math.max(1, qty - 1))}
+                          size="sm"
+                          className="bg-red-700 font-bold text-2xl hover:bg-red-800 active:bg-red-500 cursor-pointer"
+                        >
+                          -
+                        </Button>
+                        <span>{qty}</span>
+                        <Button
+                          onClick={() =>
+                            setQty(Math.min(qty + 1, product.stock || 1))
+                          }
+                          size="sm"
+                          disabled={product.stock === 0}
+                          className="bg-green-700 font-bold text-2xl hover:bg-green-800 active:bg-green-500 cursor-pointer"
+                        >
+                          +
+                        </Button>
+                      </div>
 
-            {/* Stock info */}
-            <p className="text-sm text-gray-500 mt-1">
-              {product.stock > 0
-                ? `${product.stock} left in stock`
-                : "Out of stock"}
-            </p>
-          </CardContent>
+                      {/* Stock info */}
+                      <p className="text-sm text-gray-500 mt-1">
+                        {product.stock > 0
+                          ? `${product.stock} left in stock`
+                          : "Out of stock"}
+                      </p>
+                    </CardContent>
 
-          {/* FOOTER BUTTONS */}
-          <CardFooter className="p-5 pt-0 flex flex-col gap-3">
-            <Button
-              onClick={() => handleAddToCart(product.id, qty)}
-              disabled={loadingId === product.id || product.stock === 0}
-              className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
-            >
-              <ShoppingCart size={18} />
-              {loadingId === product.id ? tc('adding') : tb('add')}
-            </Button>
+                    {/* FOOTER BUTTONS */}
+                    <CardFooter className="p-5 pt-0 flex flex-col gap-3">
+                      <Button
+                        onClick={() => handleAddToCart(product.id, qty)}
+                        disabled={
+                          loadingId === product.id || product.stock === 0
+                        }
+                        className="w-full cursor-pointer flex items-center justify-center gap-2 rounded-xl bg-gray-800 text-white hover:bg-gray-700 transition"
+                      >
+                        <ShoppingCart size={18} />
+                        {loadingId === product.id ? tc("adding") : tb("add")}
+                      </Button>
 
-            <Link href={`/product/${product.id}`} className="w-full">
-              <LoaderBtn
-                 disable={product.stock === 0}
-                btnName={tb('detail')}
-                className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
-              />
-            </Link>
-          </CardFooter>
-        </Card>
-      </motion.div>
-    );
-  })}
-</motion.div>
-
+                      <Link href={`/product/${product.id}`} className="w-full">
+                        <LoaderBtn
+                          disable={product.stock === 0}
+                          btnName={tb("detail")}
+                          className="w-full cursor-pointer rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition"
+                        />
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
     </div>

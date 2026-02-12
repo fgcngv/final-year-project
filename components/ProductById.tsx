@@ -102,7 +102,8 @@ export default function ProductById({ product, isDashboard }: { product: any; is
               <h2 className="text-2xl font-semibold mt-2">{product?.product_name}</h2>
 
               {!isDashboard && (
-                <div className="flex items-center bg-gray-400 p-2 max-w-75 rounded-2xl gap-1 mt-2">
+                <div className="flex flex-col items-center bg-gray-400 p-2 max-w-75 rounded-2xl gap-1 mt-2">
+                  <div className="flex justify-center items-center">
                   <div className="bg-pink-400 p-2 rounded-full text-green-600 font-bold">
                     {product?.farmer?.first_name.charAt(0)}
                     {product?.farmer?.last_name.charAt(0)}
@@ -112,10 +113,14 @@ export default function ProductById({ product, isDashboard }: { product: any; is
                       Farmer: <span className="font-medium">{product?.farmer?.first_name} {product?.farmer?.last_name}</span>
                     </p>
                   </div>
-                  <div className="bg-green-800 p-1 rounded text-pink-400 font-bold">
-                    <LoaderBtn btnName="Chat" linkTo={`/chatMatche/${product.farmer.id}`} className="bg-green-800 p-1 rounded text-pink-400 font-bold" />
                   </div>
+
+                  <div className="bg-green-800 p-1 rounded w-full text-pink-400 font-bold">
+                    <LoaderBtn btnName="Goto Chat" linkTo={`/chatMatche/${product.farmer.id}`} className="bg-green-800 p-1 rounded text-pink-400 font-bold w-full" />
+                  </div>
+                  <LoaderBtn btnName="Farmer Profile" className="bg-green-800 p-1 rounded w-full text-pink-400 font-bold" linkTo={`/profile/${product.farmer.id}`}/>
                 </div>
+                
               )}
             </div>
 

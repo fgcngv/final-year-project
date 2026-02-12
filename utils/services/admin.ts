@@ -32,6 +32,75 @@ export async function getUserById(id:string) {
   }
 }
 
+export async function getFarmerById(id: string) {
+  try {
+    const farmer = await prisma.farmer.findUnique({
+      where: { id },
+      include: {
+        products: {
+          where: { status: "ACTIVE" },
+          include: {
+            description: true,
+            orderItems: true,
+          },
+        },
+      },
+    });
+
+    if (!farmer) {
+      return {
+        success: false,
+        error: true,
+        message: "Farmer with this id not found!",
+      };
+    }
+
+    // Compute stats
+    const totalProducts = farmer.products.length;
+
+    const totalSold = farmer.products.reduce((sum, product) => {
+      return (
+        sum +
+        product.orderItems.reduce(
+          (s, item) => s + item.quantity,
+          0
+        )
+      );
+    }, 0);
+
+    const totalRevenue = farmer.products.reduce((sum, product) => {
+      return (
+        sum +
+        product.orderItems.reduce(
+          (s, item) => s + item.quantity * item.price,
+          0
+        )
+      );
+    }, 0);
+
+    return {
+      success: true,
+      data: {
+        ...farmer,
+        stats: {
+          totalProducts,
+          totalSold,
+          totalRevenue,
+        },
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching farmer:", error);
+    return {
+      success: false,
+      error: true,
+      message: "Something went wrong!",
+    };
+  }
+}
+
+
+
 interface LanguageProps {
     id:string,
     userType: "BUYER" | "SELLER"
