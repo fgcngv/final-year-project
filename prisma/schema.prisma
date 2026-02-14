@@ -48,9 +48,11 @@ enum Gender {
 enum OrderStatus {
   PENDING
   PAID
-  SCHEDULED
+  PROCESSING
+  SHIPPED
+  DELIVERED // farmer marked delivered
+  CONFIRMED // buyer confirmed delivery
   CANCELLED
-  DELIVERED
 }
 
 enum PaymentMethod {
@@ -95,7 +97,7 @@ model User {
   order      Order[]
   cart       Cart? // A user has at most one cart
   payments   Payment[]
- 
+
   matchesAsUser1 ChatMatches[] @relation("User1Matches")
   matchesAsUser2 ChatMatches[] @relation("User2Matches")
 
@@ -162,35 +164,19 @@ model Wishlist {
   @@unique([user_id, product_id]) // Prevent duplicates
 }
 
-// model Order {
-//   id             String         @id @default(cuid())
-//   order_address  String?
-//   address_type   address_Type   @default(HOME)
-//   user_id        String
-//   product_id     String
-//   quantity       Float
-//   date           DateTime
-//   status         OrderStatus    @default(PENDING)
-
-//   user           User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
-//   items          OrderItem[]
-//   payment      Payment?
-//   notification   Notification[]
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
-
 model Order {
   id         String      @id @default(cuid())
   user_id    String
   address_id String
   status     OrderStatus @default(PENDING)
 
+  confirmedAt DateTime?
+
   user         User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
   address      Address        @relation(fields: [address_id], references: [id])
   items        OrderItem[]
   payment      Payment?
+  payout       Payout?
   notification Notification[]
 
   createdAt DateTime @default(now())
@@ -359,16 +345,27 @@ model Address {
   @@index([userId])
 }
 
-
 model ChatMatches {
-  id         String   @id @default(cuid())
-  user1_id   String
-  user2_id   String
-  isActive   Boolean  @default(true)
+  id        String   @id @default(cuid())
+  user1_id  String
+  user2_id  String
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
 
   user1 User @relation("User1Matches", fields: [user1_id], references: [id], onDelete: Cascade)
   user2 User @relation("User2Matches", fields: [user2_id], references: [id], onDelete: Cascade)
 
   @@unique([user1_id, user2_id])
+}
+
+/// after the company sends the money for the farmers the payout.status should changed to SENT. before that it sould be PENDING even if the orderstatus and payment status is paid
+model Payout {
+  id        String    @id @default(cuid())
+  order_id  String    @unique
+  farmer_id String
+  amount    Float
+  status    String    @default("PENDING") // PENDING | SENT | FAILED
+  sentAt    DateTime?
+
+  order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
 }

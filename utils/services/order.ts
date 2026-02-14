@@ -77,7 +77,91 @@ export const OrdersByBuyerId = async () => {
       };
     }
   };
-  
+
+
+
+
+export const ConfirmOrderDelivery = async (orderId: string) => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        payout: true,
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    if (!order) {
+      return { success: false, message: "Order not found" };
+    }
+
+    if (order.user_id !== userId) {
+      return { success: false, message: "Not your order" };
+    }
+
+
+    if (order.status !== "DELIVERED") {
+      return { success: false, message: "Order not delivered yet" };
+    }
+
+    if (!order.payout) {
+      return { success: false, message: "Payout record not found!" };
+    }
+    
+
+    //  TRANSACTION (important)
+    await prisma.$transaction(async (tx) => {
+      // 1️ Update order
+      await tx.order.update({
+        where: { id: orderId },
+        data: {
+          status: "CONFIRMED",
+          confirmedAt: new Date(),
+        },
+      });
+    
+      // 2️ Update payout ONLY if exists
+      if (order.payout) {
+        await tx.payout.update({
+          where: { order_id: orderId },
+          data: {
+            status: "SENT",
+            sentAt: new Date(),
+          },
+        });
+      }
+    
+      // 3️ Notify farmer
+      const farmerId = order.items[0].product.farmer_id;
+    
+      await tx.notification.create({
+        data: {
+          user_id: farmerId,
+          title: "Order Confirmed 🎉",
+          message: "Buyer confirmed delivery. Payment released.",
+          type: "ORDER",
+          order_id: orderId,
+        },
+      });
+    });
+    
+    return { success: true, message: "Order confirmed successfully!" };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Something went wrong!(remembering msg for me:i need to solve the chapa error before fixing this error" };
+  }
+};
+
 
 
 

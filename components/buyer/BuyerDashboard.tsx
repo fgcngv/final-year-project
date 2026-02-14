@@ -8,6 +8,7 @@ import { CancelOrder, OrdersByBuyerId } from "@/utils/services/order";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { ConfirmOrderDelivery } from "@/utils/services/order";
 import {
   Bell,
   Heart,
@@ -49,6 +50,34 @@ export default function BuyerDashboardPage() {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancelLoading, setCancelLoading] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+
+  // order confirmation function
+  const confirmOrder = async (orderId: string) => {
+    setConfirmLoading(true);
+  
+    try {
+      const res = await ConfirmOrderDelivery(orderId);
+  
+      if (!res.success) {
+        toast.error(res.message);
+      } else {
+        toast.success(res.message);
+  
+        setOrders((prev) =>
+          prev.map((o) =>
+            o.id === orderId ? { ...o, status: "CONFIRMED" } : o
+          )
+        );
+      }
+    } catch {
+      toast.error("Failed to confirm order");
+    }
+  
+    setConfirmLoading(false);
+  };
+  
 
   useEffect(() => {
     if (!user || !user.id) return;
@@ -132,12 +161,14 @@ export default function BuyerDashboardPage() {
                     <p
                       className={`text-sm font-semibold ${
                         order.status === "PENDING"
-                          ? "text-amber-500"
-                          : order.status === "DELIVERED"
-                          ? "text-green-600"
-                          : order.status === "CANCELLED"
-                          ? "text-red-500"
-                          : "text-gray-600"
+                        ? "text-amber-500"
+                        : order.status === "DELIVERED"
+                        ? "text-green-600"
+                        : order.status === "CONFIRMED"
+                        ? "text-green-800"
+                        : order.status === "CANCELLED"
+                        ? "text-red-500"
+                        : "text-gray-600"                      
                       }`}
                     >
                       {order.status}
@@ -186,6 +217,17 @@ export default function BuyerDashboardPage() {
                         disabled={cancelLoading}
                       >
                         {cancelLoading ? "Cancelling..." : "Cancel Order"}
+                      </Button>
+                    )}
+                    {/* deliver button */}
+                    {order.status === "DELIVERED" && (
+                      <Button
+                        size="sm"
+                        className="mt-2 w-full bg-green-600 hover:bg-green-700"
+                        onClick={() => confirmOrder(order.id)}
+                        disabled={confirmLoading}
+                      >
+                        {confirmLoading ? "Confirming..." : "Confirm Delivery"}
                       </Button>
                     )}
                   </CardContent>

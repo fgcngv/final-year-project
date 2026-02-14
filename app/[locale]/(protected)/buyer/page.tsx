@@ -16,12 +16,12 @@ async function UserPage() {
     }
 
     
-      // ✅ Handle unauthenticated users FIRST
+      // Handle unauthenticated users FIRST
       if (!userId) {
         redirect("/sign-in");
       }
     
-      // ✅ Now it is safe to query Prisma
+      // Now it is safe to query Prisma
       const cart = await getCartByUserIdForCartQuantity(userId);
     
       let cartQuantity = 0;
