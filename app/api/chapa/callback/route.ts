@@ -154,7 +154,7 @@ export async function GET(req: Request) {
   }
 
   await prisma.$transaction(async (tx) => {
-    await tx.payment.update({
+   const paid = await tx.payment.update({
       where: { id: payment.id },
       data: {
         status: "PAID",
@@ -162,11 +162,23 @@ export async function GET(req: Request) {
       },
     });
 
-    await tx.order.update({
+    if(!paid) {
+      console.error("Payment not Completed:", tx_ref);
+      return NextResponse.redirect(
+        new URL("/en/check-out/failed", req.url)
+      );
+    }
+    const orderPaid = await tx.order.update({
       where: { id: payment.order_id },
       data: { status: "PAID" },
     });
-
+    if(!orderPaid) {
+      console.error("Order status not Completed:", tx_ref);
+      return NextResponse.redirect(
+        new URL("/en/check-out/failed", req.url)
+      );
+    }
+    
     for (const item of payment.order.items) {
       await tx.product.update({
         where: { id: item.product_id },
