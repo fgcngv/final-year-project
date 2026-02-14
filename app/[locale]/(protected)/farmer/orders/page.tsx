@@ -127,7 +127,6 @@
 
 
 import BuyerPopup from "@/components/farmer/buyerPopup";
-import BuyerModalShadcn from "@/components/farmer/buyerPopup";
 import FarmerOrdersProducts from "@/components/farmer/farmerOrdersProduct";
 import Header from "@/components/header";
 import { getAllOrderItems, getUserById } from "@/utils/services/admin";

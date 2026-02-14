@@ -1,8 +1,11 @@
+import OrderConfirmation from "@/components/checkout/OrderConfirmation";
 
 
 function PaymentSuccess() {
     return ( 
-        <div>Paymemnt Successfuly finished!</div>
+        <div>
+            <OrderConfirmation orderId="cmlewco1j001h0kuporfbrjjh" />
+        </div>
      );
 }
 

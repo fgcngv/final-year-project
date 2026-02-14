@@ -4,6 +4,9 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
+  console.log("🔥 CHAPA CALLBACK HIT");
+  console.log("Full URL:", req.url);
+  
   const { searchParams } = new URL(req.url);
   const tx_ref = searchParams.get("tx_ref");
 
