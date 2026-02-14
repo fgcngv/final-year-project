@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 
 import AboutPage from "@/components/aboutPage";
 import { getCartByUserId } from "@/utils/services/cart";

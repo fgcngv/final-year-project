@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ContactForm from "@/components/contactPage";
 import { getCartByUserId } from "@/utils/services/cart";
 import { auth } from "@clerk/nextjs/server";
