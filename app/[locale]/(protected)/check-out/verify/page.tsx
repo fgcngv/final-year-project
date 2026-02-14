@@ -5,6 +5,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+
 export default function VerifyingPage() {
   const router = useRouter();
 
@@ -12,7 +13,7 @@ export default function VerifyingPage() {
     const searchParams = new URLSearchParams(window.location.search);
     const tx_ref = searchParams.get("tx_ref");
     if (!tx_ref) {
-      router.replace("/check-out/faileds");
+      router.replace("/check-out/failed");
       return;
     }
 
@@ -23,7 +24,7 @@ export default function VerifyingPage() {
       if (data.success) {
         router.replace("/check-out/success");
       } else {
-        router.replace("/check-out/failedss");
+        router.replace("/check-out/failed");
       }
     }
 

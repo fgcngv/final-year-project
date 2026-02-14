@@ -70,7 +70,8 @@ const tx_ref = `order-${orderIdPart}-${shortUuid}`;
       // email: user.email
       tx_ref,
       callback_url: process.env.CHAPA_CALLBACK_URL,
-      return_url: process.env.CHAPA_RETURN_URL,
+      // return_url: process.env.CHAPA_RETURN_URL,
+      return_url: `${process.env.CHAPA_RETURN_URL}?tx_ref=${tx_ref}`,
       customization: {
         title: "Order Payment",
         description: `Payment for order ${payment.order_id}`,
