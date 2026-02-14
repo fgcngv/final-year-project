@@ -2,6 +2,9 @@
 
 // "use client";
 
+export const dynamic = "force-dynamic";
+
+
 import AddressStep from "@/components/checkout/AddressStep";
 import SeePage from "./seepage/page";
 import Header from "@/components/header";

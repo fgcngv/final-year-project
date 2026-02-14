@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+
+
 import DashboardHeader from "@/components/dashboardHeader";
 import MobileNav from "@/components/farmer/MobileNav";
 import { FarmerSidebar } from "@/components/sidebar";

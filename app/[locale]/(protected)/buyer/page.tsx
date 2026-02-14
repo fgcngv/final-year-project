@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+
+
 import BuyerDashboard from "@/components/buyer/BuyerDashboard";
 import Header from "@/components/header";
 import { Table } from "@/components/ui/table";

@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+
+
 import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
 import { auth } from "@clerk/nextjs/server";
 

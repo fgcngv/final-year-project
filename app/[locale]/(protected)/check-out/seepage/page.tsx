@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+
+
+
 import OrderSummary from "@/components/checkout/OrderSummary";
 import { getCartByUserId } from "@/utils/services/cart";
 import { auth } from "@clerk/nextjs/server";
