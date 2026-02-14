@@ -57,7 +57,7 @@ export async function GET(req: Request) {
     return new Response(JSON.stringify({ success: false }));
   }
 
-  // 🔥 Now update DB if not already paid
+  //  Now update DB if not already paid
   const payment = await prisma.payment.findFirst({
     where: { transactionRef: tx_ref },
     include: { order: { include: { items: true } } },
