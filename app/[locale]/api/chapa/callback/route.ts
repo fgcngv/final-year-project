@@ -1,81 +1,81 @@
 
 
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+// import { NextResponse } from "next/server";
+// import prisma from "@/lib/prisma";
 
-export async function GET(req: Request) {
-  console.log("🔥 CHAPA CALLBACK HIT");
-  console.log("Full URL:", req.url);
+// export async function GET(req: Request) {
+//   console.log("🔥 CHAPA CALLBACK HIT");
+//   console.log("Full URL:", req.url);
+
+//   const { searchParams } = new URL(req.url);
+//   const tx_ref = searchParams.get("tx_ref");
+
+//   console.log("Search Params:", searchParams.toString());
+
+//   if (!tx_ref) {
+//     return NextResponse.redirect("/check-out/failed");
+//   }
+
+//   const verifyRes = await fetch(
+//     `${process.env.CHAPA_BASE_URL}/v1/transaction/verify/${tx_ref}`,
+//     {
+//       headers: {
+//         Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`,
+//       },
+//     }
+//   );
+
   
-  const { searchParams } = new URL(req.url);
-  const tx_ref = searchParams.get("tx_ref");
 
-  console.log("Search Params:", searchParams.toString());
+//   const result = await verifyRes.json();
 
-  if (!tx_ref) {
-    return NextResponse.redirect("/check-out/failed");
-  }
+//   console.log("CHAPA VERIFY RESULT:", result);
 
-  const verifyRes = await fetch(
-    `${process.env.CHAPA_BASE_URL}/v1/transaction/verify/${tx_ref}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`,
-      },
-    }
-  );
-
-  
-
-  const result = await verifyRes.json();
-
-  console.log("CHAPA VERIFY RESULT:", result);
-
-if (result.status !== "success" || result.data?.status !== "success") {
-  console.error("Chapa payment failed:", result);
-  return NextResponse.redirect("/check-out/failed");
-}
+// if (result.status !== "success" || result.data?.status !== "success") {
+//   console.error("Chapa payment failed:", result);
+//   return NextResponse.redirect("/check-out/failed");
+// }
 
 
-  const payment = await prisma.payment.findFirst({
-    where: { transactionRef: tx_ref },
-    include: {
-      order: {
-        include: { items: true },
-      },
-    },
-  });
+//   const payment = await prisma.payment.findFirst({
+//     where: { transactionRef: tx_ref },
+//     include: {
+//       order: {
+//         include: { items: true },
+//       },
+//     },
+//   });
 
-  if (!payment || payment.status === "PAID") {
-    return NextResponse.redirect("/check-out/failed");
-  }
+//   if (!payment || payment.status === "PAID") {
+//     return NextResponse.redirect("/check-out/failed");
+//   }
 
-  await prisma.$transaction(async (tx) => {
-    // mark payment
-    await tx.payment.update({
-      where: { id: payment.id },
-      data: {
-        status: "PAID",
-        paidAt: new Date(),
-      },
-    });
+//   await prisma.$transaction(async (tx) => {
+//     // mark payment
+//     await tx.payment.update({
+//       where: { id: payment.id },
+//       data: {
+//         status: "PAID",
+//         paidAt: new Date(),
+//       },
+//     });
 
-    // mark order
-    await tx.order.update({
-      where: { id: payment.order_id },
-      data: { status: "PAID" },
-    });
+//     // mark order
+//     await tx.order.update({
+//       where: { id: payment.order_id },
+//       data: { status: "PAID" },
+//     });
 
-    // reduce stock
-    for (const item of payment.order.items) {
-      await tx.product.update({
-        where: { id: item.product_id },
-        data: {
-          stock: { decrement: item.quantity },
-        },
-      });
-    }
-  });
+//     // reduce stock
+//     for (const item of payment.order.items) {
+//       await tx.product.update({
+//         where: { id: item.product_id },
+//         data: {
+//           stock: { decrement: item.quantity },
+//         },
+//       });
+//     }
+//   });
 
-  return NextResponse.redirect("/check-out/success");
-}
+//   return NextResponse.redirect("/check-out/success");
+// }
