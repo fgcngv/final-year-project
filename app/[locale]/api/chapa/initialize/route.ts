@@ -67,6 +67,7 @@ const tx_ref = `order-${orderIdPart}-${shortUuid}`;
       amount: payment.amount,
       currency: "ETB",
       email: "birhanugezahegn099@gmail.com", // real email
+      // email: user.email
       tx_ref,
       callback_url: process.env.CHAPA_CALLBACK_URL,
       return_url: process.env.CHAPA_RETURN_URL,

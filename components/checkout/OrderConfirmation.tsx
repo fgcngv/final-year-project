@@ -1,11 +1,16 @@
-
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Check, Download, Home, Package, ShoppingBag, Truck } from "lucide-react";
+import {
+  Check,
+  Download,
+  Home,
+  Package,
+  ShoppingBag,
+  Truck,
+} from "lucide-react";
 import { motion } from "framer-motion";
 
 interface OrderConfirmationProps {
@@ -27,7 +32,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
     items: 3,
     total: "2,790.00",
     delivery: "December 20, 2024",
-    address: "Bole, Addis Ababa, Ethiopia"
+    address: "Bole, Addis Ababa, Ethiopia",
   };
 
   return (
@@ -49,7 +54,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
             >
               <Check className="h-12 w-12" />
             </motion.div>
-            
+
             <h1 className="text-4xl font-bold mb-2">Order Confirmed!</h1>
             <p className="text-lg opacity-90">
               Thank you for supporting Ethiopian coffee farmers
@@ -77,15 +82,17 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                 </div>
                 <p className="text-xl font-semibold">{orderDetails.items}</p>
               </div>
-              
+
               <div className="space-y-2 p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <div className="h-4 w-4">💰</div>
                   <span className="text-sm">Total Amount</span>
                 </div>
-                <p className="text-xl font-semibold">{orderDetails.total} Brr</p>
+                <p className="text-xl font-semibold">
+                  {orderDetails.total} Brr
+                </p>
               </div>
-              
+
               <div className="space-y-2 p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <Truck className="h-4 w-4" />
@@ -93,13 +100,15 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                 </div>
                 <p className="font-semibold">{orderDetails.delivery}</p>
               </div>
-              
+
               <div className="space-y-2 p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-2 text-gray-600">
                   <div className="h-4 w-4">📍</div>
                   <span className="text-sm">Delivery To</span>
                 </div>
-                <p className="font-semibold line-clamp-2">{orderDetails.address}</p>
+                <p className="font-semibold line-clamp-2">
+                  {orderDetails.address}
+                </p>
               </div>
             </div>
 
@@ -138,14 +147,14 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                 <Download className="h-5 w-5" />
                 Download Receipt
               </Button>
-              
+
               <Button
                 className="flex-1 gap-2 py-6"
                 onClick={() => (window.location.href = "/orders")}
               >
                 View Order Details
               </Button>
-              
+
               <Button
                 variant="ghost"
                 className="flex-1 gap-2 py-6"
@@ -160,7 +169,8 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
             <div className="text-center text-sm text-gray-500">
               <p>
                 Redirecting to order tracking in{" "}
-                <span className="font-bold text-green-600">{countdown}</span> seconds
+                <span className="font-bold text-green-600">{countdown}</span>{" "}
+                seconds
               </p>
             </div>
           </CardContent>
