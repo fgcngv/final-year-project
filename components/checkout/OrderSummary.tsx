@@ -72,7 +72,7 @@ export default function OrderSummary({
       // Initialize Chapa
       const locale = "en";
 
-      const res = await fetch(`/${locale}/api/chapa/initialize`, {
+      const res = await fetch(`/api/chapa/initialize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ payment_id }),
