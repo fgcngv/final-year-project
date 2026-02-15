@@ -129,6 +129,9 @@ export async function getUserLanguage({ id, userType }: LanguageProps) {
 
 
 export const getAllUsers = async () => {
+
+  const {userId} = await auth();
+  if(!userId) return;
   try {
     // Fetch users and count at the same time
     const [users, totalUsers] = await Promise.all([

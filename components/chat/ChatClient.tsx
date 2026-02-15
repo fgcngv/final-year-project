@@ -14,6 +14,8 @@ import { toast } from "sonner";
 
 interface ChatClientProps {
   otherUser: User;
+  cartQuantity?:number
+  unreadNotification?:number
 }
 
 interface Message {
@@ -24,7 +26,7 @@ interface Message {
   user_id: string;
 }
 
-export default function ChatClient({ otherUser }: ChatClientProps) {
+export default function ChatClient({ otherUser,cartQuantity,unreadNotification }: ChatClientProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [client, setClient] = useState<StreamChat | null>(null);
@@ -169,7 +171,7 @@ export default function ChatClient({ otherUser }: ChatClientProps) {
 
   return (
     <div>
-      <Header />
+      <Header cartQuantity={cartQuantity} notification={unreadNotification} />
 
       <div className="flex justify-center items-center min-h-screen bg-[#F5EFE6] p-4 pt-20">
         <div className="flex flex-col w-full max-w-2xl h-[90vh] bg-[#FFFDF8] rounded-2xl shadow-lg border border-[#D6C7B0] overflow-hidden">
