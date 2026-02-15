@@ -19,7 +19,10 @@ export default async function AdminDashboard() {
   // stats = { users, sellers, products, orders, revenue }
   const ProductsData = await getAllProducts();
   const totalProduct = ProductsData?.data?.length;
-  const { totalUsers } = await getAllUsers();
+  // const { totalUsers } = await getAllUsers();
+
+  const allUsers = await getAllUsers();
+  const totalUsers = allUsers?.totalUsers;
   const { totalFarmers } = await getAllFarmers();
   const { totalOrders } = await getAllOrders();
 
