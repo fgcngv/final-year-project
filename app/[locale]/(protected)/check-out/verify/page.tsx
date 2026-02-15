@@ -63,7 +63,7 @@ export default function VerifyingPage() {
       const locale = window.location.pathname.split("/")[1];
 
       const res = await fetch(
-        `/${locale}/api/chapa/verify?tx_ref=${tx_ref}`
+        `/api/chapa/verify?tx_ref=${tx_ref}`
       );
 
       const data = await res.json();
