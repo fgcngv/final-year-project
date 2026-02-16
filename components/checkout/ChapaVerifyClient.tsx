@@ -62,6 +62,7 @@ export default function ChapaVerifyClient() {
 
   useEffect(() => {
     const tx_ref = searchParams.get("tx_ref");
+    console.log("tx_ref : ",tx_ref)
 
     if (!tx_ref) {
       setStatus("Transaction reference missing!");
@@ -71,26 +72,27 @@ export default function ChapaVerifyClient() {
 
     setStatus("Fetching verification from server...");
 
-    fetch(`/api/chapa/verify?tx_ref=${tx_ref}`)
-      .then(async (res) => {
-        const data = await res.json();
+    // fetch(`/api/chapa/verify?tx_ref=${tx_ref}`)
+    //   .then(async (res) => {
+    //     const data = await res.json();
 
-        console.log("==== Chapa Verify Response ====");
-        console.log("HTTP Status:", res.status);
-        console.log("Response JSON:", data);
-        console.log("TX_REF used:", tx_ref);
-        console.log("===============================");
+    //     console.log("==== Chapa Verify Response ====");
+    //     console.log("HTTP Status:", res.status);
+    //     console.log("Response JSON:", data);
+    //     console.log("TX_REF used:", tx_ref);
+    //     console.log("===============================");
 
-        if (data.success) {
-          setStatus("Payment successful!");
-        } else {
-          setStatus("Payment failed! Check console for details.");
-        }
-      })
-      .catch((err) => {
-        setStatus("Verification error! Check console for details.");
-        console.error("Fetch error:", err);
-      });
+    //     if (data.success) {
+    //       setStatus("Payment successful!");
+    //     } else {
+    //       setStatus("Payment failed! Check console for details.");
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setStatus("Verification error! Check console for details.");
+    //     console.error("Fetch error:", err);
+        
+    //   });
   }, [searchParams]);
 
   return (
