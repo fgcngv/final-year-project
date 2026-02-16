@@ -3,6 +3,9 @@
 
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { OrderStatus } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+
 
 
 
@@ -183,7 +186,7 @@ export const ConfirmOrderDelivery = async (orderId: string) => {
     }
 
 
-    if (order.status !== "DELIVERED") {
+    if (order.status !== "DELIVERED" ) {
       return { success: false, message: "Order not delivered yet" };
     }
 
@@ -235,6 +238,43 @@ export const ConfirmOrderDelivery = async (orderId: string) => {
   }
 };
 
+
+
+
+
+export async function updateOrderStatus(
+  orderId: string,
+  newStatus: OrderStatus
+) {
+  const order = await prisma.order.findUnique({
+    where: { id: orderId },
+  });
+
+  if (!order) {
+    throw new Error("Order not found");
+  }
+
+  //  Only allow change if order is PAID
+  if (order.status !== "PAID") {
+    throw new Error("Order must be PAID before updating status.");
+  }
+
+  //  Allow only SHIPPED or DELIVERED
+  if (newStatus !== "SHIPPED" && newStatus !== "DELIVERED") {
+    throw new Error("Invalid status update.");
+  }
+
+  const update = await prisma.order.update({
+    where: { id: orderId },
+    data: {
+      status: newStatus,
+    },
+  });
+
+  revalidatePath("/farmer/orders");
+
+  return update
+}
 
 
 

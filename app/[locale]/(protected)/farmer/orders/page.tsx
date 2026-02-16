@@ -1,123 +1,14 @@
-// import BuyerPopup from "@/components/farmer/buyerPopup";
-// import BuyerModalShadcn from "@/components/farmer/buyerPopup";
-// import FarmerOrdersProducts from "@/components/farmer/farmerOrdersProduct";
-// import Header from "@/components/header";
-// import { getAllOrderItems, getUserById } from "@/utils/services/admin";
-// import { getAllProductByFarmerId } from "@/utils/services/product";
-// import { auth } from "@clerk/nextjs/server";
-// import Link from "next/link";
-
-// async function OrdersPage() {
-//   const { userId } = await auth();
-
-//   if (!userId) {
-//     return <div>Not Authenticated! please <Link href={"../sign-in"}>Login</Link> to access this page!!</div>;
-//   }
-//   const buyer = await getUserById(userId)
-// console.log("buyer by id : ",buyer)
-
-//   const orderItems = await getAllOrderItems();
-//   const orderItemsData = orderItems?.data;
-
-//   console.log("orderItemsData : ", orderItemsData);
-
-//   const FarmerProduct = await getAllProductByFarmerId();
-
-//   // console.log("farmer products : ",FarmerProduct)
-//   return (
-//     <div>
-//       <Header />
-//       <div className=" ">
-//         <FarmerOrdersProducts products={FarmerProduct} />
-//         <div className="overflow-x-auto">
-//           <table className="min-w-full divide-y divide-gray-200 shadow-sm rounded-lg">
-//             <thead className="bg-emerald-100">
-//               <tr>
-//                 <th className="px-4 py-2 text-left text-sm font-medium text-emerald-900">
-//                   Image
-//                 </th>
-//                 <th className="px-4 py-2 text-left text-sm font-medium text-emerald-900">
-//                   Product
-//                 </th>
-//                 <th className="px-4 py-2 text-center text-sm font-medium text-emerald-900">
-//                   Quantity
-//                 </th>
-//                 <th className="px-4 py-2 text-center text-sm font-medium text-emerald-900">
-//                   Price
-//                 </th>
-//                 <th className="px-4 py-2 text-center text-sm font-medium text-emerald-900">
-//                   Status
-//                 </th>
-//                 <th className="px-4 py-2 text-center text-sm font-medium text-emerald-900">
-//                   Order Date
-//                 </th>
-//                 <th className="px-4 py-2 text-center text-sm font-medium text-emerald-900">
-//                   Actions
-//                 </th>
-//               </tr>
-//             </thead>
-//             <tbody className="bg-white divide-y divide-gray-200">
-//               {orderItemsData?.map((items) => (
-//                 <tr
-//                   key={items?.id}
-//                   className="hover:bg-emerald-50 transition-colors"
-//                 >
-//                   <td className="px-4 py-2">
-//                     <img
-//                       className="w-10 h-10 rounded-full object-cover"
-//                       src={items?.product?.image}
-//                       alt={items?.product?.product_name}
-//                     />
-//                   </td>
-//                   <td className="px-4 py-2 font-medium text-gray-800">
-//                     {items?.product?.product_name}
-//                   </td>
-//                   <td className="px-4 py-2 text-center">{items?.quantity}</td>
-//                   <td className="px-4 py-2 text-center">
-//                     ${items?.product?.price * items?.quantity}
-//                   </td>
-//                   <td className="px-4 py-2 text-center">
-//                     <span
-//                       className={`px-2 py-1 rounded-full text-xs font-semibold ${
-//                         items?.order?.status === "PENDING"
-//                           ? "bg-yellow-100 text-yellow-800"
-//                           : items?.order?.status === "SCHEDULED"
-//                           ? "bg-blue-100 text-blue-800"
-//                           : items?.order?.status === "DELIVERED"
-//                           ? "bg-green-100 text-green-800"
-//                           : "bg-gray-100 text-red-600"
-//                       }`}
-//                     >
-//                       {items?.order?.status}
-//                     </span>
-//                   </td>
-//                   <td className="px-4 py-2 text-center text-sm text-gray-500">
-//                     {items?.order?.createdAt
-//                       ? new Date(items.order.createdAt).toLocaleDateString()
-//                       : "-"}
-//                   </td>
-//                   <td>
-//                     <BuyerPopup user={items.order.user} />
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default OrdersPage;
-
 import BuyerPopup from "@/components/farmer/buyerPopup";
 import FarmerOrdersProducts from "@/components/farmer/farmerOrdersProduct";
 import Header from "@/components/header";
+import { Button } from "@/components/ui/button";
 import { getAllOrderItems, getUserById } from "@/utils/services/admin";
+import { updateOrderStatus } from "@/utils/services/order";
 import { getAllProductByFarmerId } from "@/utils/services/product";
 import { auth } from "@clerk/nextjs/server";
+import { OrderStatus } from "@prisma/client";
 import Link from "next/link";
+import { toast } from "sonner";
 
 async function OrdersPage() {
   const { userId } = await auth();
@@ -187,7 +78,9 @@ async function OrdersPage() {
                       : "bg-blue-100 text-blue-800"
                   }`}
                 >
-                  {items.order.status}
+                  {items.order.status === "PAID"
+                    ? "Payment Verified"
+                    : items.order.status}
                 </span>
 
                 <BuyerPopup user={items.order.user} />
@@ -196,6 +89,47 @@ async function OrdersPage() {
               <p className="mt-2 text-xs text-gray-400">
                 {new Date(items.order.createdAt).toLocaleDateString()}
               </p>
+
+              <div>
+                {items?.order?.status === "PAID" ? (
+                  <>
+                    <form
+                      action={async () => {
+                        "use server";
+                        await updateOrderStatus(items.order.id, "SHIPPED");
+                      }}
+                    >
+                      <button className="bg-blue-500 hover:bg-blue-600 active:bg-blue-800 text-white px-2 py-1 rounded text-xs">
+                        Mark Shipped
+                      </button>
+                    </form>
+
+                    <form
+                      action={async () => {
+                        "use server";
+                        await updateOrderStatus(items.order.id, "DELIVERED");
+                      }}
+                    >
+                      <button className="bg-green-600 hover:bg-green-700 active:bg-green-900 text-white px-2 py-1 rounded text-xs">
+                        Mark Delivered
+                      </button>
+                    </form>
+                  </>
+                ) : items?.order?.status === "SHIPPED" ? (
+                  <>
+                    <form
+                      action={async () => {
+                        "use server";
+                        await updateOrderStatus(items.order.id, "DELIVERED");
+                      }}
+                    >
+                      <button className="bg-green-600 hover:bg-green-700 active:bg-green-900 text-white px-2 py-1 rounded text-xs">
+                        Mark Delivered
+                      </button>
+                    </form>
+                  </>
+                ) : null}
+              </div>
             </div>
           ))}
         </div>
@@ -256,13 +190,16 @@ async function OrdersPage() {
                       className={`px-2 py-1 rounded-full text-xs font-semibold ${
                         items?.order?.status === "PENDING"
                           ? "bg-yellow-100 text-yellow-800"
+                          : items?.order?.status === "SHIPPED"
+                          ? "bg-purple-100 text-purple-800"
                           : items?.order?.status === "PROCESSING"
                           ? "bg-blue-100 text-blue-800"
                           : items?.order?.status === "DELIVERED"
                           ? "bg-green-100 text-green-800"
                           : items?.order?.status === "CANCELLED"
                           ? "bg-gray-100 text-red-600"
-                          : "bg-gray-100 text-gray-600" // fallback for CONFIRMED or unknown
+                          : "bg-gray-100 text-gray-600"
+                        // fallback for CONFIRMED or unknown
                       }`}
                     >
                       {items?.order?.status}
@@ -273,7 +210,35 @@ async function OrdersPage() {
                       ? new Date(items.order.createdAt).toLocaleDateString()
                       : "-"}
                   </td>
-                  <td>
+                  <td className="px-4 py-2 text-center space-x-2">
+                    {items?.order?.status === "PAID" && (
+                      <>
+                        <form
+                          action={async () => {
+                            "use server";
+                            await updateOrderStatus(items.order.id, "SHIPPED");
+                          }}
+                        >
+                          <button className="bg-blue-500 text-white px-2 py-1 rounded text-xs">
+                            Mark Shipped
+                          </button>
+                        </form>
+
+                        <form
+                          action={async () => {
+                            "use server";
+                            await updateOrderStatus(
+                              items.order.id,
+                              "DELIVERED"
+                            );
+                          }}
+                        >
+                          <button className="bg-green-600 text-white px-2 py-1 rounded text-xs">
+                            Mark Delivered
+                          </button>
+                        </form>
+                      </>
+                    )}
                     <BuyerPopup user={items.order.user} />
                   </td>
                 </tr>

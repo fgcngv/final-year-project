@@ -220,7 +220,7 @@ export default function BuyerDashboardPage() {
                       </Button>
                     )}
                     {/* deliver button */}
-                    {order.status === "DELIVERED" && (
+                    {(order.status === "DELIVERED" || order.status === "SHIPPED" ) && (
                       <Button
                         size="sm"
                         className="mt-2 w-full bg-green-600 hover:bg-green-700"
