@@ -15,10 +15,24 @@ import { motion } from "framer-motion";
 
 interface OrderConfirmationProps {
   orderId: string;
+  items?:number
+  totalAmount?:number
+  deliveryDate?:string
+  deliveryTo?:string
 }
 
-export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
+export default function OrderConfirmation({ orderId,items,totalAmount,deliveryDate,deliveryTo }: OrderConfirmationProps) {
   const [countdown, setCountdown] = useState(10);
+
+  function formatDate(iso?: string) {
+    if (!iso) return "Unknown date"; // fallback if undefined
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(new Date(iso));
+  }
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -80,7 +94,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                   <Package className="h-4 w-4" />
                   <span className="text-sm">Items</span>
                 </div>
-                <p className="text-xl font-semibold">{orderDetails.items}</p>
+                <p className="text-xl font-semibold">{items}</p>
               </div>
 
               <div className="space-y-2 p-4 bg-gray-50 rounded-lg">
@@ -89,7 +103,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                   <span className="text-sm">Total Amount</span>
                 </div>
                 <p className="text-xl font-semibold">
-                  {orderDetails.total} Brr
+                  {totalAmount} Brr
                 </p>
               </div>
 
@@ -98,7 +112,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                   <Truck className="h-4 w-4" />
                   <span className="text-sm">Delivery Date</span>
                 </div>
-                <p className="font-semibold">{orderDetails.delivery}</p>
+                <p className="font-semibold">{formatDate(deliveryDate)}</p>
               </div>
 
               <div className="space-y-2 p-4 bg-gray-50 rounded-lg">
@@ -107,7 +121,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                   <span className="text-sm">Delivery To</span>
                 </div>
                 <p className="font-semibold line-clamp-2">
-                  {orderDetails.address}
+                  {deliveryTo}
                 </p>
               </div>
             </div>

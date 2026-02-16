@@ -78,6 +78,79 @@ export const OrdersByBuyerId = async () => {
     }
   };
 
+  export const getOrderById = async (orderId:string) => {
+    const { userId } = await auth();
+  
+    if (!userId) {
+      return { success: false, error: true, message: "User not authenticated" };
+    }
+  
+    try {
+      const orders = await prisma.order.findMany({
+        where: { id: orderId },
+        orderBy: { createdAt: "desc" },
+        include: {
+          items: {
+            include: {
+              product: {
+                select: {
+                  id: true,
+                  product_name: true,
+                  image: true,
+                  price: true,
+                  farmer:true
+                },
+              },
+            },
+          },
+          payment: true,
+          address: true,
+          user:true
+        },
+      });
+  
+      if (orders.length === 0) {
+        return { success: true, error: false, data: [], message: "No orders yet!" };
+      }
+  
+      const mappedOrders = orders.map((order) => ({
+        id: order.id,
+        status: order.status,
+        createdAt: order.createdAt.toISOString(),
+        totalAmount: order.items.reduce(
+          (sum, item) => sum + item.quantity * item.price,
+          0
+        ),
+        address: order.address,
+        items: order.items.map((item) => ({
+          id: item.id,
+          product_name: item.product.product_name,
+          image: item.product.image,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        payment: order.payment
+          ? {
+              method: order.payment.method,
+              status: order.payment.status,
+            }
+          : null,
+      }));
+  
+      return {
+        success: true,
+        error: false,
+        data: mappedOrders,
+      };
+    } catch (err) {
+      console.error("Error fetching buyer orders:", err);
+      return {
+        success: false,
+        error: true,
+        message: "Error occurred while fetching your orders!",
+      };
+    }
+  };
 
 
 
