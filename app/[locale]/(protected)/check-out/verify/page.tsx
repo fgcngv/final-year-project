@@ -1,13 +1,13 @@
 
-// "use client";
+"use client";
 
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { useSearchParams, useRouter } from "next/navigation";
 
-// export default function ChapaVerifyPage() {
+export default function ChapaVerifyPage() {
 //   const searchParams = useSearchParams();
 //   const router = useRouter();
-//   const [status, setStatus] = useState("Verifying payment...");
+  const [status, setStatus] = useState("Verifying payment...");
 
 //   useEffect(() => {
 //     const tx_ref = searchParams.get("tx_ref");
@@ -33,19 +33,11 @@
 //       });
 //   }, [searchParams, router]);
 
-//   return (
-//     <div className="min-h-screen flex items-center justify-center">
-//       <h1 className="text-xl font-bold">{status}</h1>
-//     </div>
-//   );
-// }
-
-
-
-function verify() {
-    return ( 
-        <div>hello</div>
-     );
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <h1 className="text-xl font-bold">{status}</h1>
+    </div>
+  );
 }
 
-export default verify;
+
