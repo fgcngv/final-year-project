@@ -53,11 +53,13 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function ChapaVerifyClient() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState("Verifying payment...");
   const [logs, setLogs] = useState<string[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const tx_ref = searchParams.get("tx_ref");
@@ -90,7 +92,10 @@ export default function ChapaVerifyClient() {
         setLogs((prev) => [...prev, `TX_REF used: ${tx_ref}`]);
 
         if (data.success) {
-          setStatus("Payment successful!");
+        //   setStatus("Payment successful!");
+        setStatus("Payment successful! Payment ID: " + data.paymentId);
+        setTimeout(() => router.push("/check-out/success"), 2000);
+
         } else {
           setStatus("Payment failed! Check logs below.");
         }
