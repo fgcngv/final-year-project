@@ -56,5 +56,3 @@ export default function Page() {
   // server component just renders client
   return <ChapaVerifyClient />;
 }
-
-
