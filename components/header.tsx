@@ -18,13 +18,6 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
 import LocaleSwitcher from "./LocaleSwitcher";
 
-const headerLinks = [
-  { name: "Home", link: "/", key: "home" },
-  { name: "Shop", link: "/product", key: "shop" },
-  { name: "About", link: "/about", key: "about" },
-  { name: "Contact Us", link: "/contact", key: "contact" },
-  { name: "Orders", link: "/orders", key: "orders" },
-];
 
 export default function Header({
   cartQuantity,
@@ -33,13 +26,23 @@ export default function Header({
   cartQuantity?: number;
   notification?: number;
 }) {
+
+  const { user } = useUser();
+
+const headerLinks = [
+  { name: "Home", link: "/", key: "home" },
+  { name: "Shop", link: "/product", key: "shop" },
+  { name: "About", link: "/about", key: "about" },
+  { name: "Contact Us", link: "/contact", key: "contact" },
+  { name: "Orders", link: "/orders", key: "orders" },
+  { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
+];
   // Language Option
   const { theme, toggleTheme } = useTheme();
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const router = useRouter();
 
-  const { user } = useUser();
   const userId = user?.id;
 
   const [isPending, startTransition] = useTransition();

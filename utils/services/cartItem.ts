@@ -57,7 +57,7 @@ export const addToCart = async (product_id: string, quantity: number = 1) => {
 
   // Start transaction
   return await prisma.$transaction(async (tx) => {
-    // 1️⃣ Get product
+    // 1️ Get product
     const product = await tx.product.findUnique({
       where: { id: product_id },
     });
