@@ -73,7 +73,7 @@ export default function ChapaVerifyClient() {
     setStatus("Fetching verification from server...");
     const locale = "en";
 
-    fetch(`/${locale}/api/chapa/verify?tx_ref=${tx_ref}`)
+    fetch(`/api/chapa/verify?tx_ref=${tx_ref}`)
       .then(async (res) => {
         const data = await res.json();
 
