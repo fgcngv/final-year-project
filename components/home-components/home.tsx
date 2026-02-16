@@ -323,6 +323,7 @@ export default function HomePage({ role, products }: roleProps) {
   const router = useRouter();
   const tc = useTranslations("home");
   const tb = useTranslations("button");
+  const tcc = useTranslations("cart");
   const { theme } = useTheme();
 
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -372,7 +373,7 @@ export default function HomePage({ role, products }: roleProps) {
     const result = await addToCart(id, getQty(id));
     setLoadingId(null);
 
-    if (result.success) toast.success(tc("added"));
+    if (result.success) toast.success(tcc("added"));
     else toast.error(result.message);
   };
 
