@@ -49,8 +49,6 @@
 
 
 
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -59,49 +57,60 @@ import { useSearchParams } from "next/navigation";
 export default function ChapaVerifyClient() {
   const searchParams = useSearchParams();
   const [status, setStatus] = useState("Verifying payment...");
+  const [logs, setLogs] = useState<string[]>([]);
 
   useEffect(() => {
     const tx_ref = searchParams.get("tx_ref");
-    console.log("tx_ref : ",tx_ref)
+    const locale = searchParams.get("locale") || "en";
 
     if (!tx_ref) {
       setStatus("Transaction reference missing!");
-      console.error("Missing tx_ref in URL!");
       return;
     }
 
-    setStatus("Fetching verification from server...");
-    const locale = "en";
+    const apiUrl = `/${locale}/api/chapa/verify?tx_ref=${tx_ref}`;
+    setLogs((prev) => [...prev, `Calling API: ${apiUrl}`]);
 
-    fetch(`/api/chapa/verify?tx_ref=${tx_ref}`)
+    fetch(apiUrl)
       .then(async (res) => {
-        const data = await res.json();
+        const text = await res.text();
+        setLogs((prev) => [...prev, `Raw response:\n${text}`]);
 
-        console.log("==== Chapa Verify Response ====");
-        console.log("HTTP Status:", res.status);
-        console.log("Response JSON:", data);
-        console.log("TX_REF used:", tx_ref);
-        console.log("===============================");
+        // Try parsing JSON safely
+        let data: any = null;
+        try {
+          data = JSON.parse(text);
+          setLogs((prev) => [...prev, `Parsed JSON: ${JSON.stringify(data, null, 2)}`]);
+        } catch (err) {
+          setLogs((prev) => [...prev, `Failed to parse JSON: ${err}`]);
+          setStatus("Verification failed! See logs below.");
+          return;
+        }
+
+        setLogs((prev) => [...prev, `TX_REF used: ${tx_ref}`]);
 
         if (data.success) {
           setStatus("Payment successful!");
         } else {
-          setStatus("Payment failed! Check console for details.");
+          setStatus("Payment failed! Check logs below.");
         }
       })
       .catch((err) => {
-        setStatus("Verification error! Check console for details.");
-        console.error("Fetch error:", err);
-        
+        setStatus("Verification error! See logs below.");
+        setLogs((prev) => [...prev, `Fetch error: ${err}`]);
       });
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen p-4 bg-gray-50">
       <h1 className="text-xl font-bold mb-4">{status}</h1>
-      <p className="text-sm text-gray-600">
-        Open the browser console to see detailed information about the payment verification.
-      </p>
+      
+      <div className="bg-white shadow rounded p-4 overflow-auto max-h-[60vh]">
+        <h2 className="text-lg font-semibold mb-2">Debug Logs:</h2>
+        <pre className="text-sm font-mono whitespace-pre-wrap">
+          {logs.join("\n")}
+        </pre>
+      </div>
     </div>
   );
 }
