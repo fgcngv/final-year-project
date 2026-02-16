@@ -137,7 +137,7 @@ export async function GET(req: Request) {
   }
 
   await prisma.$transaction(async (tx) => {
-    // mark payment
+    // mark payment as paid
     await tx.payment.update({
       where: { id: payment.id },
       data: {
@@ -146,7 +146,7 @@ export async function GET(req: Request) {
       },
     });
 
-    // mark order
+    // mark order as paid
     await tx.order.update({
       where: { id: payment.order_id },
       data: { status: "PAID" },
@@ -161,6 +161,11 @@ export async function GET(req: Request) {
         },
       });
     }
+
+        //  Delete user's cart (if exists)
+        await tx.cart.deleteMany({
+          where: { user_id: payment.user_id },
+        });
 
     // 4️ Calculate total amount
     const totalAmount = payment.order.items.reduce(
