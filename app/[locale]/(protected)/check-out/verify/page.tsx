@@ -1,13 +1,15 @@
+// export const dynamic = "force-dynamic"; // first
+// "use client";
 
-"use client";
+import ChapaVerifyClient from "@/components/checkout/ChapaVerifyClient";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 // import { useSearchParams, useRouter } from "next/navigation";
 
-export default function ChapaVerifyPage() {
+// export default function ChapaVerifyPage() {
 //   const searchParams = useSearchParams();
 //   const router = useRouter();
-  const [status, setStatus] = useState("Verifying payment...");
+//   const [status, setStatus] = useState("Verifying payment...");
 
 //   useEffect(() => {
 //     const tx_ref = searchParams.get("tx_ref");
@@ -33,11 +35,26 @@ export default function ChapaVerifyPage() {
 //       });
 //   }, [searchParams, router]);
 
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-xl font-bold">{status}</h1>
-    </div>
-  );
+//   return (
+//     <div className="min-h-screen flex items-center justify-center">
+//       <h1 className="text-xl font-bold">{status}</h1>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+// app/[locale]/(protected)/check-out/verify/page.tsx
+
+export const dynamic = "force-dynamic"; // ensures Next.js treats as dynamic
+
+
+export default function Page() {
+  // server component just renders client
+  return <ChapaVerifyClient />;
 }
 
 
