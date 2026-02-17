@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import LoaderBtn from "../loaderBtn";
+import DeleteDialog from "../dialog/deleteDialog";
 
 interface userDetailProps {
   param: string;
@@ -73,7 +74,7 @@ function UserDetail({ param, userData }: userDetailProps) {
         </CardContent>
 
         <CardFooter className="flex justify-end gap-3">
-          <LoaderBtn btnName="Delete User" className="bg-red-600" />
+          <DeleteDialog  deleteType="user" id={param} />
 
           <LoaderBtn btnName="Update user" />
 

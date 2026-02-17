@@ -57,8 +57,6 @@ export default function UsersTable({data,deleteType}:usersTableProps) {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.role}</TableCell>
               <TableCell className="hidden sm:flex flex-col sm:flex-row md:flex-row gap-1 ">
-                {/* <Link href={`/admin/users/id`}>
-                <Trash2 size={20} className="font-bold text-red-600 cursor-pointer"/></Link> */}
                  <DeleteDialog deleteType={deleteType} id={user?.id} />
                 <Link href={`/admin/users/${user?.id}`} className="bg-blue-700 p-1 rounded text-white hover:bg-blue-800 active:bg-blue-900">
                     View Detail

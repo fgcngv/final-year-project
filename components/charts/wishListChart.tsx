@@ -1,29 +1,28 @@
-"use client"
 
+"use client";
 
 import ChartCard from "./chartCard";
-import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis, CartesianGrid } from "recharts";
 
-export const mockWishlistData = [
-  { name: "Yirgacheffe Grade 1", count: 240 },
-  { name: "Guji Natural", count: 210 },
-  { name: "Sidamo Organic", count: 190 },
-  { name: "Harrar Longberry", count: 160 },
-  { name: "Limu Washed", count: 120 },
-];
+interface WishlistChartProps {
+  data: {
+    name: string;
+    count: number;
+  }[];
+}
 
-export function WishlistChart() {
-    return (
-      <ChartCard title="Most Wishlisted Products">
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={mockWishlistData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Bar dataKey="count" />
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartCard>
-    );
-  }
-  
+export function WishlistChart({ data }: WishlistChartProps) {
+  return (
+    <ChartCard title="Most Wishlisted Products">
+      <ResponsiveContainer width="100%" height={300}>
+        <BarChart data={data} layout="vertical" margin={{ left: 50, right: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis type="number" />
+          <YAxis type="category" dataKey="name" width={150} />
+          <Tooltip formatter={(value) => [`${value} wishlists`, ""]} />
+          <Bar dataKey="count" radius={[6, 6, 0, 0]} fill="#22c55e" />
+        </BarChart>
+      </ResponsiveContainer>
+    </ChartCard>
+  );
+}

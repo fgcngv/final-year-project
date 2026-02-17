@@ -1,31 +1,3 @@
-// import { Product } from "@prisma/client";
-// import ProductCard from "./ProductCard";
-
-// interface AllProductsProps {
-//   products: Product[];
-// }
-
-// function AllProducts({ products }: AllProductsProps) {
-//   if (!products.length) {
-//     return <p>No products found</p>;
-//   }
-
-//   return (
-//     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-//       {products.map((product) => (
-//         <ProductCard key={product.id} product={product} />
-//       ))}
-
-
-//     </div>
-//   );
-// }
-
-// export default AllProducts;
-
-
-
-
 
 "use client";
 
@@ -33,6 +5,8 @@ import { Eye, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
+import LoaderBtn from "./loaderBtn";
+import DeleteDialog from "./dialog/deleteDialog";
 
 type ProductWithRelations = Prisma.ProductGetPayload<{
   include: {
@@ -49,9 +23,11 @@ interface AdminProductsTableProps {
 function ActionButton({
     icon,
     danger,
+    link,
   }: {
     icon: React.ReactNode;
     danger?: boolean;
+    link?:string
   }) {
     return (
       <button
@@ -62,7 +38,7 @@ function ActionButton({
               : "hover:bg-gray-100 text-gray-600"
           }`}
       >
-        {icon}
+        {link ? <Link href={link}>{link}</Link> :icon}
       </button>
     );
   }
@@ -177,12 +153,9 @@ export default function AdminProductsTable({
                  {/* Actions */}
                  <td className="px-6 py-4">
                    <div className="flex justify-end gap-2">
-                     <ActionButton icon={<Eye size={16} />} />
+                     <Link className="p-2 hover:bg-gray-300 active:bg-gray-400 rounded-md border transition" href={`/admin/product/${product?.id}`}><Eye size={20} /></Link>
                      <ActionButton icon={<Pencil size={16} />} />
-                     <ActionButton
-                       icon={<Trash2 size={16} />}
-                       danger
-                     />
+                     <DeleteDialog deleteType="product" id={product?.id}/>
                    </div>
                  </td>
                </tr>

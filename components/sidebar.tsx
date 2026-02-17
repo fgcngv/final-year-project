@@ -24,7 +24,6 @@ const sidebarLinks = [
     links: [
       { name: "Users", link: "/admin/users", key2: "users" },
       { name: "Farmers", link: "/admin/farmers", key2: "farmers" },
-      { name: "Staffs", link: "/admin/staffs", key2: "staffs" },
       { name: "Products", link: "/admin/product", key2: "products" },
       { name: "Messages", link: "/admin/messages", key2: "messages" },
     ],
@@ -85,7 +84,10 @@ async function Sidebar() {
               <Link
                 key={link.key2}
                 href={link.link}
-                className="bg-gray-300 rounded flex justify-center items-center hover:bg-gray-500 font-bold"
+                className={cn(
+                  "rounded-lg px-4 py-3 text-sm font-semibold transition",
+                  "hover:bg-green-700 hover:text-white",
+                    "bg-gray-100 text-gray-800")}
               >
                 {link.name}
               </Link>

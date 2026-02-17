@@ -1,28 +1,38 @@
-"use client"
 
+"use client";
 
-
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip,
+  CartesianGrid,
+} from "recharts";
 import ChartCard from "./chartCard";
 
-export const mockProductData = [
-  { name: "Yirgacheffe Grade 1", sales: 420 },
-  { name: "Sidamo Organic", sales: 380 },
-  { name: "Harrar Longberry", sales: 310 },
-  { name: "Guji Natural", sales: 260 },
-  { name: "Limu Washed", sales: 190 },
-];
+interface TopProductsChartProps {
+  data: {
+    name: string;
+    sales: number;
+  }[];
+}
 
-
-export function TopProductsChart() {
+export function TopProductsChart({ data }: TopProductsChartProps) {
   return (
     <ChartCard title="Top Products">
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={mockProductData} layout="vertical">
+        <BarChart data={data} layout="vertical">
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis type="number" />
-          <YAxis dataKey="name" type="category" />
+          <YAxis
+            dataKey="name"
+            type="category"
+            width={150}
+          />
           <Tooltip />
-          <Bar dataKey="sales" />
+          <Bar dataKey="sales" radius={[0, 6, 6, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </ChartCard>

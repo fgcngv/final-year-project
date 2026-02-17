@@ -172,11 +172,56 @@ export const getAllUsers = async () => {
 };
 
 
+// export const getAllFarmers = async () => {
+//   try {
+//     // Fetch users and count at the same time
+//     const [farmers, totalFarmers] = await Promise.all([
+//       prisma.farmer.findMany(),
+
+//       prisma.farmer.count()
+
+//     ]);
+
+//     if (farmers.length === 0) {
+//       return {
+//         success: false,
+//         error: true,
+//         message: "No Farmers found!"
+//       };
+//     }
+
+//     return {
+//       success: true,
+//       error: false,
+//       message: "All farmers fetched!",
+//       data: farmers,
+//       totalFarmers
+//     };
+
+//   } catch (error) {
+//     console.error("Error while fetching Farmers:", error);
+//     return {
+//       success: false,
+//       error: true,
+//       message: "Something went wrong!"
+//     };
+//   }
+// };
+
+
 export const getAllFarmers = async () => {
   try {
     // Fetch users and count at the same time
     const [farmers, totalFarmers] = await Promise.all([
-      prisma.farmer.findMany(),
+      prisma.farmer.findMany({
+        include: {
+          products: {
+            include: {
+              orderItems: true,
+            },
+          },
+        },
+      }),
 
       prisma.farmer.count()
 
@@ -209,6 +254,8 @@ export const getAllFarmers = async () => {
 };
 
 
+
+
 export const getAllOrders = async () => {
   try {
     // Fetch users and count at the same time
@@ -218,7 +265,7 @@ export const getAllOrders = async () => {
           notification:true,
           address:true,
           user:true,
-          payment:true
+          payment:true,
           // product:true
         }
       }),
@@ -342,3 +389,50 @@ export const getAllMessages = async () => {
 };
 
 
+export const getAllPayments = async () => {
+  try {
+    const payments = await prisma.payment.findMany();
+
+    if (!payments || payments.length === 0) {
+      return {
+        success: false,
+        error: true,
+        message: "No payments found!",
+        data: [],
+      };
+    }
+
+    return {
+      success: true,
+      error: false,
+      message: "All payments fetched!",
+      data: payments,
+    };
+  } catch (error) {
+    console.error("Error fetching payments:", error);
+    return {
+      success: false,
+      error: true,
+      message: "Something went wrong!",
+      data: [],
+    };
+  }
+};
+
+
+export const getTotalRevenue = async () => {
+  try {
+    const totalRevenue = await prisma.payment.aggregate({
+      where: { status: "PAID" },
+      _sum: { amount: true },
+    });
+
+    return {
+      success: true,
+      totalRevenue: totalRevenue._sum.amount || 0,
+    };
+  } catch (error) {
+    console.error("Error calculating total revenue:", error);
+    return { success: false, totalRevenue: 0 };
+  }
+};

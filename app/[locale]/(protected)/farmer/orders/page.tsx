@@ -21,13 +21,11 @@ async function OrdersPage() {
       </div>
     );
   }
-  const buyer = await getUserById(userId);
-  console.log("buyer by id : ", buyer);
+  // const buyer = await getUserById(userId);
+  // console.log("buyer by id : ", buyer);
 
   const orderItems = await getAllOrderItems();
   const orderItemsData = orderItems?.data;
-
-  console.log("orderItemsData : ", orderItemsData);
 
   const FarmerProduct = await getAllProductByFarmerId();
 

@@ -1,37 +1,41 @@
+
+
 "use client";
 
 import { PieChart, Pie, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import ChartCard from "./chartCard";
 
-export const mockStatusData = [
-  { name: "Pending", value: 120 },
-  { name: "Scheduled", value: 80 },
-  { name: "Delivered", value: 540 },
-  { name: "Cancelled", value: 60 },
-];
+interface OrderStatusChartProps {
+  data: {
+    name: string;
+    value: number;
+  }[];
+}
 
-const Order_COLORS = {
-  Pending: "#f59e0b", // amber
-  Scheduled: "#38bdf8",
-  Delivered: "#22c55e", // green
-  Cancelled: "#ef4444", // red
+const Order_COLORS: Record<string, string> = {
+  PENDING: "#f59e0b",
+  PAID: "#3b82f6",
+  SHIPPED: "#8b5cf6",
+  DELIVERED: "#22c55e",
+  CANCELLED: "#ef4444",
 };
 
-export function OrderStatusChart() {
+export function OrderStatusChart({ data }: OrderStatusChartProps) {
   return (
     <ChartCard title="Order Status">
       <ResponsiveContainer width="100%" height={280}>
         <PieChart>
           <Pie
-            data={mockStatusData}
+            data={data}
             dataKey="value"
+            nameKey="name"
             innerRadius={70}
             outerRadius={100}
           >
-            {mockStatusData.map((entry, index) => (
+            {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={Order_COLORS[entry.name as keyof typeof Order_COLORS]}
+                fill={Order_COLORS[entry.name] || "#9ca3af"}
               />
             ))}
           </Pie>
