@@ -41,8 +41,9 @@ async function OrdersPage() {
         {/* MOBILE VIEW */}
         <div className="space-y-4 p-1 md:hidden mt-10  border-green-800 border-4 rounded-2xl mt-20">
           <h1 className="text-2xl p-2 text-green-700 font-bold text-center">
-            All Orders
+            {orderItems?.data?.length !== 0 ? "All Orders" : "No Order Found"}
           </h1>
+          <h2 className="flex items-center text-2xl text-green-500 font-bold w-full">{orderItems?.data?.length} order{orderItems?.data?.length && orderItems?.data?.length > 1 ?"s":""}</h2>
           {orderItemsData?.map((items) => (
             <div
               key={items.id}

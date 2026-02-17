@@ -1,5 +1,3 @@
-
-
 // "use client";
 
 // import { useUser } from "@clerk/nextjs";
@@ -130,7 +128,7 @@
 
 //       {/* FEATURED SECTION */}
 //       <section className="py-20 px-6 md:px-20">
-        
+
 //         {
 //           !user && (
 //             <motion.div className=" w-full flex justify-around absolute bottom-0 p-2">
@@ -275,14 +273,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -392,7 +382,6 @@ export default function HomePage({ role, products }: roleProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#faf7f2] to-[#f4efe7]">
-      
       {/* HERO */}
       <motion.section
         className="relative min-h-[90vh] flex flex-col justify-center items-center text-center bg-[url('/cup_coffee.png')] bg-cover bg-center bg-fixed shadow-inner"
@@ -437,7 +426,27 @@ export default function HomePage({ role, products }: roleProps) {
           </Link>
         )}
       </motion.section>
-
+      {!user && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className=" p-1 flex justify-around"
+        >
+          <Link
+            href="/about"
+            className="relative active:bg-[#6A4325]/30 cursor-pointer mt-10 px-8 py-4 bg-[#6A4325]/90 hover:bg-[#6A4325] text-white font-semibold rounded-xl shadow-xl flex items-center gap-2"
+          >
+            About Us
+          </Link>
+          <Link
+            href="/contact"
+            className="relative cursor-pointer mt-10 px-8 py-4 bg-[#6A4325]/90 active:bg-[#6A4325]/30 hover:bg-[#6A4325] text-white font-semibold rounded-xl shadow-xl flex items-center gap-2"
+          >
+            Contact Us
+          </Link>
+        </motion.div>
+      )}
       {/* FEATURED */}
       <section className="py-20 px-6 md:px-20">
         <h2 className="text-4xl font-bold text-center text-[#4b2e16] mb-8 flex items-center justify-center gap-3">
@@ -458,9 +467,7 @@ export default function HomePage({ role, products }: roleProps) {
 
         {/* EMPTY STATE */}
         {filteredProducts.length === 0 && (
-          <p className="text-center text-gray-600 mb-10">
-            No products found.
-          </p>
+          <p className="text-center text-gray-600 mb-10">No products found.</p>
         )}
 
         {/* PRODUCT GRID */}
@@ -473,7 +480,6 @@ export default function HomePage({ role, products }: roleProps) {
           {filteredProducts.map((product) => (
             <motion.div key={product.id} variants={item}>
               <Card className="rounded-3xl shadow-md hover:shadow-xl border border-gray-200 hover:border-green-500 transition-all duration-300 bg-white overflow-hidden flex flex-col">
-                
                 {/* IMAGE */}
                 <div className="relative group">
                   <Link href={`/product/${product.id}`}>
@@ -539,15 +545,11 @@ export default function HomePage({ role, products }: roleProps) {
                 <CardFooter className="p-5 pt-0 flex flex-col gap-3">
                   <Button
                     onClick={() => handleAddToCart(product.id)}
-                    disabled={
-                      loadingId === product.id || product.stock === 0
-                    }
+                    disabled={loadingId === product.id || product.stock === 0}
                     className="w-full flex items-center justify-center gap-2 bg-gray-800 text-white hover:bg-gray-700"
                   >
                     <ShoppingCart size={18} />
-                    {loadingId === product.id
-                      ? tc("adding")
-                      : tb("add")}
+                    {loadingId === product.id ? tc("adding") : tb("add")}
                   </Button>
 
                   <Link href={`/product/${product.id}`} className="w-full">

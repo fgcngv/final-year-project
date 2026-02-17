@@ -262,7 +262,7 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
                 <Link
                   key={key}
                   href={`/chats/${chat.id}`}
-                  className="block hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                  className="block hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-900 transition-colors duration-200"
                 >
                   {
                     users && userId && (
@@ -352,37 +352,6 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
                    
                     )
                   }
-                  {/* <div className="flex items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-                    <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                      <img
-                        // src={chat.user.last_name}
-                        // alt={chat.user.first_name}
-                        src={chat.user1_id}
-                        alt={chat.user2_id}
-                        className="w-full h-full object-cover"
-                      />
-                      {chat.unreadCount > 0 && (
-                        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
-                          {chat.unreadCount}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex-1 min-w-0 ml-4">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
-                          {chat.user1_id}
-                        </h3>
-                        <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
-                          {formatTime(chat.user1_id)}
-                        </span>
-                      </div>
-
-                      <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                        {chat.user1_id}
-                      </p>
-                    </div>
-                  </div> */}
                 </Link>
               ))}
             </div>

@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
 import LocaleSwitcher from "./LocaleSwitcher";
 
-
 export default function Header({
   cartQuantity,
   notification,
@@ -26,17 +25,16 @@ export default function Header({
   cartQuantity?: number;
   notification?: number;
 }) {
-
   const { user } = useUser();
 
-const headerLinks = [
-  { name: "Home", link: "/", key: "home" },
-  { name: "Shop", link: "/product", key: "shop" },
-  { name: "About", link: "/about", key: "about" },
-  { name: "Contact Us", link: "/contact", key: "contact" },
-  { name: "Orders", link: "/orders", key: "orders" },
-  { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
-];
+  const headerLinks = [
+    { name: "Home", link: "/", key: "home" },
+    { name: "Shop", link: "/product", key: "shop" },
+    { name: "About", link: "/about", key: "about" },
+    { name: "Contact Us", link: "/contact", key: "contact" },
+    { name: "Orders", link: "/orders", key: "orders" },
+    { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
+  ];
   // Language Option
   const { theme, toggleTheme } = useTheme();
 
@@ -63,7 +61,7 @@ const headerLinks = [
         {/* LOGO */}
         <Link
           href="/"
-          className="text-2xl text-green-600 font-bold tracking-wide"
+          className="text-2xl max-[355px]:hidden text-green-600 font-bold tracking-wide"
         >
           EGC
         </Link>
@@ -110,8 +108,11 @@ const headerLinks = [
 
           {/* notification */}
           {notification && notification > 0 ? (
-            <div className="relative hidden min-[330px]:block ">
-              <Link href={`/notifications`} className="hover:text-red-400 active:text-red-600">
+            <div className="relative hidden min-[298px]:block ">
+              <Link
+                href={`/notifications`}
+                className="hover:text-red-400 active:text-red-600"
+              >
                 <Bell size={22} />
               </Link>
               <span className="absolute  w-6 -top-5 -right-3 items-center justify-center flex bg-red-500 rounded-full">
@@ -149,5 +150,3 @@ const headerLinks = [
     </header>
   );
 }
-
-

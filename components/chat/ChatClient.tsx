@@ -173,7 +173,8 @@ export default function ChatClient({ otherUser,cartQuantity,unreadNotification }
     <div>
       <Header cartQuantity={cartQuantity} notification={unreadNotification} />
 
-      <div className="flex justify-center items-center min-h-screen bg-[#F5EFE6] p-4 pt-20">
+      <div className="flex justify-center items-start min-h-screen bg-[#F5EFE6] p-4 pt-20">
+
         <div className="flex flex-col w-full max-w-2xl h-[90vh] bg-[#FFFDF8] rounded-2xl shadow-lg border border-[#D6C7B0] overflow-hidden">
           {/* Header */}
           <div className="flex items-center gap-3 px-5 py-4 bg-[#4B2E1E] text-[#FAF7F2] justify-between">
