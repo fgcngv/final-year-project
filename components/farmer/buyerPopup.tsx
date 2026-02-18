@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useState } from "react";
@@ -15,13 +13,16 @@ import {
 } from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { User } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import LoaderBtn from "../loaderBtn";
 
 interface BuyerPopup {
-  user: User
+  user: User;
 }
 
-export default function BuyerPopup({user}:BuyerPopup) {
+export default function BuyerPopup({ user }: BuyerPopup) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   // Example static buyer data
   const buyer = {
@@ -34,8 +35,11 @@ export default function BuyerPopup({user}:BuyerPopup) {
   return (
     <div className="p-6">
       {/* Button to open modal */}
-      <Button onClick={() => setOpen(true)} className="bg-emerald-600 hover:bg-emerald-700 text-white active:bg-green-800">
-         Buyer
+      <Button
+        onClick={() => setOpen(true)}
+        className="bg-emerald-600 hover:bg-emerald-700 text-white active:bg-green-800"
+      >
+        Buyer
       </Button>
 
       {/* Shadcn Dialog */}
@@ -56,7 +60,9 @@ export default function BuyerPopup({user}:BuyerPopup) {
           <div className="space-y-3 mt-4">
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Name:</span>
-              <span className="text-gray-800">{user.first_name} {user.last_name}</span>
+              <span className="text-gray-800">
+                {user.first_name} {user.last_name}
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="font-medium text-gray-600">Email:</span>
@@ -74,7 +80,15 @@ export default function BuyerPopup({user}:BuyerPopup) {
 
           {/* Footer with Close Button */}
           <DialogFooter className="mt-6">
-            <Button onClick={() => setOpen(false)} className="bg-emerald-600 hover:bg-emerald-700 text-white">
+            <LoaderBtn
+              btnName="Chat With"
+              linkTo={`/chatMatche/${user?.id}`}
+              className="bg-pink-400 font-bold cursor-pointer hover:bg-pink-500 active:bg-pink-600"
+            />
+            <Button
+              onClick={() => setOpen(false)}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+            >
               Close
             </Button>
           </DialogFooter>

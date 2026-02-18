@@ -9,13 +9,18 @@ import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/n
 export default function MobileHeader() {
 
   const {user} = useUser()
+  const role = user?.publicMetadata?.role;
+
+  let orderLink = "";
+  (role === "admin" || role === "ADMIN") ?orderLink = `${role}/order` : orderLink = `/${role}`;
+
 
   const headerLinks = [
     { name: "Home", link: "/", key: "home" },
     { name: "Shop", link: "/product", key: "shop" },
     { name: "About", link: "/about", key: "about" },
     { name: "Contact Us", link: "/contact", key: "contact" },
-    { name: "Orders", link: "/orders", key: "orders" },
+    { name: "Orders", link: `/${orderLink}`, key: "orders" },
     { name: "Notifications", link: "/notifications", key: "notifications" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
   ];

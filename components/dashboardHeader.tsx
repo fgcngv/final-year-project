@@ -38,7 +38,7 @@ import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 function DashboardHeader({ role }: { role: string }) {
   return (
-    <div className="flex items-center justify-between bg-black px-4 py-3 text-white sm:px-6">
+    <div className="flex items-center justify-between font-bold text-2xl  px-4 py-3 w-full bg-transparent text-black  sm:px-6">
       {/* LEFT */}
       <span className="text-sm font-semibold uppercase tracking-wide">
         {role}

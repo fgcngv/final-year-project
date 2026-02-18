@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Footer() {
   return (
-    <footer className="bg-emerald-950 text-emerald-50">
+    <footer className="bg-emerald-950 text-emerald-50 z-20">
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-10 md:grid-cols-4">
           {/* Brand */}

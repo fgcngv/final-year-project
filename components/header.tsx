@@ -25,14 +25,19 @@ export default function Header({
   cartQuantity?: number;
   notification?: number;
 }) {
-  const { user } = useUser();
+  const { user, } = useUser();
+  const role = user?.publicMetadata?.role;
+  
+  let orderLink = "";
+  (role === "admin" || role === "ADMIN") ?orderLink = `${role}/order` : orderLink = `/${role}`;
+
 
   const headerLinks = [
     { name: "Home", link: "/", key: "home" },
     { name: "Shop", link: "/product", key: "shop" },
     { name: "About", link: "/about", key: "about" },
     { name: "Contact Us", link: "/contact", key: "contact" },
-    { name: "Orders", link: "/orders", key: "orders" },
+    { name: "Orders", link: `/${orderLink}`, key: "orders" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
   ];
   // Language Option
