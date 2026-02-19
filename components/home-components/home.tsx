@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useUser } from "@clerk/nextjs";
@@ -12,13 +11,16 @@ import { addToCart } from "@/utils/services/cartItem";
 import { ShoppingCart, ArrowRight, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../checkTheme";
-import { Product } from "@prisma/client";
+import { Product, Review } from "@prisma/client";
 import LoaderBtn from "../loaderBtn";
 import { useTranslations } from "next-intl";
+import { getReviewsByProductId } from "@/app/[locale]/actions/review";
+import ReviewCard from "../review/ReviewCard";
 
 interface roleProps {
   role: "ADMIN" | "BUYER" | "SELLER" | "LAB_TECHNICIAN" | "CASHIER" | "/";
   products: Product[];
+  reviewData?: Record<string, any[]>;
 }
 
 const container = {
@@ -34,7 +36,7 @@ const item = {
   show: { opacity: 1, y: 0 },
 };
 
-export default function HomePage({ role, products }: roleProps) {
+export default function HomePage({ role, products, reviewData }: roleProps) {
   const { user } = useUser();
   const router = useRouter();
   const tc = useTranslations("home");
@@ -236,6 +238,9 @@ export default function HomePage({ role, products }: roleProps) {
                   <p className="text-2xl font-bold text-green-700">
                     {product.price} Brr
                   </p>
+                  <p className="text-lg font-semibold text-gray-600">
+                    <i>{product.product_detail}</i>
+                  </p>
 
                   <div className="flex items-center gap-2 mt-2">
                     <Button
@@ -265,6 +270,25 @@ export default function HomePage({ role, products }: roleProps) {
                       ? `${product.stock} left in stock`
                       : "Out of stock"}
                   </p>
+
+                  {reviewData && reviewData?.[product.id]?.length > 0 && (
+                    <div className="mt-4 space-y-3">
+                      <h3 className="text-sm font-semibold text-gray-700">
+                        Reviews ({reviewData[product.id].length})
+                      </h3>
+
+                      {reviewData[product.id].slice(0, 2).map((r) => (
+                        <ReviewCard
+                          key={r.id}
+                          name={r.name}
+                          date={r.date}
+                          comment={r.comment || ""}
+                          rating={r.rating}
+                          isDialog
+                        />
+                      ))}
+                    </div>
+                  )}
                 </CardContent>
 
                 {/* FOOTER */}

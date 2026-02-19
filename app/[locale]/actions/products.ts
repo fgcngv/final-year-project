@@ -9,7 +9,8 @@ export const getAllProducts= async ()=>{
                 cartItems:true,
                 orderItems:true,
                 wishlist:true,
-                farmer:true 
+                farmer:true,
+                reviews:true
             }
         });
 

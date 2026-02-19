@@ -128,3 +128,21 @@ export async function AddReview(values: unknown) {
     };
   }
 }
+
+
+
+export async function getReviewsByProductId(productId: string) {
+  const reviews = await prisma.review.findMany({
+    where: { product_id: productId, type: "PRODUCT" },
+    include: { user: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return reviews.map((r) => ({
+    id: r.id,
+    rating: r.rating,
+    comment: r.comment,
+    date: r.createdAt,
+    name: r.user.first_name + " " + r.user.last_name,
+  }));
+}
