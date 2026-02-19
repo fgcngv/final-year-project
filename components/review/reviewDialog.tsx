@@ -11,11 +11,11 @@ import {
 import { Star } from "lucide-react";
 import ReviewForm from "@/components/review/ReviewForm";
 
-export default function ReviewDialog({ items }: any) {
+export default function ReviewDialog({ order_id,product_id }: {order_id:string,product_id:string}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="inline-flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white font-medium px-2  rounded-lg transition shadow-sm">
+        <button className="inline-flex p-2 items-center gap-2 bg-green-700 hover:bg-green-800 text-white font-medium px-2  rounded-lg transition shadow-sm">
           <Star className="w-4 h-4" />
           Rate Product
         </button>
@@ -37,8 +37,8 @@ export default function ReviewDialog({ items }: any) {
         <div className="p-6 bg-white">
           <ReviewForm
             type="PRODUCT"
-            productId={items?.product.id}
-            orderId={items?.order.id}
+            productId={product_id}
+            orderId={order_id}
           />
         </div>
 

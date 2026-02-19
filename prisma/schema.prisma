@@ -85,6 +85,11 @@ enum NotificationType {
   PRODUCT
 }
 
+enum ReviewType {
+  PRODUCT
+  FARMER
+}
+
 model User {
   id         String     @id //clerk id
   first_name String
@@ -105,6 +110,7 @@ model User {
   updated_at DateTime @updatedAt
 
   addresses Address[]
+  reviews   Review[]
 
   // chat integration
   buyerConversations Conversation[] @relation("BuyerConversations")
@@ -122,6 +128,7 @@ model Farmer {
   role       Role      @default(SELLER)
   status     Status    @default(ACTIVE)
   products   Product[] //one farmer can have many products
+  reviews    Review[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -145,7 +152,9 @@ model Product {
   orderItems   OrderItem[]
   cartItems    CartItem[]
   notification Notification[]
-  description  PDescription? // ONE-TO-ONE
+  reviews      Review[]
+
+  description PDescription? // ONE-TO-ONE
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -178,6 +187,7 @@ model Order {
   payment      Payment?
   payout       Payout?
   notification Notification[]
+  reviews      Review[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -368,4 +378,33 @@ model Payout {
   sentAt    DateTime?
 
   order Order @relation(fields: [order_id], references: [id], onDelete: Cascade)
+}
+
+// review model
+model Review {
+  id       String     @id @default(cuid())
+  user_id  String
+  order_id String
+  type     ReviewType
+  rating   Int // 1 - 5
+  comment  String?
+
+  // Optional Relations
+  product_id String?
+  farmer_id  String?
+
+  // Relations
+  user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  order   Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  farmer  Farmer?  @relation(fields: [farmer_id], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Prevent duplicate review per order per type
+  @@unique([order_id, type], name: "order_id_type")
+  @@index([product_id])
+  @@index([farmer_id])
+  @@index([user_id])
 }

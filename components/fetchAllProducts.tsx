@@ -7,6 +7,8 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import LoaderBtn from "./loaderBtn";
 import DeleteDialog from "./dialog/deleteDialog";
+import { useState } from "react";
+import { Input } from "./ui/input";
 
 type ProductWithRelations = Prisma.ProductGetPayload<{
   include: {
@@ -69,6 +71,25 @@ function ActionButton({
 export default function AdminProductsTable({
   products,
 }: AdminProductsTableProps) {
+    const [searchTerm, setSearchTerm] = useState("");
+  
+      // Filter orders based on search
+      const filteredProducts = products.filter((product) => {
+          const customerName = `${product.farmer.first_name} ${product.farmer.last_name}`.toLowerCase();
+          const customerEmail = product.farmer.email.toLowerCase();
+          const orderId = product.id.toLowerCase();
+          const productNames = product.product_name;
+      
+          const term = searchTerm.toLowerCase();
+          return (
+            customerName.includes(term) ||
+            customerEmail.includes(term) ||
+            orderId.includes(term) ||
+            productNames.includes(term)
+          );
+        });
+
+  console.log("products : ",products)
   return (
     <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
       {/* Table Header */}
@@ -77,7 +98,17 @@ export default function AdminProductsTable({
         <p className="text-sm text-gray-500">
           Manage all products in the system
         </p>
+        <h1 className="text-green-600 text-2xl font-bold text-center">{products.length} Product{products.length > 1 ?"s":""} Found</h1>
       </div>
+
+      <div className="mb-4 flex items-center gap-2">
+  <Input
+    placeholder="Search products by,Origin, farmer, farmer email, product_name..."
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value)}
+    className="w-full max-w-md m-2"
+  />
+</div>
 
       {/* Table */}
       <div className="overflow-x-auto">
@@ -94,7 +125,7 @@ export default function AdminProductsTable({
           </thead>
 
           <tbody className="divide-y">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
                  <tr
                  key={product.id}
                  className="hover:bg-gray-50 transition"

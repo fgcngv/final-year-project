@@ -258,44 +258,45 @@ export const getAllFarmers = async () => {
 
 export const getAllOrders = async () => {
   try {
-    // Fetch users and count at the same time
     const [orders, totalOrders] = await Promise.all([
       prisma.order.findMany({
-        include:{
-          notification:true,
-          address:true,
-          user:true,
-          payment:true,
-          // product:true
-        }
+        orderBy: { createdAt: "desc" },
+        include: {
+          address: true,
+          user: true,
+          payment: true,
+          items: {
+            include: {
+              product: true,
+            },
+          },
+        },
       }),
-
-      prisma.order.count()
-
+      prisma.order.count(),
     ]);
 
-    if (orders.length === 0) {
-      return {
-        success: false,
-        error: true,
-        message: "No Order found!"
-      };
-    }
+    const totalRevenue = orders.reduce(
+      (acc, order) => acc + (order.payment?.amount || 0),
+      0
+    );
+
+    const statusStats = orders.reduce((acc: any, order) => {
+      acc[order.status] = (acc[order.status] || 0) + 1;
+      return acc;
+    }, {});
 
     return {
       success: true,
-      error: false,
-      message: "All Orders fetched!",
       data: orders,
-      totalOrders
+      totalOrders,
+      totalRevenue,
+      statusStats,
     };
-
   } catch (error) {
-    console.error("Error while fetching Orders:", error);
+    console.error("Error fetching Orders:", error);
     return {
       success: false,
-      error: true,
-      message: "Something went wrong!"
+      message: "Something went wrong!",
     };
   }
 };

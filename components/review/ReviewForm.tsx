@@ -3,6 +3,8 @@
 
 import { useState } from "react";
 import StarRating from "./StarRating";
+import { toast } from "sonner";
+import { AddReview } from "@/app/[locale]/actions/review";
 
 interface Props {
   productId?: string;
@@ -24,37 +26,34 @@ export default function ReviewForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
+  
     if (rating === 0) {
-      alert("Please select a rating.");
+      toast.error("Please select a rating.");
       return;
     }
-
+  
     setLoading(true);
-
-    try {
-      const res = await fetch("/api/review", {
-        method: "POST",
-        body: JSON.stringify({
-          rating,
-          comment,
-          productId,
-          farmerId,
-          orderId,
-          type,
-        }),
-      });
-
-      if (!res.ok) throw new Error("Failed");
-
-      setSuccess(true);
-    } catch (error) {
-      alert("Something went wrong.");
-    } finally {
+  
+    const result = await AddReview({
+      rating,
+      comment,
+      productId,
+      farmerId,
+      orderId,
+      type,
+    });
+  
+    if (!result.success) {
+      toast.error(result.message);
       setLoading(false);
+      return;
     }
+  
+    toast.success("Review submitted successfully 🎉");
+    setSuccess(true);
+    setLoading(false);
   }
-
+  
   if (success) {
     return (
       <div className="p-6 bg-green-50 border border-green-200 rounded-lg text-green-700 font-semibold">
