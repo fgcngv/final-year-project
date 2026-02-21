@@ -52,27 +52,75 @@ export default async function AdminSidebarContent() {
       ? farmerSideBarLinks(userId)
       : sidebarLinks;
 
+  // return (
+  //   <div className="px-4 py-4 ">
+  //     <div className="border text-center bg-green-800 rounded font-bold text-2xl text-green-300 mb-6 p-3">
+  //       Green Coffee
+  //     </div>
+
+  //     {linksToRender.map((section) => (
+  //       <div key={section.key} className="mb-6">
+  //         <h1 className="font-bold text-gray-500 text-sm mb-2">
+  //           {section.label}
+  //         </h1>
+
+  //         <div className="flex flex-col gap-2">
+  //           {section.links.map((link) => (
+  //             <Link
+  //               key={link.key2}
+  //               href={link.link}
+  //               className={cn(
+  //                 "rounded-lg px-4 py-3 text-sm font-semibold transition",
+  //                 "hover:bg-green-700 hover:text-white",
+  //                 "bg-gray-100 text-gray-800"
+  //               )}
+  //             >
+  //               {link.name}
+  //             </Link>
+  //           ))}
+  //         </div>
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
+
   return (
-    <div className="px-4 py-4 ">
-      <div className="border text-center bg-green-800 rounded font-bold text-2xl text-green-300 mb-6 p-3">
+    <div className="px-4 py-4 transition-colors duration-500">
+  
+      {/* Sidebar Brand */}
+      <div className="
+        border 
+        text-center 
+        bg-green-800 dark:bg-green-900 
+        rounded 
+        font-bold 
+        text-2xl 
+        text-green-300 dark:text-green-200 
+        mb-6 
+        p-3
+        transition-colors
+      ">
         Green Coffee
       </div>
-
+  
+      {/* Sections */}
       {linksToRender.map((section) => (
         <div key={section.key} className="mb-6">
-          <h1 className="font-bold text-gray-500 text-sm mb-2">
+          <h1 className="font-bold text-gray-500 dark:text-gray-400 text-sm mb-2 transition-colors">
             {section.label}
           </h1>
-
+  
           <div className="flex flex-col gap-2">
             {section.links.map((link) => (
               <Link
                 key={link.key2}
                 href={link.link}
                 className={cn(
-                  "rounded-lg px-4 py-3 text-sm font-semibold transition",
-                  "hover:bg-green-700 hover:text-white",
-                  "bg-gray-100 text-gray-800"
+                  "rounded-lg px-4 py-3 text-sm font-semibold transition-colors",
+                  // light mode default
+                  "bg-gray-100 text-gray-800 hover:bg-green-700 hover:text-white",
+                  // dark mode override
+                  "dark:bg-[#1f140d] dark:text-[#f5f5dc] dark:hover:bg-green-700 dark:hover:text-white"
                 )}
               >
                 {link.name}

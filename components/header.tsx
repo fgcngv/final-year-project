@@ -17,6 +17,7 @@ import MobileHeader from "./mobileHeader";
 import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
 import LocaleSwitcher from "./LocaleSwitcher";
+import ThemeToggle from "./theme/theme-toggle";
 
 export default function Header({
   cartQuantity,
@@ -40,8 +41,6 @@ export default function Header({
     { name: "Orders", link: `/${orderLink}`, key: "orders" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
   ];
-  // Language Option
-  const { theme, toggleTheme } = useTheme();
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const router = useRouter();
@@ -70,6 +69,7 @@ export default function Header({
         >
           EGC
         </Link>
+        <ThemeToggle />
 
         {/* Desktop Nav */}
         <nav className="hidden min-[1010px]:flex items-center gap-10 text-sm font-medium">

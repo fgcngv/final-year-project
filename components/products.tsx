@@ -244,13 +244,13 @@ export default function ProductsPage({
   const [quantityMap, setQuantityMap] = useState<Record<string, number>>({});
   const [searchTerm, setSearchTerm] = useState("");
 
-  const { theme } = useTheme();
+  const { language } = useTheme();
   const router = useRouter();
 
   const tp = useTranslations("products");
   const tb = useTranslations("button");
   const tc = useTranslations("cart");
-  const language = theme;
+  const lang = language;
 
   /* =====================
      SEARCH LOGIC + HIGHLIGHT
@@ -352,27 +352,159 @@ export default function ProductsPage({
   /* =====================
      UI
   ====================== */
+  // return (
+  //   <div className="min-h-screen px-4 md:px-12 py-16">
+  //     <Header notification={notification} cartQuantity={cartQuantity} />
+
+  //     <h1 className="text-3xl font-bold mb-4 text-center">{tp("title")}</h1>
+
+  //     {/* SEARCH INPUT */}
+  //     <div className="flex justify-center mb-8">
+  //       <input
+  //         type="text"
+  //         placeholder="Search product..."
+  //         value={searchTerm}
+  //         onChange={(e) => setSearchTerm(e.target.value)}
+  //         className="w-full max-w-xl px-5 py-3 rounded-2xl border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600"
+  //       />
+  //     </div>
+
+  //     {filteredProducts.length === 0 && (
+  //       <p className="text-center text-gray-600 mb-10">No products found.</p>
+  //     )}
+
+  //     {/* PRODUCT GRID */}
+  //     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+  //       {filteredProducts.map((product) => (
+  //         <motion.div
+  //           key={product.id}
+  //           initial={{ opacity: 0, y: 30 }}
+  //           animate={{ opacity: 1, y: 0 }}
+  //           transition={{ duration: 0.4 }}
+  //         >
+  //           <Card
+  //             className={`rounded-2xl relative shadow-md hover:shadow-xl transition border ${
+  //               product.stock === 0 ? " bg-red-300" : " "
+  //             }`}
+  //           >
+  //             <CardContent className="p-4 flex flex-col gap-2 ">
+  //               <Link href={`product/${product.id}`} className="cursor-pointer">
+  //                 <div className="relative group">
+  //                   <img
+  //                     src={`${product.image}`}
+  //                     alt={product.product_name || "Product image"}
+  //                     className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
+  //                     loading="lazy"
+  //                   />
+  //                 </div>
+  //               </Link>
+
+  //               {/* Highlighted Product Name */}
+  //               <h2 className="text-lg font-semibold">
+  //                 {highlightText(product.product_name)}
+  //               </h2>
+
+  //               <p className="text-xl font-bold text-green-600">{product.price} Brr</p>
+
+  //               <div className="flex items-center gap-2 mt-2">
+  //                 <input
+  //                   type="number"
+  //                   min={1}
+  //                   max={product.stock}
+  //                   value={quantityMap[product.id] || 1}
+  //                   onChange={(e) =>
+  //                     handleQuantityChange(product.id, Number(e.target.value))
+  //                   }
+  //                   className="w-20 p-1 rounded border text-center"
+  //                 />
+  //                 <span className="text-sm text-gray-500">
+  //                   {product.stock === 0
+  //                     ? "Finished Product!"
+  //                     : language === "ENGLISH"
+  //                     ? `Stock: ${product.stock}`
+  //                     : language === "AFAN_OROMO"
+  //                     ? `Qabeenya: ${product.stock}`
+  //                     : `እቃ ቀሪ: ${product.stock}`}
+  //                 </span>
+  //               </div>
+  //             </CardContent>
+
+  //             <CardFooter className="flex flex-col gap-3 p-4">
+  //               <div className="flex justify-between items-center w-full">
+  //                 <Button
+  //                   className="rounded-xl cursor-pointer"
+  //                   onClick={() => handleAddToCart(product)}
+  //                   disabled={loadingId === product.id || product.stock === 0}
+  //                 >
+  //                   {loadingId === product.id ? "loading..." : tb("add")}
+  //                 </Button>
+
+  //                 <LoaderBtn
+  //                   btnName={tb("detail")}
+  //                   linkTo={`/product/${product.id}`}
+  //                   className="rounded-xl cursor-pointer bg-green-600 font-bold text-white hover:bg-green-700"
+  //                   disable={product.stock === 0}
+  //                 />
+  //               </div>
+  //             </CardFooter>
+
+  //             <Button
+  //               className="rounded-xl bg-blue-600 absolute top-10 left-10 text-white font-bold"
+  //               onClick={() => handleBuyNow(product)}
+  //               disabled={product.stock === 0}
+  //             >
+  //               {tb("buy")}
+  //             </Button>
+  //           </Card>
+  //         </motion.div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
+
   return (
-    <div className="min-h-screen px-4 md:px-12 py-16">
+    <div
+      className="
+        min-h-screen px-4 md:px-12 py-16
+        bg-gradient-to-b 
+        from-[#faf7f2] to-[#f4efe7]
+        dark:from-[#1a120b] dark:to-[#0f0a06]
+        text-[#2d1b0f] dark:text-[#f5f5dc]
+        transition-colors duration-500
+      "
+    >
       <Header notification={notification} cartQuantity={cartQuantity} />
-
-      <h1 className="text-3xl font-bold mb-4 text-center">{tp("title")}</h1>
-
+  
+      <h1 className="text-3xl font-bold mb-6 text-center tracking-wide">
+        {tp("title")}
+      </h1>
+  
       {/* SEARCH INPUT */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-10">
         <input
           type="text"
           placeholder="Search product..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full max-w-xl px-5 py-3 rounded-2xl border border-gray-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-600"
+          className="
+            w-full max-w-xl px-5 py-3 rounded-2xl
+            bg-white dark:bg-[#2b1c12]
+            border border-gray-300 dark:border-[#3c2a21]
+            text-black dark:text-[#f5f5dc]
+            placeholder:text-gray-500 dark:placeholder:text-gray-400
+            shadow-md focus:outline-none
+            focus:ring-2 focus:ring-green-600
+            transition-colors duration-300
+          "
         />
       </div>
-
+  
       {filteredProducts.length === 0 && (
-        <p className="text-center text-gray-600 mb-10">No products found.</p>
+        <p className="text-center text-gray-600 dark:text-gray-400 mb-10">
+          No products found.
+        </p>
       )}
-
+  
       {/* PRODUCT GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredProducts.map((product) => (
@@ -381,32 +513,45 @@ export default function ProductsPage({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
+            className="h-full"
           >
             <Card
-              className={`rounded-2xl relative shadow-md hover:shadow-xl transition border ${
-                product.stock === 0 ? " bg-red-300" : " "
-              }`}
+              className={`
+                h-full flex flex-col
+                rounded-3xl overflow-hidden
+                shadow-md hover:shadow-xl
+                border border-gray-200 dark:border-[#3c2a21]
+                bg-white dark:bg-[#1f140d]
+                transition-all duration-300
+                ${
+                  product.stock === 0
+                    ? "opacity-80 border-red-400 dark:border-red-600"
+                    : "hover:border-green-600"
+                }
+              `}
             >
-              <CardContent className="p-4 flex flex-col gap-2 ">
+              <CardContent className="p-4 flex flex-col gap-3 flex-grow">
                 <Link href={`product/${product.id}`} className="cursor-pointer">
-                  <div className="relative group">
+                  <div className="relative group overflow-hidden rounded-xl">
                     <img
                       src={`${product.image}`}
                       alt={product.product_name || "Product image"}
-                      className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
+                      className="w-full h-52 object-cover transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                     />
                   </div>
                 </Link>
-
-                {/* Highlighted Product Name */}
+  
                 <h2 className="text-lg font-semibold">
                   {highlightText(product.product_name)}
                 </h2>
-
-                <p className="text-xl font-bold text-green-600">{product.price} Brr</p>
-
-                <div className="flex items-center gap-2 mt-2">
+  
+                <p className="text-xl font-bold text-green-700 dark:text-green-400">
+                  {product.price} Brr
+                </p>
+  
+                {/* Quantity + Stock */}
+                <div className="flex items-center justify-between mt-2">
                   <input
                     type="number"
                     min={1}
@@ -415,9 +560,16 @@ export default function ProductsPage({
                     onChange={(e) =>
                       handleQuantityChange(product.id, Number(e.target.value))
                     }
-                    className="w-20 p-1 rounded border text-center"
+                    className="
+                      w-20 p-1 rounded-md text-center
+                      bg-white dark:bg-[#2b1c12]
+                      border border-gray-300 dark:border-[#3c2a21]
+                      text-black dark:text-[#f5f5dc]
+                      transition-colors
+                    "
                   />
-                  <span className="text-sm text-gray-500">
+  
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
                     {product.stock === 0
                       ? "Finished Product!"
                       : language === "ENGLISH"
@@ -428,37 +580,50 @@ export default function ProductsPage({
                   </span>
                 </div>
               </CardContent>
-
-              <CardFooter className="flex flex-col gap-3 p-4">
-                <div className="flex justify-between items-center w-full">
+  
+              {/* FOOTER */}
+              <CardFooter className="flex flex-col gap-3 p-4 mt-auto">
+                <div className="flex justify-between items-center w-full gap-2">
                   <Button
-                    className="rounded-xl cursor-pointer"
+                    className="
+                      flex-1 rounded-xl
+                      bg-[#3c2a21] text-white
+                      hover:bg-[#2b1c12]
+                      dark:bg-[#6f4e37]
+                      dark:hover:bg-[#5a3d2b]
+                      transition-colors
+                    "
                     onClick={() => handleAddToCart(product)}
-                    disabled={loadingId === product.id || product.stock === 0}
+                    disabled={
+                      loadingId === product.id || product.stock === 0
+                    }
                   >
                     {loadingId === product.id ? "loading..." : tb("add")}
                   </Button>
-
+  
                   <LoaderBtn
                     btnName={tb("detail")}
                     linkTo={`/product/${product.id}`}
-                    className="rounded-xl cursor-pointer bg-green-600 font-bold text-white hover:bg-green-700"
+                    className="
+                      flex-1 rounded-xl
+                      bg-green-600 text-white font-bold
+                      hover:bg-green-700
+                      dark:bg-green-700 dark:hover:bg-green-800
+                    "
                     disable={product.stock === 0}
                   />
+
+                  
                 </div>
               </CardFooter>
+  
+              {/* BUY BUTTON */}
 
-              <Button
-                className="rounded-xl bg-blue-600 absolute top-10 left-10 text-white font-bold"
-                onClick={() => handleBuyNow(product)}
-                disabled={product.stock === 0}
-              >
-                {tb("buy")}
-              </Button>
             </Card>
           </motion.div>
         ))}
       </div>
     </div>
   );
+
 }

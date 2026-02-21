@@ -99,120 +99,107 @@ export default function OrderSummary({
   }
 
   return (
-    <div className="space-y-6 sticky top-8">
-      <Card className="shadow-xl border-2">
-        <CardHeader>
-          <CardTitle className="text-xl">Order Summary</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Order Items */}
-          <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center gap-4 p-3 rounded-lg bg-gray-50"
-              >
-                <div className="relative h-16 w-16 rounded-lg overflow-hidden">
-                  {/* <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-700" /> */}
-                  <img
-                    src={item?.product?.image}
-                    alt={item?.product?.product_name}
-                  />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-semibold">{item.product.product_name}</h4>
-                  <p className="text-sm text-gray-600">
-                    {item.product.product_detail}
-                  </p>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-sm text-gray-500">
-                      Qty: {item.quantity}
-                    </span>
-                    <span className="font-bold">
-                      {(item.product.price * item.quantity).toFixed(2)} Brr
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Price Breakdown */}
-          <div className="space-y-3 border-t pt-4">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Subtotal</span>
-              <span className="font-semibold">{subtotal.toFixed(2)} Brr</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Shipping</span>
-              <span className="font-semibold">
-                {shippingFee.toFixed(2)} Brr
-              </span>
-            </div>
-            <div className="flex justify-between items-center border-t pt-3">
-              <span className="text-lg font-bold">Total</span>
-              <div className="text-right">
-                <div className="text-2xl font-bold text-green-700">
-                  {total.toFixed(2)} Brr
-                </div>
-                <div className="text-sm text-gray-500">including VAT</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Delivery Info */}
-          <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-200">
-            <div className="flex items-center gap-2">
-              <Truck className="h-5 w-5 text-green-600" />
-              <span className="font-semibold">Estimated Delivery</span>
-            </div>
-            <p className="text-sm text-gray-600">
-              Within 3-5 business days in Addis Ababa
-            </p>
-          </div>
-
-          {/* Guarantee */}
-          <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-200">
-            <Shield className="h-5 w-5 text-amber-600 flex-shrink-0" />
-            <div>
-              <p className="text-sm font-medium">100% Satisfaction Guarantee</p>
-              <p className="text-xs text-gray-600">
-                Full refund if not satisfied with quality
-              </p>
-            </div>
-          </div>
-          <Button
-            disabled={loading}
-            className={cn(
-              ` ${
-                loading
-                  ? "bg-green-100 text-black"
-                  : "cursor-pointer bg-green-700 font-bold"
-              }`
-            )}
-            onClick={handleCreateOrder}
+<div className="space-y-6 sticky top-8">
+  <Card className="shadow-xl border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+    <CardHeader>
+      <CardTitle className="text-xl text-gray-900 dark:text-white">Order Summary</CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-6">
+      {/* Order Items */}
+      <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+        {items.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center gap-4 p-3 rounded-lg bg-gray-50 dark:bg-gray-700"
           >
-            {loading ? "Creating Order... " : "Create Order "}
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Support Card */}
-      <Card className="border border-green-200">
-        <CardContent className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Package className="h-5 w-5 text-green-600" />
+            <div className="relative h-16 w-16 rounded-lg overflow-hidden">
+              <img
+                src={item?.product?.image}
+                alt={item?.product?.product_name}
+                className="object-cover w-full h-full"
+              />
             </div>
-            <div>
-              <p className="font-medium">Need help with your order?</p>
-              <p className="text-sm text-gray-600">
-                Call us at +251 900 123 456
-              </p>
+            <div className="flex-1">
+              <h4 className="font-semibold text-gray-900 dark:text-white">{item.product.product_name}</h4>
+              <p className="text-sm text-gray-600 dark:text-gray-300">{item.product.product_detail}</p>
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-sm text-gray-500 dark:text-gray-400">Qty: {item.quantity}</span>
+                <span className="font-bold text-gray-900 dark:text-white">
+                  {(item.product.price * item.quantity).toFixed(2)} Brr
+                </span>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        ))}
+      </div>
+
+      {/* Price Breakdown */}
+      <div className="space-y-3 border-t border-gray-200 dark:border-gray-700 pt-4">
+        <div className="flex justify-between text-gray-700 dark:text-gray-300">
+          <span>Subtotal</span>
+          <span className="font-semibold">{subtotal.toFixed(2)} Brr</span>
+        </div>
+        <div className="flex justify-between text-gray-700 dark:text-gray-300">
+          <span>Shipping</span>
+          <span className="font-semibold">{shippingFee.toFixed(2)} Brr</span>
+        </div>
+        <div className="flex justify-between items-center border-t border-gray-200 dark:border-gray-700 pt-3">
+          <span className="text-lg font-bold text-gray-900 dark:text-white">Total</span>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-green-700">{total.toFixed(2)} Brr</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">including VAT</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Delivery Info */}
+      <div className="space-y-3 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700 text-gray-900 dark:text-white">
+        <div className="flex items-center gap-2">
+          <Truck className="h-5 w-5 text-green-600" />
+          <span className="font-semibold">Estimated Delivery</span>
+        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          Within 3-5 business days in Addis Ababa
+        </p>
+      </div>
+
+      {/* Guarantee */}
+      <div className="flex items-center gap-3 p-3 bg-amber-50 dark:bg-amber-900 rounded-lg border border-amber-200 dark:border-amber-700 text-gray-900 dark:text-white">
+        <Shield className="h-5 w-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+        <div>
+          <p className="text-sm font-medium">100% Satisfaction Guarantee</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">
+            Full refund if not satisfied with quality
+          </p>
+        </div>
+      </div>
+
+      <Button
+        disabled={loading}
+        className={`w-full py-3 rounded-xl font-bold ${
+          loading ? "bg-green-100 text-black" : "bg-green-700 text-white hover:bg-green-800"
+        }`}
+        onClick={handleCreateOrder}
+      >
+        {loading ? "Creating Order..." : "Create Order"}
+      </Button>
+    </CardContent>
+  </Card>
+
+  {/* Support Card */}
+  <Card className="border border-green-200 dark:border-green-700 bg-white dark:bg-gray-800">
+    <CardContent className="p-4 text-gray-900 dark:text-white">
+      <div className="flex items-center gap-3">
+        <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+          <Package className="h-5 w-5 text-green-600 dark:text-green-400" />
+        </div>
+        <div>
+          <p className="font-medium">Need help with your order?</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Call us at +251 900 123 456</p>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+</div>
   );
 }

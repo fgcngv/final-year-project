@@ -35,6 +35,7 @@
 
 
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import ThemeToggle from "./theme/theme-toggle";
 
 function DashboardHeader({ role }: { role: string }) {
   return (
@@ -43,6 +44,7 @@ function DashboardHeader({ role }: { role: string }) {
       <span className="text-sm font-semibold uppercase tracking-wide">
         {role}
       </span>
+      <ThemeToggle />
 
       {/* CENTER (desktop only) */}
       <div className="hidden sm:block">

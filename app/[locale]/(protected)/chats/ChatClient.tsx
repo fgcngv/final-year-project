@@ -269,7 +269,7 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
                         userId === chat.user1_id ? 
                         users.map((user)=>(
                           user.id === chat.user2_id && (
-                            <div className="flex bg-white hover:bg-gray-200 items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                            <div className="flex bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 transition-colors">
                             <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
                               <img
                                 src="/image.png"
@@ -293,15 +293,11 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
                                 </span>
                               </div>
         
-                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {user.email}
-                              </p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {user.language}
-                              </p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {user.role}
-                              </p>
+                              <div className="text-gray-600 dark:text-gray-400 space-y-1 text-sm">
+  <p className="truncate">{user.email}</p>
+  <p className="truncate">{user.language}</p>
+  <p className="truncate">{user.role}</p>
+</div>
                             </div>
                           </div>
                           )
@@ -326,7 +322,7 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
         
                             <div className="flex-1 min-w-0 ml-4">
                               <div className="flex items-center justify-between mb-1">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                                <h3 className="text-lg  text-gray-900 dark:text-gray-800 truncate font-bold">
                                   {user.first_name} {user.last_name}
                                 </h3>
                                 <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">

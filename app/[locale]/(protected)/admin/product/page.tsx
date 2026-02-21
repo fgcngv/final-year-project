@@ -32,7 +32,7 @@ async function Products() {
   return (
     <div className="space-y-6 z-100">
       <AddProduct />
-      <AllProducts  products={result.data} />
+      <AllProducts  products={result.data}/>
     </div>
   );
 }

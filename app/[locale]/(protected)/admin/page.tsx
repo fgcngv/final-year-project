@@ -171,58 +171,63 @@ const paymentChartData = Object.entries(statusMap).map(([name, value]) => ({
 }));
 
 
-  
   return (
-    <div className="p-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="p-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 transition-colors duration-500">
+  
+      {/* KPI Cards */}
       <Cards
         cardName="Total Users"
         icon={Users}
         link="/admin/users"
         total={totalUsers}
+        className="bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] shadow-md transition-colors"
       />
-
+  
       <Cards
         cardName="Total Seller"
         icon={ShoppingBag}
         link="/admin/farmers"
         total={totalFarmers}
+        className="bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] shadow-md transition-colors"
       />
-
+  
       <Cards
         cardName="Total Products"
         icon={Package}
         link="/admin/product"
         total={totalProduct}
+        className="bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] shadow-md transition-colors"
       />
-
+  
       <Cards
         cardName="Total Orders"
         icon={Receipt}
         link="/admin/order"
         total={totalOrders}
+        className="bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] shadow-md transition-colors"
       />
-      {/* 
-      <Cards cardName="Revenue Overview" icon={BarChart3} link="/admin/sellers" total={0}  /> */}
-
-      <Card className="col-span-1 sm:col-span-2 xl:col-span-4 rounded-2xl shadow-md p-6 mt-4">
+  
+      {/* Revenue Overview */}
+      <Card className="col-span-1 sm:col-span-2 xl:col-span-4 rounded-2xl shadow-md p-6 bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] transition-colors mt-4">
         <CardHeader className="flex flex-row items-center justify-between pb-4">
-          <CardTitle className="text-2xl font-semibold">
-            Revenue Overview
-          </CardTitle>
-          <BarChart3 className="h-8 w-8" />
+          <CardTitle className="text-2xl font-semibold">Revenue Overview</CardTitle>
+          <BarChart3 className="h-8 w-8 text-gray-800 dark:text-[#f5f5dc]" />
         </CardHeader>
         <CardContent>
           <p className="text-5xl font-bold mb-2">{totalRevenue} Birr</p>
-          <p className="text-muted-foreground">Total revenue generated</p>
+          <p className="text-gray-500 dark:text-gray-400">Total revenue generated</p>
         </CardContent>
       </Card>
+  
+      {/* Charts */}
       <OrdersChart data={ordersChartData} />
       <OrderStatusChart data={orderStatusChartData} />
       <TopProductsChart data={topProductsData} />
       <FarmerPerformanceChart data={topFarmersData} />
-      <WishlistChart data={wishlistData} />
+      <WishlistChart data={wishlistData}  />
       <UserRoleChart data={userRoleChartData} />
       <PaymentStatusChart data={paymentChartData} />
+  
     </div>
   );
 }

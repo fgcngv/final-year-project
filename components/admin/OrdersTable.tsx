@@ -1,12 +1,7 @@
-
-
 "use client";
 
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import React, { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -46,119 +41,120 @@ export default function OrdersTable({
   const [openOrder, setOpenOrder] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-    // Filter orders based on search
-    const filteredOrders = orders.filter((order) => {
-        const customerName = `${order.user.first_name} ${order.user.last_name}`.toLowerCase();
-        const customerEmail = order.user.email.toLowerCase();
-        const orderId = order.id.toLowerCase();
-        const productNames = order.items.map((item: any) => item.product.product_name.toLowerCase()).join(" ");
-    
-        const term = searchTerm.toLowerCase();
-        return (
-          customerName.includes(term) ||
-          customerEmail.includes(term) ||
-          orderId.includes(term) ||
-          productNames.includes(term)
-        );
-      });
-  return (
-    <div className="space-y-6">
+  // Filter orders based on search
+  const filteredOrders = orders.filter((order) => {
+    const customerName =
+      `${order.user.first_name} ${order.user.last_name}`.toLowerCase();
+    const customerEmail = order.user.email.toLowerCase();
+    const orderId = order.id.toLowerCase();
+    const productNames = order.items
+      .map((item: any) => item.product.product_name.toLowerCase())
+      .join(" ");
 
+    const term = searchTerm.toLowerCase();
+    return (
+      customerName.includes(term) ||
+      customerEmail.includes(term) ||
+      orderId.includes(term) ||
+      productNames.includes(term)
+    );
+  });
+
+  const statusColorsDark: Record<string, string> = {
+    PENDING: "bg-amber-400 text-black",
+    DELIVERED: "bg-green-400 text-black",
+    CANCELLED: "bg-red-400 text-black",
+    PROCESSING: "bg-blue-400 text-black",
+  };
+
+
+  return (
+    <div className="space-y-6 transition-colors duration-500">
       {/* KPI CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total Orders</p>
-            <p className="text-2xl font-bold">{totalOrders}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total Revenue</p>
-            <p className="text-2xl font-bold">
-              {totalRevenue?.toLocaleString()} ETB
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Pending</p>
-            <p className="text-2xl font-bold">
-              {statusStats?.PENDING || 0}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Delivered</p>
-            <p className="text-2xl font-bold">
-              {statusStats?.DELIVERED || 0}
-            </p>
-          </CardContent>
-        </Card>
+        {[
+          { label: "Total Orders", value: totalOrders },
+          {
+            label: "Total Revenue",
+            value: `${totalRevenue?.toLocaleString()} ETB`,
+          },
+          { label: "Pending", value: statusStats?.PENDING || 0 },
+          { label: "Delivered", value: statusStats?.DELIVERED || 0 },
+        ].map((card, i) => (
+          <Card
+            key={i}
+            className="bg-white dark:bg-[#1f140d] border border-gray-200 dark:border-[#3c2a21] shadow-md transition-colors"
+          >
+            <CardContent className="p-4">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {card.label}
+              </p>
+              <p className="text-2xl font-bold text-gray-800 dark:text-[#f5f5dc]">
+                {card.value}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       {/* ORDERS TABLE */}
-      <Card>
+      <Card className="bg-white dark:bg-[#1f140d] border border-gray-200 dark:border-[#3c2a21] shadow-md transition-colors">
         <CardContent className="p-4">
-        <div className="mb-4 flex items-center gap-2">
-  <Input
-    placeholder="Search orders by ID, customer, email, product..."
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-    className="w-full max-w-md"
-  />
-</div>
+          <div className="mb-4 flex items-center gap-2">
+            <Input
+              placeholder="Search orders by ID, customer, email, product..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full max-w-md bg-white dark:bg-[#2b1c12] text-black dark:text-[#f5f5dc] border-gray-300 dark:border-[#3c2a21] transition-colors"
+            />
+          </div>
+
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Items</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
+                {["Order", "Customer", "Items", "Total", "Status", "Date"].map(
+                  (head) => (
+                    <TableHead key={head} className="dark:text-gray-300">
+                      {head}
+                    </TableHead>
+                  )
+                )}
               </TableRow>
             </TableHeader>
 
             <TableBody>
-            {filteredOrders.map((order) => (
-                <>
+              {filteredOrders.map((order) => (
+                <React.Fragment key={order.id}>
                   <TableRow
-                    key={order.id}
-                    className="cursor-pointer hover:bg-muted"
+                    className="cursor-pointer hover:bg-gray-100 dark:hover:bg-[#2b1c12] transition-colors"
                     onClick={() =>
-                      setOpenOrder(
-                        openOrder === order.id ? null : order.id
-                      )
+                      setOpenOrder(openOrder === order.id ? null : order.id)
                     }
                   >
-                    <TableCell className="font-medium">
+                    <TableCell className="font-medium dark:text-[#f5f5dc]">
                       #{order.id.slice(-6)}
                     </TableCell>
-
-                    <TableCell>
+                    <TableCell className="dark:text-[#f5f5dc]">
                       {order.user.first_name} {order.user.last_name}
                     </TableCell>
-
-                    <TableCell>{order.items.length}</TableCell>
-
-                    <TableCell>
+                    <TableCell className="dark:text-[#f5f5dc]">
+                      {order.items.length}
+                    </TableCell>
+                    <TableCell className="dark:text-[#f5f5dc]">
                       {order.payment?.amount?.toLocaleString()} ETB
                     </TableCell>
-
                     <TableCell>
                       <Badge
-                        className={statusColors[order.status]}
+                        className={`
+    ${statusColors[order.status]} 
+    dark:${statusColorsDark[order.status]} 
+    transition-colors
+  `}
                       >
                         {order.status}
                       </Badge>
                     </TableCell>
-
-                    <TableCell>
+                    <TableCell className="dark:text-[#f5f5dc]">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
@@ -167,50 +163,53 @@ export default function OrdersTable({
                   {openOrder === order.id && (
                     <TableRow>
                       <TableCell colSpan={6}>
-                        <div className="flex flex-col pb-3  bg-muted rounded-lg">
-                        <div className="p-4 bg-muted rounded-lg space-y-4">
-                          <p className="font-semibold">Items:</p>
-
-                          {order.items.map((item: any) => (
-                            <div
-                              key={item.id}
-                              className="flex justify-between items-center border-b pb-2"
-                            >
-                              <div className="flex items-center gap-3">
-                                <img
-                                  src={item.product.image}
-                                  alt=""
-                                  className="w-12 h-12 rounded object-cover"
-                                />
-                                <div>
-                                  <p className="font-medium">
-                                    {item.product.product_name}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground">
-                                    Qty: {item.quantity}
-                                  </p>
+                        <div className="flex flex-col pb-3 bg-gray-50 dark:bg-[#2b1c12] rounded-lg transition-colors">
+                          <div className="p-4 space-y-4">
+                            <p className="font-semibold dark:text-[#f5f5dc]">
+                              Items:
+                            </p>
+                            {order.items.map((item: any) => (
+                              <div
+                                key={item.id}
+                                className="flex justify-between items-center border-b border-gray-200 dark:border-[#3c2a21] pb-2 transition-colors"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <img
+                                    src={item.product.image}
+                                    alt=""
+                                    className="w-12 h-12 rounded object-cover"
+                                  />
+                                  <div>
+                                    <p className="font-medium dark:text-[#f5f5dc]">
+                                      {item.product.product_name}
+                                    </p>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                      Qty: {item.quantity}
+                                    </p>
+                                  </div>
+                                  <ReviewDialog
+                                    order_id={order.id}
+                                    product_id={item.product.id}
+                                  />
                                 </div>
-                                <ReviewDialog order_id={order.id} product_id={item.product.id}/>
-
+                                <p className="font-semibold dark:text-[#f5f5dc]">
+                                  {(
+                                    item.quantity * item.price
+                                  ).toLocaleString()}{" "}
+                                  ETB
+                                </p>
                               </div>
-
-                              <p className="font-semibold">
-                                {(item.quantity * item.price).toLocaleString()} ETB
-                              </p>
+                            ))}
+                            <div className="text-right font-bold dark:text-[#f5f5dc]">
+                              Total: {order.payment?.amount?.toLocaleString()}{" "}
+                              ETB
                             </div>
-                          ))}
-
-                          <div className="text-right font-bold">
-                            Total:{" "}
-                            {order.payment?.amount?.toLocaleString()} ETB
                           </div>
-                        </div>
-                          {/* <ReviewDialog /> */}
                         </div>
                       </TableCell>
                     </TableRow>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
