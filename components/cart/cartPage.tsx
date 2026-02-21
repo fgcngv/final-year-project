@@ -50,7 +50,7 @@ export default function CartPage({
 
   const { theme } = useTheme();
 
-  // ✅ FIXED — ALWAYS returns a valid union type
+  //  FIXED — ALWAYS returns a valid union type
   const language: "ENGLISH" | "AMHARIC" | "AFAN_OROMO" =
     theme === "AMHARIC"
       ? "AMHARIC"

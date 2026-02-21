@@ -14,7 +14,6 @@ import { useTheme } from "../checkTheme";
 import { Product, Review } from "@prisma/client";
 import LoaderBtn from "../loaderBtn";
 import { useTranslations } from "next-intl";
-import { getReviewsByProductId } from "@/app/[locale]/actions/review";
 import ReviewCard from "../review/ReviewCard";
 
 interface roleProps {
