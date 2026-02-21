@@ -69,7 +69,9 @@ export default function Header({
         >
           EGC
         </Link>
-        <ThemeToggle />
+        <div className=" hidden min-[477px]:block ">
+          <ThemeToggle />
+        </div>
 
         {/* Desktop Nav */}
         <nav className="hidden min-[1010px]:flex items-center gap-10 text-sm font-medium">

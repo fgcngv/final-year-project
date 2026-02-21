@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import ThemeToggle from "./theme/theme-toggle";
 
 
 export default function MobileHeader() {
@@ -48,6 +49,7 @@ export default function MobileHeader() {
             <span className="text-green-500">Login</span>
           </SignInButton>
         </SignedOut>
+        <ThemeToggle />
       </nav>
     </div>
   );
