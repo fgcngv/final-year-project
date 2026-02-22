@@ -120,27 +120,25 @@ export default function BuyerDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-green-50 ">
+    <div className="min-h-screen bg-green-50">
       <main className="p-4 space-y-6 max-w-5xl mx-auto mt-20">
         {/* Greeting */}
         <section className="space-y-1">
-          <h2 className="text-xl font-semibold text-green-800">
-            {" "}
-            Welcome back
-          </h2>
+          <h2 className="text-xl font-semibold text-green-800">Welcome back</h2>
           <p className="text-sm text-muted-foreground">
             Discover fresh coffee directly from farmers
           </p>
         </section>
 
-        {/* Featured Products */}
+        {/* Featured Products Placeholder */}
         <section>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3"></div>
         </section>
 
-        {/* Orders */}
+        {/* Orders Section */}
         <section>
           <h3 className="font-semibold mb-3 text-green-800">📦 My Orders</h3>
+
           {loading ? (
             <p>Loading orders...</p>
           ) : orders.length === 0 ? (
@@ -161,14 +159,16 @@ export default function BuyerDashboardPage() {
                     <p
                       className={`text-sm font-semibold ${
                         order.status === "PENDING"
-                        ? "text-amber-500"
-                        : order.status === "DELIVERED"
-                        ? "text-green-600"
-                        : order.status === "CONFIRMED"
-                        ? "text-green-800"
-                        : order.status === "CANCELLED"
-                        ? "text-red-500"
-                        : "text-gray-600"                      
+                          ? "text-amber-500"
+                          : order.status === "DELIVERED"
+                          ? "text-green-600"
+                          : order.status === "CONFIRMED"
+                          ? "text-green-800"
+                          : order.status === "CANCELLED"
+                          ? "text-red-500"
+                          : order.status === "SHIPPED"
+                          ? "text-purple-600"
+                          : "text-gray-600"
                       }`}
                     >
                       {order.status}
@@ -176,6 +176,7 @@ export default function BuyerDashboardPage() {
                   </CardHeader>
 
                   <CardContent className="space-y-2">
+                    {/* Items */}
                     {order.items.map((item) => (
                       <div
                         key={item.id}
@@ -195,12 +196,14 @@ export default function BuyerDashboardPage() {
                       </div>
                     ))}
 
+                    {/* Delivery Info */}
                     <p className="text-sm">
                       <span className="font-semibold">Delivery:</span>{" "}
                       {order.address.addressLine1}, {order.address.city},{" "}
                       {order.address.region}
                     </p>
 
+                    {/* Payment Info */}
                     <p className="text-sm">
                       <span className="font-semibold">Payment:</span>{" "}
                       {order.payment
@@ -208,6 +211,7 @@ export default function BuyerDashboardPage() {
                         : "Pending"}
                     </p>
 
+                    {/* Actions */}
                     {order.status === "PENDING" && (
                       <Button
                         variant="destructive"
@@ -219,8 +223,9 @@ export default function BuyerDashboardPage() {
                         {cancelLoading ? "Cancelling..." : "Cancel Order"}
                       </Button>
                     )}
-                    {/* deliver button */}
-                    {(order.status === "DELIVERED" || order.status === "SHIPPED" ) && (
+
+                    {(order.status === "DELIVERED" ||
+                      order.status === "SHIPPED") && (
                       <Button
                         size="sm"
                         className="mt-2 w-full bg-green-600 hover:bg-green-700"
@@ -238,7 +243,7 @@ export default function BuyerDashboardPage() {
         </section>
       </main>
 
-      {/* Bottom Navigation */}
+      {/* Bottom Navigation for Mobile */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around py-2 md:hidden">
         <Home className="w-6 h-6 text-green-700" />
         <Heart className="w-6 h-6 text-green-700" />

@@ -13,7 +13,7 @@ export default function MobileHeader() {
   const role = user?.publicMetadata?.role;
 
   let orderLink = "";
-  (role === "admin" || role === "ADMIN") ?orderLink = `${role}/order` : orderLink = `/${role}`;
+  (role === "admin" || role === "ADMIN") ?orderLink = `${role}/order` : orderLink = `${role}`;
 
 
   const headerLinks = [

@@ -34,19 +34,24 @@ export default function DeleteProductPopup({ productId }: Props) {
       <Button variant="destructive" onClick={() => setOpen(true)}>
         Delete
       </Button>
-
+  
       {open && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-80">
-            <h2 className="text-lg text-red-600 font-bold text-center mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
+          
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-card shadow-xl p-6 transition-colors">
+            
+            {/* Title */}
+            <h2 className="text-lg font-bold text-destructive text-center mb-4">
               Delete Product?
             </h2>
-
-            <p className="text-sm flex  text-amber-400  font-bold mb-6 text-center">
-              <AlertTriangle className="w-5 h-5 text-yellow-500" />
+  
+            {/* Warning */}
+            <p className="text-sm text-muted-foreground flex items-center justify-center gap-2 font-medium mb-6 text-center">
+              <AlertTriangle className="w-5 h-5 text-amber-500 dark:text-amber-400" />
               This action cannot be undone.
             </p>
-
+  
+            {/* Actions */}
             <div className="flex justify-end gap-3">
               <Button
                 variant="outline"
@@ -55,7 +60,7 @@ export default function DeleteProductPopup({ productId }: Props) {
               >
                 Cancel
               </Button>
-
+  
               <Button
                 variant="destructive"
                 onClick={handleDelete}
@@ -64,6 +69,7 @@ export default function DeleteProductPopup({ productId }: Props) {
                 {isPending ? "Deleting..." : "Delete"}
               </Button>
             </div>
+  
           </div>
         </div>
       )}
