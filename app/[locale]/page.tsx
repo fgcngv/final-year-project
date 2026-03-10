@@ -76,7 +76,6 @@ export default async function Home() {
 
   return (
     <div className="pt-2">
-      <div>hello</div>
       <Header notification={unread?.data?.length} cartQuantity={cartQuantity} />
       {/* <HomePage products={productsData.data ?? []} role={role || "/"} /> */}
       <HomePage

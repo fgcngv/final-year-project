@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { OrderStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { getRole } from "../role";
 
 
 
@@ -80,6 +81,70 @@ export const OrdersByBuyerId = async () => {
       };
     }
   };
+
+  // admin can show the order of each users
+  export const AdminOrderByUserId = async (userId:string) => {
+    const role = await getRole();
+  
+    if (!userId) {
+      return {
+        success: false,
+        error: true,
+        message: "User ID is required",
+      };
+    }
+
+    if (role !== "admin" ) {
+      return { success: false, error: true, message: "Only Admins allowed for this Action!" };
+    }
+    try {
+      const [orders, totalOrders] = await Promise.all([
+        prisma.order.findMany({
+          where: { user_id: userId },
+          orderBy: { createdAt: "desc" },
+          include: {
+            address: true,
+            user: true,
+            payment: true,
+            items: {
+              include: {
+                product: true,
+              },
+            },
+          },
+        }),
+        prisma.order.count({
+          where: { user_id: userId }
+        })
+      ]);
+  
+      const totalRevenue = orders.reduce(
+        (acc, order) => acc + (order.payment?.amount || 0),
+        0
+      );
+  
+      const statusStats = orders.reduce((acc: any, order) => {
+        acc[order.status] = (acc[order.status] || 0) + 1;
+        return acc;
+      }, {});
+  
+      return {
+        success: true,
+        data: orders,
+        totalOrders,
+        totalRevenue,
+        statusStats,
+      };
+    } catch (error) {
+      console.error("Error fetching Orders:", error);
+      return {
+        success: false,
+        message: "Something went wrong!",
+      };
+    }
+  };
+
+
 
   export const getOrderById = async (orderId:string) => {
     const { userId } = await auth();

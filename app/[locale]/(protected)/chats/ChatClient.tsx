@@ -269,7 +269,7 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
                         userId === chat.user1_id ? 
                         users.map((user)=>(
                           user.id === chat.user2_id && (
-                            <div className="flex bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 transition-colors">
+                            <div key={user.id} className="flex bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 transition-colors">
                             <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
                               <img
                                 src="/image.png"

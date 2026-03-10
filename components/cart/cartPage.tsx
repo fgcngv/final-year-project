@@ -84,19 +84,7 @@ export default function CartPage({
     router.refresh();
   };
 
-  // const handleDelete = async (id: string) => {
-  //   setDeleteLoading(id);
 
-  //   const deleteData = await deleteCartItemById(id, user_id);
-
-  //   if (!deleteData) {
-  //     toast.error("Failed to delete Cart Item!");
-  //   }
-
-  //   toast.success("Cart Item Deleted Successfully!");
-  //   setDeleteLoading("");
-  //   router.refresh();
-  // };
   const handleDelete = async (id: string) => {
     setDeleteLoading(id);
   
