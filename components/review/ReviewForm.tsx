@@ -151,7 +151,7 @@ export default function ReviewForm({
       return;
     }
 
-    toast.success("Review submitted successfully 🎉");
+    toast.success("Review submitted successfully ");
     setSuccess(true);
     setLoading(false);
   }
@@ -162,10 +162,10 @@ export default function ReviewForm({
         className={`p-6 border rounded-lg font-semibold ${
           isDark
             ? "bg-gray-800 border-green-600 text-green-300"
-            : "bg-green-50 border-green-200 text-green-700"
+            : "bg-green-50 border-green-200 text-green-700 text-center"
         }`}
       >
-        Thank you for your review! 🎉
+        Thank you for your review! 
       </div>
     );
   }

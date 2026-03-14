@@ -210,6 +210,24 @@ export default function BuyerDashboardPage() {
                         ? `${order.payment.method} (${order.payment.status})`
                         : "Pending"}
                     </p>
+                    <p>
+                      Order Status : 
+                         <span className={`rounded p-1 ${
+                            order.status === "PENDING"
+                            ?" bg-amber-200 text-amber-900 dark:bg-amber-500/20 dark:text-amber-400"
+                            :  order.status === "SHIPPED"
+                            ? "bg-purple-200 text-purple-900 dark:bg-purple-500/20 dark:text-purple-400"
+                            : order.status === "DELIVERED"
+                            ? "bg-emerald-200 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-400"
+                            : order.status === "PAID"
+                            ? "bg-blue-200 text-blue-900 dark:bg-blue-500/20 dark:text-blue-400"
+                            :order.status === "CONFIRMED"
+                            ? "bg-green-600 font-bold text-green-100"
+                            : "bg-red-400 text-foreground"
+                         }`}>
+                             {order.status}
+                         </span>
+                    </p>
 
                     {/* Actions */}
                     {order.status === "PENDING" && (

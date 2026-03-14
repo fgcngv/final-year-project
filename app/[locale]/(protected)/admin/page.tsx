@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart3, Users, ShoppingBag, Package, Receipt } from "lucide-react";
 import { getAllProducts } from "@/app/[locale]/actions/products";
 import {
@@ -31,6 +31,8 @@ export default async function AdminDashboard() {
 
   const revenueResult = await getTotalRevenue();
 const totalRevenue = revenueResult.totalRevenue || 0;
+const totalCommision = (totalRevenue*0.01).toFixed(2) || 0;
+
 
   // ORDERS CHART LOGIC
   const ordersChartData =
@@ -217,6 +219,11 @@ const paymentChartData = Object.entries(statusMap).map(([name, value]) => ({
           <p className="text-5xl font-bold mb-2">{totalRevenue} Birr</p>
           <p className="text-gray-500 dark:text-gray-400">Total revenue generated</p>
         </CardContent>
+        <CardFooter className="flex flex-col gap-2 items-start">
+           <h1>Total Commision </h1>
+           <p className="text-5xl font-bold mb-2">{totalCommision} Birr</p>
+           <p className="text-gray-500 dark:text-gray-400">Total Commision generated</p>
+        </CardFooter>
       </Card>
   
       {/* Charts */}

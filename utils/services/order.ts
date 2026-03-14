@@ -251,10 +251,12 @@ export const ConfirmOrderDelivery = async (orderId: string) => {
     }
 
 
-    if (order.status !== "DELIVERED" ) {
-      return { success: false, message: "Order not delivered yet" };
+    if (order.status !== "DELIVERED" && order.status !== "SHIPPED") {
+      return {
+        success: false,
+        message: "Order must be shipped or delivered before confirmation",
+      };
     }
-
     if (!order.payout) {
       return { success: false, message: "Payout record not found!" };
     }
@@ -307,6 +309,41 @@ export const ConfirmOrderDelivery = async (orderId: string) => {
 
 
 
+// export async function updateOrderStatus(
+//   orderId: string,
+//   newStatus: OrderStatus
+// ) {
+//   const order = await prisma.order.findUnique({
+//     where: { id: orderId },
+//   });
+
+//   if (!order) {
+//     throw new Error("Order not found");
+//   }
+
+//   //  Only allow change if order is PAID
+//   if (order.status !== "PAID") {
+//     throw new Error("Order must be PAID before updating status.");
+//   }
+
+//   //  Allow only SHIPPED or DELIVERED
+//   if (newStatus !== "SHIPPED" && newStatus !== "DELIVERED") {
+//     throw new Error("Invalid status update.");
+//   }
+
+//   const update = await prisma.order.update({
+//     where: { id: orderId },
+//     data: {
+//       status: newStatus,
+//     },
+//   });
+
+//   revalidatePath("/farmer/orders");
+
+//   return update
+// }
+
+
 export async function updateOrderStatus(
   orderId: string,
   newStatus: OrderStatus
@@ -316,17 +353,32 @@ export async function updateOrderStatus(
   });
 
   if (!order) {
-    throw new Error("Order not found");
+    return { error: true, message: "Order not found" };
   }
 
-  //  Only allow change if order is PAID
-  if (order.status !== "PAID") {
-    throw new Error("Order must be PAID before updating status.");
-  }
-
-  //  Allow only SHIPPED or DELIVERED
+  // Allow only SHIPPED or DELIVERED
   if (newStatus !== "SHIPPED" && newStatus !== "DELIVERED") {
-    throw new Error("Invalid status update.");
+    return { error: true, message: "Invalid status update." };
+  }
+
+  // Rule 1: SHIPPED only if PAID
+  if (newStatus === "SHIPPED" && order.status !== "PAID") {
+    return {
+      error: true,
+      message: "Order must be PAID before marking as SHIPPED.",
+    };
+  }
+
+  // Rule 2: DELIVERED only if PAID or SHIPPED
+  if (
+    newStatus === "DELIVERED" &&
+    order.status !== "PAID" &&
+    order.status !== "SHIPPED"
+  ) {
+    return {
+      error: true,
+      message: "Order must be PAID or SHIPPED before marking as DELIVERED.",
+    };
   }
 
   const update = await prisma.order.update({
@@ -338,9 +390,8 @@ export async function updateOrderStatus(
 
   revalidatePath("/farmer/orders");
 
-  return update
+  return update;
 }
-
 
 
   export const CancelOrder = async (orderId:string,action?:string)=>{

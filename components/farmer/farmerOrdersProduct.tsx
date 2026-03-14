@@ -438,7 +438,7 @@ export default function FarmerOrdersProducts({
   }, [searchTerm, products]);
 
   return (
-    <div className="min-h-screen bg-background p-6 text-foreground transition-colors">
+    <div className=" bg-background p-6 text-foreground transition-colors">
       <div className="mx-auto max-w-7xl space-y-8">
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

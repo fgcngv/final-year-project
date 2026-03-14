@@ -57,24 +57,24 @@ export default function BuyerPopup({ user }: BuyerPopup) {
           </DialogHeader>
 
           {/* Buyer Info */}
-          <div className="space-y-3 mt-4">
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Name:</span>
-              <span className="text-gray-800">
+          <div className="space-y-3 mt-4 dark:text-white">
+            <div className="flex justify-between dark:text-gray-300">
+              <span className="font-medium text-gray-600 dark:text-gray-300">Name:</span>
+              <span className="text-gray-800 dark:text-gray-300">
                 {user.first_name} {user.last_name}
               </span>
             </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Email:</span>
-              <span className="text-gray-800">{user.email}</span>
+            <div className="flex dark:text-gray-300 justify-between">
+              <span className="font-medium text-gray-600 dark:text-gray-300">Email:</span>
+              <span className="text-gray-800 dark:text-gray-300">{user.email}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Phone:</span>
-              <span className="text-gray-800">No</span>
+            <div className="flex dark:text-gray-300 justify-between">
+              <span className="dark:text-gray-300 font-medium text-gray-600">Phone:</span>
+              <span className="text-gray-800 dark:text-gray-300">No</span>
             </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Address:</span>
-              <span className="text-gray-800">{user.address}</span>
+            <div className="flex dark:text-gray-300 justify-between">
+              <span className="font-medium text-gray-600 dark:text-gray-300">Address:</span>
+              <span className="text-gray-800 dark:text-gray-300">{user.address}</span>
             </div>
           </div>
 

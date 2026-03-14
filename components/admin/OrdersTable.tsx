@@ -67,7 +67,6 @@ export default function OrdersTable({
     PROCESSING: "bg-blue-400 text-black",
   };
 
-
   return (
     <div className="space-y-6 transition-colors duration-500">
       {/* KPI CARDS */}
