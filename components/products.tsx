@@ -580,7 +580,6 @@ console.log("products : : ",products)
                       : `እቃ ቀሪ: ${product.stock}`}
                   </span>
                 </div>
-                <p className="text-sm text-gray-600 font-bold"><i>{product.product_detail}</i></p> 
 
               </CardContent>
   
