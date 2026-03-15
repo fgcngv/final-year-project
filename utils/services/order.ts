@@ -257,9 +257,9 @@ export const ConfirmOrderDelivery = async (orderId: string) => {
         message: "Order must be shipped or delivered before confirmation",
       };
     }
-    if (!order.payout) {
-      return { success: false, message: "Payout record not found!" };
-    }
+    // if (!order.payout) {
+    //   return { success: false, message: "Payout record not found!" };
+    // }
     
 
     //  TRANSACTION (important)
@@ -466,6 +466,83 @@ export async function updateOrderStatus(
           success: false,
           error:true,
           message: "Server error: Failed to cancel order",
+        };
+      }
+  }
+
+
+  export const ReOrder = async (orderId:string)=>{
+    const {userId} = await auth();
+
+    if (!orderId || typeof orderId !== "string") {
+        return {
+            success:false,
+            error:true,
+            message: "Missing orderId"
+        };
+      }
+    
+      try {
+        // Authenticate user
+        const { userId } = await auth();
+        if (!userId) {
+          return {
+            success:false,
+            error:true,
+            message: "Unauthorized" 
+          };
+        }
+    
+        // Fetch order
+        const order = await prisma.order.findUnique({
+          where: { id: orderId },
+          include: { items: true, payment: true },
+        });
+    
+        if (!order) {
+          return {
+            success:false,
+            error:true,
+            message: "Order not found"
+          };
+        }
+    
+        // Only the buyer who owns the order can cancel
+        if (order.user_id !== userId ) {
+          return {
+            success:false,
+            error:true,
+            message: "Forbidden"
+          };
+        }
+    
+        // Only PENDING orders can be cancelled
+        if (order.status !== "CANCELLED") {
+          return {
+            success: false,
+            erro:true,
+            message: `Order Already Exist!"`,
+          };
+        }
+    
+        // Update order status to PENDING
+        const reOrder = await prisma.order.update({
+          where: { id: orderId },
+          data: { status: "PENDING" },
+        });
+    
+        return {
+          success: true,
+          erro:false,
+          message: "Order Re ordered successfully",
+          order: reOrder,
+        };
+      } catch (err) {
+        console.error("Error re ordering:", err);
+        return {
+          success: false,
+          error:true,
+          message: "Server error: Failed to re order",
         };
       }
   }

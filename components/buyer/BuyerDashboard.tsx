@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useUser } from "@clerk/nextjs";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { CancelOrder, OrdersByBuyerId } from "@/utils/services/order";
+import { CancelOrder, OrdersByBuyerId, ReOrder } from "@/utils/services/order";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -17,10 +17,12 @@ import {
   ShoppingCart,
   User,
 } from "lucide-react";
+import ReviewDialog from "../review/reviewDialog";
 
 type OrderItemType = {
   id: string;
   product_name: string;
+  product_id?:string;
   quantity: number;
   price: number;
   image: string;
@@ -50,6 +52,7 @@ export default function BuyerDashboardPage() {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancelLoading, setCancelLoading] = useState(false);
+  const [reorder,setReorder] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
 
@@ -119,6 +122,29 @@ export default function BuyerDashboardPage() {
     setCancelLoading(false);
   };
 
+  const reorderAgain = async (orderId: string) => {
+    setReorder(true);
+
+    try {
+      const reorder = await ReOrder(orderId);
+      if (!reorder.success) toast.error(reorder.message);
+      else {
+        toast.success(reorder.message);
+        setOrders((prev) =>
+          prev.map((o) =>
+            o.id === orderId ? { ...o, status: "PENDING" } : o
+          )
+        );
+      }
+    } catch {
+      toast.error("Failed to RE order");
+    }
+
+    setReorder(false);
+  };
+
+  console.log("orders : ",orders)
+
   return (
     <div className="min-h-screen bg-green-50">
       <main className="p-4 space-y-6 max-w-5xl mx-auto mt-20">
@@ -137,8 +163,9 @@ export default function BuyerDashboardPage() {
 
         {/* Orders Section */}
         <section>
-          <h3 className="font-semibold mb-3 text-green-800">📦 My Orders</h3>
-
+          <h3 className="font-semibold mb-3 text-green-800"> My Orders</h3>
+          <span className="font-bold items-center flex justify-center text-2xl text-green-600 bg-green-300 p-1 m-2 rounded">{orders.length} total order{orders.length > 1?"s" :""}</span>
+          
           {loading ? (
             <p>Loading orders...</p>
           ) : orders.length === 0 ? (
@@ -193,6 +220,11 @@ export default function BuyerDashboardPage() {
                             Qty: {item.quantity} • Price: {item.price} ETB
                           </p>
                         </div>
+                          {
+                            order.status === "CONFIRMED" && (
+                              <ReviewDialog order_id={order.id} product_id={item.id}/>
+                            )
+                          }
                       </div>
                     ))}
 
@@ -231,7 +263,8 @@ export default function BuyerDashboardPage() {
 
                     {/* Actions */}
                     {order.status === "PENDING" && (
-                      <Button
+                       <div>
+                        <Button
                         variant="destructive"
                         size="sm"
                         onClick={() => cancelOrder(order.id)}
@@ -239,6 +272,23 @@ export default function BuyerDashboardPage() {
                         disabled={cancelLoading}
                       >
                         {cancelLoading ? "Cancelling..." : "Cancel Order"}
+                      </Button>
+                      <Button                              
+                        size="sm"
+                        className="bg-amber-200 mt-2 w-full cursor-pointer font-bold text-green-900 text-lg"
+                        
+                        >Goto Payment</Button>
+                       </div>   
+                    )}
+
+                    {order.status === "CANCELLED" && (
+                      <Button
+                        size="sm"
+                        onClick={() => reorderAgain(order.id)}
+                        className="mt-2 w-full cursor-pointer font-bold text-gray-900 bg-amber-300"
+                        disabled={reorder}
+                      >
+                        {reorder ? "Creating Order..." : " ReOrder"}
                       </Button>
                     )}
 
@@ -254,6 +304,7 @@ export default function BuyerDashboardPage() {
                       </Button>
                     )}
                   </CardContent>
+                  {/* <ReviewDialog order_id={order.id} product_id={order}/> */}
                 </Card>
               ))}
             </div>

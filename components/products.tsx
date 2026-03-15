@@ -220,6 +220,7 @@ import { useTheme } from "./checkTheme";
 import LoaderBtn from "./loaderBtn";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import ReviewDialog from "./review/reviewDialog";
 
 interface Product {
   id: string;
@@ -250,8 +251,7 @@ export default function ProductsPage({
   const tp = useTranslations("products");
   const tb = useTranslations("button");
   const tc = useTranslations("cart");
-  const lang = language;
-
+console.log("products : : ",products)
   /* =====================
      SEARCH LOGIC + HIGHLIGHT
   ====================== */
@@ -307,6 +307,7 @@ export default function ProductsPage({
     );
   }
 
+  console.log("filtered product : ",filteredProducts)
   /* =====================
      QUANTITY HANDLING
   ====================== */
@@ -579,6 +580,8 @@ export default function ProductsPage({
                       : `እቃ ቀሪ: ${product.stock}`}
                   </span>
                 </div>
+                <p className="text-sm text-gray-600 font-bold"><i>{product.product_detail}</i></p> 
+
               </CardContent>
   
               {/* FOOTER */}

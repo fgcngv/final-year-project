@@ -1,8 +1,6 @@
 "use client";
 
-
 //  PLEASE DO NOT DELETE THIS CODE.BECAUSE THE WORKING CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THIS CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
-
 
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
@@ -114,12 +112,14 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
   ========================== */
 
   return (
-    <div className="min-h-screen
+    <div
+      className="min-h-screen
     bg-gradient-to-b
     from-[#faf7f2] to-[#f4efe7]
     dark:from-[#1a120b] dark:to-[#0f0a06]
     text-[#2d1b0f] dark:text-[#f5f5dc]
-    transition-colors duration-500">
+    transition-colors duration-500"
+    >
       {/* HERO */}
       <motion.section
         className="relative min-h-[90vh] flex flex-col justify-center items-center text-center bg-[url('/cup_coffee.png')] bg-cover bg-center bg-fixed shadow-inner"
@@ -127,7 +127,7 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-       <div className="absolute inset-0 bg-black/60 dark:bg-black/75" />
+        <div className="absolute inset-0 bg-black/60 dark:bg-black/75" />
 
         <motion.h1
           className="relative text-5xl md:text-7xl font-extrabold tracking-wide text-green-800 dark:text-green-400 transition-colors"
@@ -138,7 +138,7 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
         </motion.h1>
 
         <motion.p
-         className="relative mt-4 text-2xl max-w-2xl
+          className="relative mt-4 text-2xl max-w-2xl
          bg-white/90 dark:bg-[#2b1c12]/90
          text-green-700 dark:text-green-300
          p-3 rounded-xl backdrop-blur-md transition-colors"
@@ -227,7 +227,8 @@ transition-colors"
         >
           {filteredProducts.map((product) => (
             <motion.div key={product.id} variants={item}>
-              <Card className="
+              <Card
+                className="
 rounded-3xl
 shadow-md hover:shadow-xl
 border border-gray-200 dark:border-[#3c2a21]
@@ -235,7 +236,8 @@ hover:border-green-500
 transition-all duration-300
 bg-white dark:bg-[#1f140d]
 overflow-hidden flex flex-col
-transition-colors  h-full">
+transition-colors  h-full"
+              >
                 {/* IMAGE */}
                 <div className="relative group">
                   <Link href={`/product/${product.id}`}>
@@ -318,25 +320,25 @@ transition-colors  h-full">
                     </div>
                   )} */}
                   {reviewData && reviewData?.[product.id]?.length > 0 && (
-  <div className="mt-4">
-    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-      Reviews ({reviewData[product.id].length})
-    </h3>
+                    <div className="mt-4">
+                      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                        Reviews ({reviewData[product.id].length})
+                      </h3>
 
-    <div className="max-h-28 overflow-y-auto pr-1 space-y-3">
-      {reviewData[product.id].slice(0, 2).map((r) => (
-        <ReviewCard
-          key={r.id}
-          name={r.name}
-          date={r.date}
-          comment={r.comment || ""}
-          rating={r.rating}
-          isDialog
-        />
-      ))}
-    </div>
-  </div>
-)}
+                      <div className="max-h-28 overflow-y-auto pr-1 space-y-3">
+                        {reviewData[product.id].slice(0, 2).map((r) => (
+                          <ReviewCard
+                            key={r.id}
+                            name={r.name}
+                            date={r.date}
+                            comment={r.comment || ""}
+                            rating={r.rating}
+                            isDialog
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
 
                 {/* FOOTER */}
@@ -371,22 +373,6 @@ transition-colors"
   );
 }
 //  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // //  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
 // "use client";
@@ -526,7 +512,6 @@ transition-colors"
 //     };
 //   }, []);
 
-
 //   function handleShowGoogleLang (){
 //     setShowGoogleLang(!showGoogleLang);
 //     router.refresh();
@@ -536,9 +521,9 @@ transition-colors"
 
 //   return (
 //     <div
-//       className="min-h-screen 
-//     bg-gradient-to-b 
-//     from-[#faf7f2] to-[#f4efe7] 
+//       className="min-h-screen
+//     bg-gradient-to-b
+//     from-[#faf7f2] to-[#f4efe7]
 //     dark:from-[#1a120b] dark:to-[#0f0a06]
 //     text-[#2d1b0f] dark:text-[#f5f5dc]
 //     transition-colors duration-500"
@@ -553,7 +538,7 @@ transition-colors"
 //           <div className="fixed z-50">
 //           {/* ///////////////////// */}
 //           <div id="google_translate_element"></div>
-  
+
 //           <Script
 //             src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
 //             strategy="afterInteractive"
@@ -582,7 +567,7 @@ transition-colors"
 //         </motion.h1>
 
 //         <motion.p
-//           className="relative mt-4 text-2xl max-w-2xl 
+//           className="relative mt-4 text-2xl max-w-2xl
 //          bg-white/90 dark:bg-[#2b1c12]/90
 //          text-green-700 dark:text-green-300
 //          p-3 rounded-xl backdrop-blur-md transition-colors"
@@ -678,7 +663,7 @@ transition-colors"
 //             <motion.div key={product.id} variants={item}>
 //               <Card
 //                 className="
-// rounded-3xl 
+// rounded-3xl
 // shadow-md hover:shadow-xl
 // border border-gray-200 dark:border-[#3c2a21]
 // hover:border-green-500
