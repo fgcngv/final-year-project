@@ -22,7 +22,7 @@ import ReviewDialog from "../review/reviewDialog";
 type OrderItemType = {
   id: string;
   product_name: string;
-  product_id?:string;
+  product_id?: string;
   quantity: number;
   price: number;
   image: string;
@@ -52,22 +52,21 @@ export default function BuyerDashboardPage() {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancelLoading, setCancelLoading] = useState(false);
-  const [reorder,setReorder] = useState(false);
+  const [reorder, setReorder] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-
 
   // order confirmation function
   const confirmOrder = async (orderId: string) => {
     setConfirmLoading(true);
-  
+
     try {
       const res = await ConfirmOrderDelivery(orderId);
-  
+
       if (!res.success) {
         toast.error(res.message);
       } else {
         toast.success(res.message);
-  
+
         setOrders((prev) =>
           prev.map((o) =>
             o.id === orderId ? { ...o, status: "CONFIRMED" } : o
@@ -77,10 +76,9 @@ export default function BuyerDashboardPage() {
     } catch {
       toast.error("Failed to confirm order");
     }
-  
+
     setConfirmLoading(false);
   };
-  
 
   useEffect(() => {
     if (!user || !user.id) return;
@@ -100,7 +98,7 @@ export default function BuyerDashboardPage() {
 
     fetchOrders();
   }, [user]);
-
+  console.log("orders : ", orders);
   const cancelOrder = async (orderId: string) => {
     setCancelLoading(true);
 
@@ -131,9 +129,7 @@ export default function BuyerDashboardPage() {
       else {
         toast.success(reorder.message);
         setOrders((prev) =>
-          prev.map((o) =>
-            o.id === orderId ? { ...o, status: "PENDING" } : o
-          )
+          prev.map((o) => (o.id === orderId ? { ...o, status: "PENDING" } : o))
         );
       }
     } catch {
@@ -143,7 +139,7 @@ export default function BuyerDashboardPage() {
     setReorder(false);
   };
 
-  console.log("orders : ",orders)
+  console.log("orders : ", orders);
 
   return (
     <div className="min-h-screen bg-green-50">
@@ -164,8 +160,10 @@ export default function BuyerDashboardPage() {
         {/* Orders Section */}
         <section>
           <h3 className="font-semibold mb-3 text-green-800"> My Orders</h3>
-          <span className="font-bold items-center flex justify-center text-2xl text-green-600 bg-green-300 p-1 m-2 rounded">{orders.length} total order{orders.length > 1?"s" :""}</span>
-          
+          <span className="font-bold items-center flex justify-center text-2xl text-green-600 bg-green-300 p-1 m-2 rounded">
+            {orders.length} total order{orders.length > 1 ? "s" : ""}
+          </span>
+
           {loading ? (
             <p>Loading orders...</p>
           ) : orders.length === 0 ? (
@@ -220,11 +218,12 @@ export default function BuyerDashboardPage() {
                             Qty: {item.quantity} • Price: {item.price} ETB
                           </p>
                         </div>
-                          {
-                            order.status === "CONFIRMED" && (
-                              <ReviewDialog order_id={order.id} product_id={item.id}/>
-                            )
-                          }
+                        {order.status === "CONFIRMED" && (
+                          <ReviewDialog
+                            order_id={order.id}
+                            product_id={item.product_id as string}
+                          />
+                        )}
                       </div>
                     ))}
 
@@ -243,42 +242,45 @@ export default function BuyerDashboardPage() {
                         : "Pending"}
                     </p>
                     <p>
-                      Order Status : 
-                         <span className={`rounded p-1 ${
-                            order.status === "PENDING"
-                            ?" bg-amber-200 text-amber-900 dark:bg-amber-500/20 dark:text-amber-400"
-                            :  order.status === "SHIPPED"
+                      Order Status :
+                      <span
+                        className={`rounded p-1 ${
+                          order.status === "PENDING"
+                            ? " bg-amber-200 text-amber-900 dark:bg-amber-500/20 dark:text-amber-400"
+                            : order.status === "SHIPPED"
                             ? "bg-purple-200 text-purple-900 dark:bg-purple-500/20 dark:text-purple-400"
                             : order.status === "DELIVERED"
                             ? "bg-emerald-200 text-emerald-900 dark:bg-emerald-500/20 dark:text-emerald-400"
                             : order.status === "PAID"
                             ? "bg-blue-200 text-blue-900 dark:bg-blue-500/20 dark:text-blue-400"
-                            :order.status === "CONFIRMED"
+                            : order.status === "CONFIRMED"
                             ? "bg-green-600 font-bold text-green-100"
                             : "bg-red-400 text-foreground"
-                         }`}>
-                             {order.status}
-                         </span>
+                        }`}
+                      >
+                        {order.status}
+                      </span>
                     </p>
 
                     {/* Actions */}
                     {order.status === "PENDING" && (
-                       <div>
+                      <div>
                         <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => cancelOrder(order.id)}
-                        className="mt-2 w-full"
-                        disabled={cancelLoading}
-                      >
-                        {cancelLoading ? "Cancelling..." : "Cancel Order"}
-                      </Button>
-                      <Button                              
-                        size="sm"
-                        className="bg-amber-200 mt-2 w-full cursor-pointer font-bold text-green-900 text-lg"
-                        
-                        >Goto Payment</Button>
-                       </div>   
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => cancelOrder(order.id)}
+                          className="mt-2 w-full"
+                          disabled={cancelLoading}
+                        >
+                          {cancelLoading ? "Cancelling..." : "Cancel Order"}
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="bg-amber-200 mt-2 w-full cursor-pointer font-bold text-green-900 text-lg"
+                        >
+                          Goto Payment
+                        </Button>
+                      </div>
                     )}
 
                     {order.status === "CANCELLED" && (

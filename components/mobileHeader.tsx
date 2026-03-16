@@ -23,6 +23,7 @@ export default function MobileHeader() {
     { name: "Contact Us", link: "/contact", key: "contact" },
     { name: "Orders", link: `/${orderLink}`, key: "orders" },
     { name: "Notifications", link: "/notifications", key: "notifications" },
+    { name: "Today's_Market", link: `#`, key: "today-market" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
   ];
   

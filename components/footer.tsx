@@ -92,13 +92,18 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3 text-sm text-emerald-200">
               <li className="flex items-center gap-2">
-                <MapPin size={16} />Bahir Dar, Ethiopia
+                <MapPin size={16} />
+                Bahir Dar, Ethiopia
               </li>
               <li className="flex items-center gap-2">
-                <Phone size={16} /> +251 96 106 43 70
+                <Phone size={16} />{" "}
+                <Link href="tel:+251961064370">+251 96 106 43 70</Link>
               </li>
               <li className="flex items-center gap-2">
-                <Mail size={16} /> finalyear@ethiogreen.com
+                <Mail size={16} />
+                <Link href="mailto:birhanugezahegn099@gmail.com">
+                  birhanugezahegn099@gmail.com
+                </Link>
               </li>
             </ul>
             <div className="flex gap-4 pt-2">

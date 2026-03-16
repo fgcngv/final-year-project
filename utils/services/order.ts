@@ -30,6 +30,7 @@ export const OrdersByBuyerId = async () => {
                   product_name: true,
                   image: true,
                   price: true,
+                  product_detail:true
                 },
               },
             },
@@ -55,6 +56,7 @@ export const OrdersByBuyerId = async () => {
         items: order.items.map((item) => ({
           id: item.id,
           product_name: item.product.product_name,
+          product_id:item.product.id,
           image: item.product.image,
           quantity: item.quantity,
           price: item.price,

@@ -139,6 +139,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Leaf, TrendingUp, Package, DollarSign, MapPin } from "lucide-react";
+import AddProduct from "../form/add-product";
 
 export default function FarmerDashboard() {
   return (
@@ -152,12 +153,10 @@ export default function FarmerDashboard() {
               Farmer Dashboard
             </h1>
             <p className="text-muted-foreground">
-              Welcome back, Abebe 🌱
+              Welcome back, Abebe 
             </p>
           </div>
-          <Button className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600">
-            Add New Harvest
-          </Button>
+          <AddProduct />
         </div>
 
         {/* Stats */}

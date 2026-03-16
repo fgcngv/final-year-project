@@ -263,7 +263,7 @@ async function OrdersPage() {
           </h1>
   
           <h2 className="flex items-center text-xl text-emerald-600 dark:text-emerald-400 font-semibold w-full">
-            {orderItems?.data?.length} order
+            {orderItems?.data?.length} Order Item
             {orderItems?.data?.length && orderItems?.data?.length > 1 ? "s" : ""}
           </h2>
   

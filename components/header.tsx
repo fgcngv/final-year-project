@@ -37,8 +37,9 @@ export default function Header({
     { name: "Home", link: "/", key: "home" },
     { name: "Shop", link: "/product", key: "shop" },
     { name: "About", link: "/about", key: "about" },
-    { name: "Contact Us", link: "/contact", key: "contact" },
+    { name: "Contact_Us", link: "/contact", key: "contact" },
     { name: "Orders", link: `/${orderLink}`, key: "orders" },
+    { name: "Today's_Market", link: `#`, key: "today-market" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
   ];
 
