@@ -32,6 +32,7 @@ async function GetProductBYId(props: {
   }
   const Pdescription = await getProductDescriptionByProductId(data?.id);
 
+
   console.log("Pdescription : ", Pdescription);
   
 

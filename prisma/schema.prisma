@@ -116,6 +116,8 @@ model User {
   buyerConversations Conversation[] @relation("BuyerConversations")
   sentMessages       Message[]      @relation("SenderMessages")
   notification       Notification[]
+
+  status Status @default(ACTIVE)
 }
 
 model Farmer {
