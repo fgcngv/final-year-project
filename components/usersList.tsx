@@ -9,12 +9,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Eye, EyeOff, Trash2 } from "lucide-react";
 import Link from "next/link";
 import DeleteDialog from "./dialog/deleteDialog";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { UserStatusDropdown } from "./admin/updateUserStatus";
+import LoaderBtn from "./loaderBtn";
 
 interface usersTableProps {
   data: any;
@@ -53,6 +54,7 @@ export default function UsersTable({ data, deleteType }: usersTableProps) {
           onClick={deleteStatus}
           className="bg-red-300 cursor-pointer hover:bg-red-400 text-sm text-green-900 font-bold"
         >
+          {showDeleteBtn ? <EyeOff /> : <Eye />}
           {showDeleteBtn ? " Disable Delete " : "Enable Delete"}
         </Button>
       </div>
@@ -94,12 +96,8 @@ export default function UsersTable({ data, deleteType }: usersTableProps) {
                 {showDeleteBtn && (
                   <DeleteDialog deleteType={deleteType} id={user?.id} />
                 )}
-                <Link
-                  href={`/admin/users/${user?.id}`}
-                  className="bg-blue-700 p-1 rounded text-white hover:bg-blue-800 active:bg-blue-900 dark:bg-blue-600 dark:hover:bg-blue-500"
-                >
-                  View Detail
-                </Link>
+                <LoaderBtn btnName="View Detail" linkTo={`/admin/users/${user?.id}`}
+                className="bg-blue-700 p-1 rounded text-white hover:bg-blue-800 active:bg-blue-900 dark:bg-blue-600 dark:hover:bg-blue-500"/>
               </TableCell>
             </TableRow>
           ))}
