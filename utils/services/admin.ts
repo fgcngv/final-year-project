@@ -18,10 +18,7 @@ export async function getUserById(id:string) {
       };
     }
 
-    return {
-      data:data,
-
-    };
+    return { success: true, data, message: "Data fetched Successfuly" };
   } catch (error) {
     console.log("error occured in catch");
     return {
@@ -31,6 +28,26 @@ export async function getUserById(id:string) {
     };
   }
 }
+
+
+
+
+export async function getUserSessions(userId: string, limit = 50, skip = 0) {
+  try {
+    const sessions = await prisma.userSession.findMany({
+      where: { user_id: userId },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+      skip,
+    });
+    return { success: true, sessions };
+  } catch (error) {
+    console.error("getUserSessions error:", error);
+    return { success: false, sessions: [] };
+  }
+}
+
+
 
 export async function getFarmerById(id: string) {
   try {

@@ -257,6 +257,8 @@ import { notFound } from "next/navigation";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import LanguageProvider from "@/Providers/LanguageProvider";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { auth } from "@clerk/nextjs/server";
+import { trackUserSession } from "./actions/sessionTrack";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -284,6 +286,14 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }>) {
+
+  const { userId } = await auth();
+
+  // tracking  user information if only  logged in
+  if (userId) {
+    await trackUserSession(); 
+  }
+
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();

@@ -9,21 +9,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { updateUserStatus } from "@/app/[locale]/actions/admin";
+// import { updateUserStatus } from "@/app/[locale]/actions/admin";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { updateStatus } from "@/app/[locale]/actions/admin";
 
-type Status = "ACTIVE" | "INACTIVE" | "DORMANT";
+type Status = "ACTIVE" | "INACTIVE" | "DORMANT" | "PAUSED";
 
 interface StatusDropdownProps {
   userId: string;
   currentStatus: Status; // Current status of the user
+  entity:"user" | "product"  //which table is to be updated
 }
 
 export function UserStatusDropdown({
   userId,
   currentStatus,
+  entity
 }: StatusDropdownProps) {
   const [status, setStatus] = useState<Status>(currentStatus);
   const [loading, setLoading] = useState(false);
@@ -37,7 +40,7 @@ export function UserStatusDropdown({
 
     setLoading(true);
     try {
-      const result = await updateUserStatus(userId, selectedStatus);
+      const result = await updateStatus(entity,userId, selectedStatus);
 
       if (result.error) {
         toast.error(result.message);
@@ -60,22 +63,29 @@ export function UserStatusDropdown({
 
   return (
 
-<div className={cn(` rounded-2xl ${currentStatus === "ACTIVE" ? "bg-green-900" : currentStatus === "INACTIVE" ? "bg-red-700" : "bg-yellow-900"}`)}>
+<div className={cn(` rounded-2xl text-white ${currentStatus === "ACTIVE" ? "bg-green-900" : currentStatus === "INACTIVE" ? "bg-red-700" : "bg-yellow-900"}`)}>
 <Select value={status} onValueChange={handleChange} disabled={loading}>
       <SelectTrigger className="w-32">
         {/* Display the current status inside the trigger */}
         <SelectValue placeholder="Select Status">{status}</SelectValue>
       </SelectTrigger>
       <SelectContent>
-        <SelectItem className="bg-blue-700 font-bold" value="ACTIVE">
+        <SelectItem className="bg-blue-700 font-bold text-white" value="ACTIVE">
           ACTIVE
         </SelectItem>
-        <SelectItem className="bg-yellow-500 font-bold" value="DORMANT">
+        <SelectItem className="bg-yellow-500 font-bold text-white" value="DORMANT">
           DORMANT
         </SelectItem>
-        <SelectItem className="bg-red-600 font-bold" value="INACTIVE">
+        <SelectItem className="bg-red-600 font-bold text-white" value="INACTIVE">
           INACTIVE
         </SelectItem>
+        {
+          entity==="product" && (
+            <SelectItem className="bg-cyan-600 font-bold text-white" value="PAUSED">
+            PAUSED
+          </SelectItem>
+          )
+        }
       </SelectContent>
     </Select>
 </div>

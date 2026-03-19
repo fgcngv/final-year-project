@@ -76,11 +76,13 @@ import { useTheme } from "next-themes";
 interface Props {
   order_id: string;
   product_id: string;
+  isAllowed?:boolean
 }
 
 export default function ReviewDialog({
   order_id,
   product_id,
+  isAllowed=true,
 }: Props) {
   const {theme} = useTheme();
 
@@ -101,9 +103,10 @@ export default function ReviewDialog({
   const bodyClasses = isDark ? "p-6 bg-gray-800" : "p-6 bg-white";
 
   return (
-    <Dialog>
+    <div className="">
+          <Dialog>
       <DialogTrigger asChild>
-        <button className={buttonClasses}>
+        <button className={`${buttonClasses} ${!isAllowed ?" cursor-not-allowed pointer-events-none" :" "}` }>
           <Star className="w-4 h-4" />
           Rate Product
         </button>
@@ -131,5 +134,7 @@ export default function ReviewDialog({
         </div>
       </DialogContent>
     </Dialog>
+    </div>
+
   );
 }

@@ -35,7 +35,6 @@ if(!userOrderData){
                     totalRevenue={userOrder.totalRevenue}
                     statusStats={userOrder.statusStats}
                   />
-            OrderByUserIdOByOrderId
         </div>
      );
 }

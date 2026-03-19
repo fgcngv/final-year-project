@@ -307,7 +307,6 @@ console.log("products : : ",products)
     );
   }
 
-  console.log("filtered product : ",filteredProducts)
   /* =====================
      QUANTITY HANDLING
   ====================== */

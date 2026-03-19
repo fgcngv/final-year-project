@@ -117,7 +117,8 @@ model User {
   sentMessages       Message[]      @relation("SenderMessages")
   notification       Notification[]
 
-  status Status @default(ACTIVE)
+  status   Status        @default(ACTIVE)
+  sessions UserSession[]
 }
 
 model Farmer {
@@ -408,5 +409,26 @@ model Review {
   @@unique([order_id, type], name: "order_id_type")
   @@index([product_id])
   @@index([farmer_id])
+  @@index([user_id])
+}
+
+model UserSession {
+  id      String @id @default(cuid())
+  user_id String
+
+  ip      String?
+  country String?
+  city    String?
+
+  userAgent String?
+  device    String? // mobile, desktop
+  browser   String?
+  os        String?
+
+  lastActiveAt DateTime?
+  createdAt    DateTime  @default(now())
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
   @@index([user_id])
 }

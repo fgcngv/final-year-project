@@ -32,42 +32,121 @@ export const deleteData = async (id:string,table:string)=>{
 
 
 
-export async function updateUserStatus(
-  userId: string,
-  newStatus: Status
-) {
+// export async function updateUserStatus(
+//   userId: string,
+//   newStatus: Status
+// ) {
 
-  const {userId:user_id} = await auth();
-  if(!user_id){
-    return {error:true,message:"Not Authenticated!"}
-  }
+//   const {userId:user_id} = await auth();
+//   if(!user_id){
+//     return {error:true,message:"Not Authenticated!"}
+//   }
 
-  // check whether user is admin or not
-  const admin = await getRole();
-  // Validate status
-  if (!Object.values(Status).includes(newStatus)) {
-    return {error:true,message:"Invalid status"
+//   // check whether user is admin or not
+//   const admin = await getRole();
+//   // Validate status
+//   if (!Object.values(Status).includes(newStatus)) {
+//     return {error:true,message:"Invalid status"
 
-    }
-  }
+//     }
+//   }
 
  
-  // Check if requester is actually an admin
-  if (admin !== "ADMIN" && admin !== "admin") {
-    return { 
-      error:true,message:"Unauthorized: Only admins can update user status"
+//   // Check if requester is actually an admin
+//   if (admin !== "ADMIN" && admin !== "admin") {
+//     return { 
+//       error:true,message:"Unauthorized: Only admins can update user status"
+//     }
+//   }
+
+//   // Update user status in the database
+//   const updatedUser = await prisma.user.update({
+//     where: { id: userId },
+//     data: { status: newStatus },
+//   });
+
+//   if(!updatedUser){
+//     return {error:true,message:"Failed to updated user status!"}
+//   }
+
+//   return {error:false,message:"Status Updated Successfully!", updatedUser};
+// }
+
+type EntityType = "user" | "product";
+
+export async function updateStatus(
+  entity: EntityType,
+  id: string,
+  newStatus: Status
+) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return { error: true, message: "Not authenticated" };
     }
+
+    const role = await getRole();
+
+    // Only admins allowed
+    if (role?.toUpperCase() !== "ADMIN") {
+      return {
+        error: true,
+        message: "Unauthorized: Admin access required",
+      };
+    }
+
+    // Validate status
+    if (!Object.values(Status).includes(newStatus)) {
+      return {
+        error: true,
+        message: "Invalid status value",
+      };
+    }
+
+    let updatedRecord;
+
+    //Handle different tables
+    switch (entity) {
+      case "user":
+        updatedRecord = await prisma.user.update({
+          where: { id },
+          data: { status: newStatus },
+        });
+        break;
+
+      case "product":
+        updatedRecord = await prisma.product.update({
+          where: { id },
+          data: { status: newStatus },
+        });
+        break;
+
+      default:
+        return {
+          error: true,
+          message: "Invalid entity type",
+        };
+    }
+
+    if (!updatedRecord) {
+      return {
+        error: true,
+        message: "Update failed",
+      };
+    }
+
+    return {
+      error: false,
+      message: "Status updated successfully",
+      data: updatedRecord,
+    };
+  } catch (error) {
+    console.error("Update status error:", error);
+
+    return {
+      error: true,
+      message: "Internal server error",
+    };
   }
-
-  // Update user status in the database
-  const updatedUser = await prisma.user.update({
-    where: { id: userId },
-    data: { status: newStatus },
-  });
-
-  if(!updatedUser){
-    return {error:true,message:"Failed to updated user status!"}
-  }
-
-  return {error:false,message:"Status Updated Successfully!", updatedUser};
 }

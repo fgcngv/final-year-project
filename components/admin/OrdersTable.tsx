@@ -189,6 +189,7 @@ export default function OrdersTable({
                                   <ReviewDialog
                                     order_id={order.id}
                                     product_id={item.product.id}
+                                    isAllowed={false}
                                   />
                                 </div>
                                 <p className="font-semibold dark:text-[#f5f5dc]">

@@ -1,22 +1,4 @@
-// import { getAllProducts } from "@/app/actions/products";
-// import AllProducts from "@/components/fetchAllProducts";
-// import AddProduct from "@/components/form/add-product";
 
-// async function Products() {
-//     const data = await getAllProducts();
-
-//     console.log("products : ",data)
-//     return (
-//         <div>
-//             <AddProduct />
-//             <div>
-//                 <AllProducts products={data}/>
-//             </div>
-//         </div>
-//      );
-// }
-
-// export default Products;
 
 import { getAllProducts } from "@/app/[locale]/actions/products";
 import AllProducts from "@/components/fetchAllProducts";

@@ -256,7 +256,7 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
           >
             <div>
               <h1 className="text-4xl font-extrabold text-green-700 dark:text-green-300">
-                ${product?.price}
+                {product?.price} ETB
               </h1>
               <h2 className="text-2xl font-semibold mt-2 dark:text-white">
                 {product?.product_name}
