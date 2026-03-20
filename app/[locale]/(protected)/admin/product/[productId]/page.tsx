@@ -47,7 +47,7 @@ async function GetProductBYId(props: {
   
   return (
     <div className="flex flex-col lg:flex-row lg:items-top">
-      <ProductBYId isDashboard  notification={unreadNotification?.data?.length} cartQuantity={cartQuantity} product={data} />
+      <ProductBYId   notification={unreadNotification?.data?.length} cartQuantity={cartQuantity} product={data} />
       {/* <LoaderBtn
         btnName="Back"
         className="bg-green-800 text-center font-bold text-2xl text-white absolute top-32  rounded p-1 hover:bg-green-600 active:bg-green-400 hover:underline flex justify-center items-center left-20"

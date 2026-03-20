@@ -12,10 +12,15 @@ import { toast } from "sonner";
 import { useTheme as LanguageTheme } from "./checkTheme";
 import Header from "./header";
 import LoaderBtn from "./loaderBtn";
+import { useUser } from "@clerk/nextjs";
 
 export default function ProductById({ product, isDashboard,cartQuantity,notification}: { product: any; isDashboard?: boolean, cartQuantity?:number,notification?:number}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+
+  const userInfo = useUser();
+  const [isYou,setIsYou] = useState(product.farmer.id===userInfo?.user?.id ? true:false);
+
 
   const { language } = LanguageTheme();
   const lang = language;
@@ -277,11 +282,20 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
                   </div>
   
                   <div className="bg-green-800 dark:bg-green-600 p-1 rounded w-full text-pink-400 dark:text-pink-200 font-bold">
-                    <LoaderBtn
-                      btnName="Goto Chat"
-                      linkTo={`/chatMatche/${product.farmer.id}`}
-                      className="w-full"
-                    />
+                    {
+                      isYou && (
+                        <h1 className="text-center">This is your own Product</h1>
+                      )
+                    }
+                    {
+                      !isYou && (
+                        <LoaderBtn
+                        btnName="Goto Chat"
+                        linkTo={`/chatMatche/${product.farmer.id}`}
+                        className="w-full"
+                      />
+                      )
+                    }
                   </div>
   
                   <LoaderBtn

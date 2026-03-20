@@ -12,6 +12,8 @@ import {
 import { User, UserSession } from "@prisma/client";
 import LoaderBtn from "../loaderBtn";
 import DeleteDialog from "../dialog/deleteDialog";
+import { Button } from "../ui/button";
+import { useState } from "react";
 
 interface userDetailProps {
   param: string;
@@ -24,6 +26,12 @@ function UserDetail({ param, userData, userSession }: userDetailProps) {
     dateStyle: "medium",
     timeStyle: "short",
   });
+
+  const [showProduct,setShowProduct] = useState(false);
+
+  const handleShowProduct = ()=>{
+    setShowProduct(!showProduct)
+  }
 
   const formatDate = (date?: Date | null) =>
     date ? formatter.format(new Date(date)) : "—";
@@ -75,8 +83,14 @@ function UserDetail({ param, userData, userSession }: userDetailProps) {
           <LoaderBtn
             linkTo={`/admin/order/${userData.id}`}
             btnName="View Orders"
-            className="bg-blue-700 hover:bg-blue-800"
+            className="bg-blue-700 dark:text-white hover:bg-blue-800"
           />
+          {
+            userData.role.toUpperCase() === "FARMER" && (
+             <Button>Loahhd Products</Button>
+            )
+          }
+          <Button onClick={handleShowProduct}>{showProduct ? "Load Products" : "Hide Products"}</Button>
         </CardFooter>
       </Card>
 

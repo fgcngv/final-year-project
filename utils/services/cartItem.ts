@@ -30,6 +30,8 @@ export const addToCart = async (product_id: string, quantity: number = 1) => {
 
     if (!product) return { success: false, message: "Product not found" };
 
+    if(product.farmer_id === userId) return {success:false,message:"This product is Your own Product! You can't buy your own Product"}
+
     // 2️ Check stock (just to warn the user, but do NOT decrement)
     if (product.stock < quantity) {
       return { success: false, message: `Only ${product.stock} left in stock` };

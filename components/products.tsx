@@ -206,6 +206,11 @@
 
 
 
+
+
+
+
+
 "use client";
 
 import { useState, useMemo } from "react";
@@ -337,6 +342,7 @@ console.log("products : : ",products)
       toast.success(tc("added"));
     }
     setLoadingId(null);
+    router.refresh();
   };
 
   const handleBuyNow = (product: Product) => {
