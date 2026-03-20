@@ -33,6 +33,7 @@ import {
 } from "../ui/select";
 import { Language, Role, Status } from "@prisma/client";
 
+
 export default function FarmerRegistrationForm() {
   const { user } = useUser();
   const router = useRouter();
@@ -62,26 +63,6 @@ export default function FarmerRegistrationForm() {
     setLoading(true);
 
     try {
-      // Upload image (optional – not stored in Farmer model)
-      let imageUrl: string | null = null;
-
-      if (values.image) {
-        const file = values.image;
-        const fileExt = file.name.split(".").pop();
-        const fileName = `${id}-${Date.now()}.${fileExt}`;
-
-        const { error } = await supabase.storage
-          .from("Ethiopian-green-coffee-product-images")
-          .upload(fileName, file);
-
-        if (error) throw new Error(error.message);
-
-        const { data } = supabase.storage
-          .from("Ethiopian-green-coffee-product-images")
-          .getPublicUrl(fileName);
-
-        imageUrl = data.publicUrl;
-      }
 
       // Register farmer (ENUM SAFE)
       const result = await registerFarmer({
@@ -109,133 +90,6 @@ export default function FarmerRegistrationForm() {
     }
   };
 
-  // return (
-  //   <div className="flex justify-center items-center h-screen">
-  //     <Header />
-
-  //     <Card className="max-w-2xl ">
-  //       <CardHeader>Use a clear image</CardHeader>
-  //       <CardContent>
-  //         <Form {...form}>
-  //           <form onSubmit={form.handleSubmit(onSubmit)}>
-  //             <FormField
-  //               name="first_name"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Frist Name</FormLabel>
-  //                   <FormControl>
-  //                     <Input {...field} placeholder="First Name?" />
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             <FormField
-  //               name="last_name"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Last Name</FormLabel>
-  //                   <FormControl>
-  //                     <Input type="tex" {...field} placeholder="Last Name?" />
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             <FormField
-  //               name="email"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Email</FormLabel>
-  //                   <FormControl>
-  //                     <Input type="email" {...field} placeholder="email?" />
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-  //             <FormField
-  //               name="address"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Address</FormLabel>
-  //                   <FormControl>
-  //                     <Input type="text" {...field} placeholder="Address?" />
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-  //             <FormField
-  //               name="language"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Language</FormLabel>
-  //                   <FormControl>
-  //                     <Select
-  //                       onValueChange={field.onChange}
-  //                       defaultValue={field.value}
-  //                     >
-  //                       <SelectTrigger>
-  //                         <SelectValue placeholder="Select language" />
-  //                       </SelectTrigger>
-  //                       <SelectContent>
-  //                         <SelectItem value="english">English</SelectItem>
-  //                         <SelectItem value="afan_oromo">Afan Oromo</SelectItem>
-  //                         <SelectItem value="amharic">Amharic</SelectItem>
-  //                       </SelectContent>
-  //                     </Select>
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             <FormField
-  //               name="image"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Profile Image</FormLabel>
-  //                   <FormControl>
-  //                     <Input
-  //                       type="file"
-  //                       accept="image/*"
-  //                       onChange={(e) => field.onChange(e.target.files?.[0])}
-  //                     />
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             <FormField
-  //               name="product_detail"
-  //               render={({ field }) => (
-  //                 <FormItem>
-  //                   <FormLabel>Product Description</FormLabel>
-  //                   <FormControl>
-  //                     <Textarea {...field} placeholder="Product Description?" />
-  //                   </FormControl>
-  //                   <FormMessage />
-  //                 </FormItem>
-  //               )}
-  //             />
-
-  //             <Button
-  //               type="submit"
-  //               disabled={loading}
-  //               className="hover:bg-black/10 active:bg-black/25"
-  //             >
-  //               {loading ? "Uploading..." : "Add Product"}
-  //             </Button>
-  //           </form>
-  //         </Form>
-  //       </CardContent>
-  //     </Card>
-  //   </div>
-  // );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
@@ -356,28 +210,6 @@ export default function FarmerRegistrationForm() {
                           </SelectContent>
                         </Select>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Image Upload */}
-                <FormField
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Image</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => field.onChange(e.target.files?.[0])}
-                          className="h-11 cursor-pointer"
-                        />
-                      </FormControl>
-                      <p className="text-xs text-muted-foreground">
-                        📸 Use a clear image in good light
-                      </p>
                       <FormMessage />
                     </FormItem>
                   )}

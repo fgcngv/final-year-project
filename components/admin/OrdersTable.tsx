@@ -78,8 +78,9 @@ export default function OrdersTable({
             label: "Total Revenue",
             value: `${totalRevenue?.toLocaleString()} ETB`,
           },
-          { label: "Pending", value: statusStats?.PENDING || 0 },
-          { label: "Delivered", value: statusStats?.DELIVERED || 0 },
+          { label: "Pending Orders", value: statusStats?.PENDING || 0 },
+          { label: "Delivered Orders", value: statusStats?.DELIVERED || 0 },
+          { label: "Confirmed Orders", value: statusStats?.CONFIRMED || 0 },
         ].map((card, i) => (
           <Card
             key={i}

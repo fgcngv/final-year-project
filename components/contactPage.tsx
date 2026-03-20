@@ -28,6 +28,7 @@ import { AddContact } from "@/app/[locale]/actions/contact";
 import { useTheme } from "./checkTheme";
 import { useTranslations } from "next-intl";
 import LoaderBtn from "./loaderBtn";
+import { Coffee, Globe, Mail, MapPin, Phone } from "lucide-react";
 
 export default function ContactForm({
   cartQuantity,
@@ -69,195 +70,6 @@ export default function ContactForm({
     setLoading(false);
   }
 
-  // return (
-  //   <div className="bg-gradient-to-b from-[#f5f3ef] to-white min-h-screen">
-  //     <Header cartQuantity={cartQuantity} />
-  //     {/* HERO */}
-  //     <section className="max-w-7xl mx-auto px-6 py-20 text-center">
-  //       <motion.div
-  //         initial={{ opacity: 0, y: 30 }}
-  //         animate={{ opacity: 1, y: 0 }}
-  //         transition={{ duration: 0.7 }}
-  //         className="space-y-6"
-  //       >
-  //         <h1 className="text-4xl md:text-5xl font-extrabold text-green-900">
-  //             📞 {t('contactus')}
-  //         </h1>
-  //         <p className="max-w-2xl mx-auto text-gray-600">
-  //           {t('question')}
-  //         </p>
-  //       </motion.div>
-  //     </section>
-
-  //     <Separator />
-
-  //     {/* CONTENT */}
-  //     <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12">
-  //       {/* CONTACT INFO */}
-  //       <motion.div
-  //         initial={{ opacity: 0, x: -30 }}
-  //         whileInView={{ opacity: 1, x: 0 }}
-  //         viewport={{ once: true }}
-  //         transition={{ duration: 0.6 }}
-  //         className="space-y-6"
-  //       >
-  //         <h2 className="text-3xl font-bold text-green-900">
-  //         ☕ { t('talk')}
-  //         </h2>
-  //         <p className="text-gray-600">
-  //           .
-  //           {t('weconnect')}
-  //         </p>
-
-  //         <Card className="border-green-200 shadow-sm">
-  //           <CardContent className="p-6 space-y-4">
-  //             <p>
-  //               <span className="font-semibold text-green-800">
-  //               📍 { t('location')}
-  //               </span>{" "}
-  //               {t('place')}
-  //             </p>
-  //             <p>
-  //               <span className="font-semibold text-green-800">📧 Email:</span>{" "}
-  //               birhanugezahegn099@gmail.com
-  //             </p>
-  //             <p>
-  //               <span className="font-semibold text-green-800">
-  //               📞 { t('phone')}
-  //               </span>{" "}
-  //               +251 961 06 43 70
-  //             </p>
-  //             <p>
-  //               <span className="font-semibold text-green-800">
-  //               🌍 { t('workinghours')}
-  //               </span>{" "}
-  //              {t('hour')}
-  //             </p>
-  //           </CardContent>
-  //         </Card>
-  //       </motion.div>
-
-  //       {/* CONTACT FORM */}
-  //       <motion.div
-  //         initial={{ opacity: 0, x: 30 }}
-  //         whileInView={{ opacity: 1, x: 0 }}
-  //         viewport={{ once: true }}
-  //         transition={{ duration: 0.6 }}
-  //       >
-  //         <Card className="shadow-md">
-  //           <CardContent className="p-6 space-y-6">
-  //             <h3 className="text-xl font-bold text-green-900">
-  //               {t('sendmes')}
-  //             </h3>
-
-  //             <Form {...form}>
-  //               <form
-  //                 onSubmit={form.handleSubmit(onSubmit)}
-  //                 className="space-y-4"
-  //               >
-  //                 {/* Name */}
-  //                 <FormField
-  //                   control={form.control}
-  //                   name="name"
-  //                   render={({ field }) => (
-  //                     <FormItem>
-  //                       <FormLabel>Name</FormLabel>
-  //                       <FormControl>
-  //                         <Input placeholder={tf('name')} {...field} />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-
-  //                 {/* Email */}
-  //                 <FormField
-  //                   control={form.control}
-  //                   name="email"
-  //                   render={({ field }) => (
-  //                     <FormItem>
-  //                       <FormLabel>Email</FormLabel>
-  //                       <FormControl>
-  //                         <Input
-  //                           type="email"
-  //                           placeholder={tf('email')}
-  //                           {...field}
-  //                         />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-
-  //                 {/* Subject */}
-  //                 <FormField
-  //                   control={form.control}
-  //                   name="subject"
-  //                   render={({ field }) => (
-  //                     <FormItem>
-  //                       <FormLabel>Subject</FormLabel>
-  //                       <FormControl>
-  //                         <Input placeholder={tf('subject')} {...field} />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-
-  //                 {/* Message */}
-  //                 <FormField
-  //                   control={form.control}
-  //                   name="message"
-  //                   render={({ field }) => (
-  //                     <FormItem>
-  //                       <FormLabel>Message</FormLabel>
-  //                       <FormControl>
-  //                         <Textarea
-  //                           placeholder={tf('message')}
-  //                           rows={5}
-  //                           {...field}
-  //                         />
-  //                       </FormControl>
-  //                       <FormMessage />
-  //                     </FormItem>
-  //                   )}
-  //                 />
-
-  //                 <Button
-  //                   type="submit"
-  //                   className="w-full cursor-pointer font-bold bg-green-800 hover:bg-green-900"
-  //                 >
-  //                   {
-  //                     loading ? tb('submitting') : tb('submit')
-  //                   }
-
-  //                 </Button>
-  //               </form>
-  //             </Form>
-  //           </CardContent>
-  //         </Card>
-  //       </motion.div>
-  //     </section>
-
-  //     {/* CTA */}
-  //     <section className="bg-green-900 text-white py-16">
-  //       <motion.div
-  //         initial={{ opacity: 0, scale: 0.95 }}
-  //         whileInView={{ opacity: 1, scale: 1 }}
-  //         viewport={{ once: true }}
-  //         className="text-center space-y-6 px-6"
-  //       >
-  //         <h2 className="text-3xl font-bold">
-  //           {t('partner')}
-  //         </h2>
-  //         <p className="text-green-100 max-w-2xl mx-auto">
-  //           {t('helps')}
-  //         </p>
-  //         <LoaderBtn btnName={tb('getstarted')} className="text-black cursor-pointer hover:bg-gray-300 active:bg-gray-400  bg-gray-200 border-black" linkTo="/"/>
-  //       </motion.div>
-  //     </section>
-  //   </div>
-  // );
 
   return (
     <div
@@ -280,9 +92,10 @@ export default function ContactForm({
           transition={{ duration: 0.7 }}
           className="space-y-6"
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold text-green-900 dark:text-green-400 transition-colors">
-            📞 {t("contactus")}
-          </h1>
+<h1 className="relative pl-8 text-4xl md:text-5xl font-extrabold text-green-900 flex gap-2 items-center justify-center dark:text-green-400 transition-colors">
+  <Phone className=" w-10  h-10  " />
+  {t("contactus")}
+</h1>
   
           <p className="max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
             {t("question")}
@@ -302,8 +115,8 @@ export default function ContactForm({
           transition={{ duration: 0.6 }}
           className="space-y-6"
         >
-          <h2 className="text-3xl font-bold text-green-900 dark:text-green-400">
-            ☕ {t("talk")}
+          <h2 className="text-3xl flex items-center gap-2 font-bold text-green-900 dark:text-green-400">
+          <Coffee className="w-10 h-10 text-orange-900" /> {t("talk")}
           </h2>
   
           <p className="text-gray-600 dark:text-gray-300">
@@ -319,30 +132,30 @@ export default function ContactForm({
             "
           >
             <CardContent className="p-6 space-y-4">
-              <p>
-                <span className="font-semibold text-green-800 dark:text-green-400">
-                  📍 {t("location")}
+              <p className="flex gap-2">
+                <span className="font-semibold flex  text-green-800 dark:text-green-400 gap-2">
+                  <MapPin /> {t("location")} : 
                 </span>{" "}
                 {t("place")}
               </p>
   
-              <p>
-                <span className="font-semibold text-green-800 dark:text-green-400">
-                  📧 Email:
+              <p className="flex gap-2">
+                <span className="font-semibold flex text-green-800 dark:text-green-400 gap-2">
+                  <Mail /> Email:
                 </span>{" "}
                 birhanugezahegn099@gmail.com
               </p>
   
-              <p>
-                <span className="font-semibold text-green-800 dark:text-green-400">
-                  📞 {t("phone")}
+              <p className="flex gap-2">
+                <span className="font-semibold flex gap-2 text-green-800 dark:text-green-400">
+                  <Phone /> {t("phone")}
                 </span>{" "}
                 +251 961 06 43 70
               </p>
   
-              <p>
-                <span className="font-semibold text-green-800 dark:text-green-400">
-                  🌍 {t("workinghours")}
+              <p className="flex gap-2">
+                <span className="font-semibold flex gap-2 text-green-800 dark:text-green-400">
+                  <Globe /> {t("workinghours")}
                 </span>{" "}
                 {t("hour")}
               </p>
