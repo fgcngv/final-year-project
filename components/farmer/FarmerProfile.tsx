@@ -195,12 +195,14 @@ import {
   Edit2,
   Eye,
   EyeOff,
+  AlertTriangle,
 } from "lucide-react";
 import LoaderBtn from "../loaderBtn";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
+import { cn } from "@/lib/utils";
 
 // 🔹 Define props type (adjust if you create proper TypeScript types)
 type FarmerProfileProps = {
@@ -224,224 +226,6 @@ export default function FarmerProfile({
 
   const [displayCoffee, setDisplayCoffee] = useState(false);
   const router = useRouter();
-
-  //   return (
-  //     <div className="mt-12 min-h-screen bg-gray-50 px-4 md:px-10 py-8">
-  //       {/* Header Section */}
-  //       <motion.div
-  //         initial={{ opacity: 0, y: 20 }}
-  //         animate={{ opacity: 1, y: 0 }}
-  //         transition={{ duration: 0.5 }}
-  //         className="grid md:grid-cols-3 gap-6"
-  //       >
-  //         <Card className="md:col-span-2 rounded-2xl shadow-md">
-  //           <CardContent className="p-6 flex flex-col md:flex-row gap-6">
-  //             <img
-  //               src={farmer.image || "/placeholder.jpg"}
-  //               alt="farmer"
-  //               className="w-full md:w-40 h-40 object-cover rounded-2xl"
-  //             />
-
-  //             <div className="flex-1 space-y-3">
-  //               <h1 className="text-2xl md:text-3xl font-bold">
-  //                 {farmer.first_name} {farmer.last_name}
-  //               </h1>
-
-  //               {farmer.farmName && (
-  //                 <p className="text-lg text-gray-600 font-medium">
-  //                   {farmer.farmName}
-  //                 </p>
-  //               )}
-
-  //               <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-  //                 {farmer.address && (
-  //                   <div className="flex items-center gap-1">
-  //                     <MapPin size={16} /> {farmer.address}
-  //                   </div>
-  //                 )}
-  //                 {farmer.language && (
-  //                   <div className="flex items-center gap-1">
-  //                     <Globe size={16} /> {farmer.language}
-  //                   </div>
-  //                 )}
-  //                 {farmer.createdAt && (
-  //                   <div className="flex items-center gap-1">
-  //                     <Calendar size={16} /> Member since{" "}
-  //                     {new Date(farmer.createdAt).getFullYear()}
-  //                   </div>
-  //                 )}
-  //               </div>
-
-  //               {farmer.status && (
-  //                 <Badge
-  //                   className="w-fit"
-  //                   variant={
-  //                     farmer.status === "ACTIVE" ? "default" : "secondary"
-  //                   }
-  //                 >
-  //                   {farmer.status}
-  //                 </Badge>
-  //               )}
-
-  //               {farmer.bio && (
-  //                 <p className="text-gray-700 pt-2">{farmer.bio}</p>
-  //               )}
-
-  //               {
-  //                 isOwnPage ? (
-  //                 <Button className="mt-4 rounded-xl flex gap-2 cursor-pointer bg-green-800 hover:bg-green-700 active:bg-green-600">
-  //                     <Edit size={18} /> Edit Profile
-  //                   </Button>
-  //                 ) : (
-  //                 <Button className="mt-4 rounded-xl flex gap-2 cursor-pointer bg-green-800 hover:bg-green-700 active:bg-green-600" onClick={()=>router.push(`/chatMatche/${farmer.id}`)}>
-  //                     <MessageCircle size={18} /> Message Farmer
-  //                   </Button>
-  //                 )
-  //               }
-
-  //             </div>
-  //           </CardContent>
-  //         </Card>
-
-  //         {/* Stats Card */}
-  //         {farmer.stats && (
-  //           <Card className="rounded-2xl shadow-md">
-  //             <CardContent className="p-6 space-y-6">
-  //               <h2 className="text-xl font-semibold">Farm Stats</h2>
-
-  //               <div className="space-y-4">
-  //                 <div>
-  //                   <p className="text-sm text-gray-500">Total Products</p>
-  //                   <p className="text-2xl font-bold">
-  //                     {farmer.stats.totalProducts}
-  //                   </p>
-  //                 </div>
-  //                 <div>
-  //                   <p className="text-sm text-gray-500">Total Sold (kg)</p>
-  //                   <p className="text-2xl font-bold">
-  //                     {farmer.stats.totalSold}
-  //                   </p>
-  //                 </div>
-  //                 {
-  //                     isOwnPage && (
-  //                         <div>
-  //                         <p className="text-sm text-gray-500">Revenue</p>
-  //                         <p className="text-2xl font-bold">
-  //                           ${farmer.stats.totalRevenue}
-  //                         </p>
-  //                       </div>
-  //                     )
-  //                 }
-  //                 {farmer.experience && (
-  //                   <div>
-  //                     <p className="text-sm text-gray-500">Experience</p>
-  //                     <p className="text-2xl font-bold">
-  //                       {farmer.experience} yrs
-  //                     </p>
-  //                   </div>
-  //                 )}
-  //               </div>
-  //             </CardContent>
-  //           </Card>
-  //         )}
-  //       </motion.div>
-
-  //       {/* Products Section */}
-  // {
-
-  // <Button
-  //   onClick={() => setDisplayCoffee(!displayCoffee)}
-  //   className="mt-4 rounded-xl flex gap-2 cursor-pointer bg-green-800 hover:bg-green-700 active:bg-green-600"
-  // >
-  //   {displayCoffee ? (
-  //     <>
-  //       <EyeOff size={18} />
-  //       Hide Products
-  //     </>
-  //   ) : (
-  //     <>
-  //       <Eye size={18} />
-  //       Display Products
-  //     </>
-  //   )}
-  // </Button>
-
-  // }
-  //       {farmer.products && farmer.products.length > 0 && (
-  //          displayCoffee ? (
-  //             <div className="mt-12">
-  //             <h2 className="text-2xl font-bold mb-6">Available Coffees</h2>
-
-  //             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  //               {farmer.products.map((product: any) => (
-  //                 <motion.div
-  //                   key={product.id}
-  //                   whileHover={{ scale: 1.03 }}
-  //                   transition={{ duration: 0.2 }}
-  //                 >
-  //                   <Card className="rounded-2xl shadow-md overflow-hidden">
-  //                   <Link href={`/product/${product.id}`}>
-  //                   <div className="relative group">
-  //                   <img
-  //                       src={product.image}
-  //                       alt={product.product_name}
-  //                      className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105 rounded-t-3xl"
-  //                       loading="lazy"
-
-  //                     />
-  //                   </div>
-  //                   </Link>
-  //                     <CardContent className="p-5 space-y-2">
-  //                       <h3 className="text-lg font-semibold">
-  //                         {product.product_name}
-  //                       </h3>
-  //                       <p className="text-gray-600">${product.price}</p>
-  //                       <p className="text-sm text-gray-500">
-  //                         Stock: {product.stock}
-  //                       </p>
-
-  //                       {product.description && (
-  //                         <div className="text-sm text-gray-600 space-y-1 pt-2">
-  //                           {product.description.origion && (
-  //                             <div>
-  //                               Origin: {product.description.origion}
-  //                             </div>
-  //                           )}
-  //                           {product.description.roastLevel && (
-  //                             <div>
-  //                               Roast: {product.description.roastLevel}
-  //                             </div>
-  //                           )}
-  //                           {product.description.flavorNotes && (
-  //                             <div>
-  //                               Flavor: {product.description.flavorNotes}
-  //                             </div>
-  //                           )}
-  //                         </div>
-  //                       )}
-
-  //                       {
-  //                           isOwnPage ? (
-  //                               <LoaderBtn btnName="Edit" className="mt-4 rounded-xl w-full flex gap-2 cursor-pointer bg-green-800 hover:bg-green-700 active:bg-green-600"
-  //                               />
-  //                           ) :(
-
-  //                               <LoaderBtn btnName="View Details" className="mt-4 w-full rounded-xl flex gap-2 cursor-pointer bg-green-800 hover:bg-green-700 active:bg-green-600" linkTo={`/product/${product.id}`}/>
-  //                           )
-
-  //                       }
-  //                     </CardContent>
-  //                   </Card>
-  //                 </motion.div>
-  //               ))}
-  //             </div>
-  //           </div>
-  //          ) :null
-
-  //       )}
-  //     </div>
-  //   );
-
   return (
     <div className="mt-12 min-h-screen bg-background text-foreground px-4 md:px-10 py-8 transition-colors">
       {/* ================= HEADER SECTION ================= */}
@@ -451,78 +235,120 @@ export default function FarmerProfile({
         transition={{ duration: 0.5 }}
         className="grid md:grid-cols-3 gap-6"
       >
-        <Card className="md:col-span-2 rounded-2xl shadow-md border border-border bg-card">
-          <CardContent className="p-6 flex flex-col md:flex-row gap-6">
-            <img
-              src={farmer.image || "/placeholder.jpg"}
-              alt="farmer"
-              className="w-full md:w-40 h-40 object-cover rounded-2xl"
-            />
+<Card
+  className={cn(
+    "md:col-span-2 rounded-2xl shadow-md border bg-card",
+    farmer.status === "INACTIVE"
+      ? "border-red-500 bg-red-50 dark:bg-red-950/20"
+      : "border-border"
+  )}
+>
+  <CardContent className="p-6 flex flex-col md:flex-row gap-6">
 
-            <div className="flex-1 space-y-3">
-              <h1 className="text-2xl md:text-3xl font-bold">
-                {farmer.first_name} {farmer.last_name}
-              </h1>
+    {/* 🚨 WARNING BANNER */}
+    {farmer.status === "INACTIVE" && (
+      <div className="w-full md:absolute md:top-0 md:left-0 md:right-0 bg-red-600 text-white px-4 py-3 rounded-t-2xl flex items-center gap-2 shadow-md">
+        <AlertTriangle size={20} />
+        <span className="font-semibold">
+          This farmer account is currently inactive
+        </span>
+      </div>
+    )}
 
-              {farmer.farmName && (
-                <p className="text-lg text-muted-foreground font-medium">
-                  {farmer.farmName}
-                </p>
-              )}
+    {/* IMAGE */}
+    <img
+      src={isOwnPage ? userInfo.user?.imageUrl : farmer.image}
+      alt={farmer.first_name} 
+      className="max-w-80 md:w-40 max-h-80 object-cover rounded-2xl border"
+    />
 
-              <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                {farmer.address && (
-                  <div className="flex items-center gap-1">
-                    <MapPin size={16} /> {farmer.address}
-                  </div>
-                )}
-                {farmer.language && (
-                  <div className="flex items-center gap-1">
-                    <Globe size={16} /> {farmer.language}
-                  </div>
-                )}
-                {farmer.createdAt && (
-                  <div className="flex items-center gap-1">
-                    <Calendar size={16} />
-                    Member since {new Date(farmer.createdAt).getFullYear()}
-                  </div>
-                )}
-              </div>
+    {/* CONTENT */}
+    <div className="flex-1 space-y-3">
+      <h1 className="text-2xl md:text-3xl font-bold">
+        {farmer.first_name} {farmer.last_name} 
+      </h1>
 
-              {farmer.status && (
-                <Badge
-                  className="w-fit"
-                  variant={farmer.status === "ACTIVE" ? "default" : "secondary"}
-                >
-                  {farmer.status}
-                </Badge>
-              )}
+      {farmer.farmName && (
+        <p className="text-lg text-muted-foreground font-medium">
+          {farmer.farmName}
+        </p>
+      )}
 
-              {farmer.bio && (
-                <p className="text-muted-foreground pt-2 leading-relaxed">
-                  {farmer.bio}
-                </p>
-              )}
+      <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+        {farmer.address && (
+          <div className="flex items-center gap-1">
+            <MapPin size={16} /> {farmer.address}
+          </div>
+        )}
+        {farmer.language && (
+          <div className="flex items-center gap-1">
+            <Globe size={16} /> {farmer.language}
+          </div>
+        )}
+        {farmer.createdAt && (
+          <div className="flex items-center gap-1">
+            <Calendar size={16} />
+            Member since {new Date(farmer.createdAt).getFullYear()}
+          </div>
+        )}
+      </div>
+     Email : <Link className="text-green-500 font-bold hover:underline" href={`mailto:${farmer.email}`}>
+  {farmer.email}
+</Link> <br />
 
-              {isOwnPage ? (
-                <Button className="mt-4 rounded-xl flex gap-2 bg-emerald-700 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 transition">
-                  <Edit size={18} /> Edit Profile
-                </Button>
-              ) : userInfo.user?.id === farmer.id ? (
-                <h1 className="bg-green-600 text-2xl font-bold text-center rounded-2xl text-gray-300">
-                  This is your own product
-                </h1>
-              ) : (
-                <Button
-                  className="mt-4 rounded-xl flex gap-2 bg-emerald-700 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 transition"
-                  onClick={() => router.push(`/chatMatche/${farmer.id}`)}
-                >
-                  <MessageCircle size={18} /> Message Farmer
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+      {/* STATUS BADGE */}
+      {farmer.status && (
+        <Badge
+          className={cn(
+            "w-fit font-semibold",
+            farmer.status === "INACTIVE"
+              ? "bg-red-600 text-white"
+              : ""
+          )}
+        >
+          {farmer.status}
+        </Badge>
+      )}
+
+      {/* EXTRA WARNING TEXT */}
+      {farmer.status === "INACTIVE" && (
+        <div className="p-3 rounded-xl bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-sm">
+          ⚠️ This farmer may not respond to messages or transactions.
+        </div>
+      )}
+
+      {farmer.bio && (
+        <p className="text-muted-foreground pt-2 leading-relaxed">
+          {farmer.bio}
+        </p>
+      )}
+
+      {/* ACTIONS */}
+      {isOwnPage ? (
+        <Button className="mt-4 rounded-xl flex gap-2 bg-emerald-700 hover:bg-emerald-600 transition">
+          <Edit size={18} /> Edit Profile
+        </Button>
+      ) : userInfo.user?.id === farmer.id ? (
+        <h1 className="bg-green-600 text-2xl font-bold text-center rounded-2xl text-gray-300">
+          This is your own product
+        </h1>
+      ) : (
+        <Button
+          disabled={farmer.status === "INACTIVE"}
+          className={cn(
+            "mt-4 rounded-xl flex gap-2 transition",
+            farmer.status === "INACTIVE"
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-emerald-700 hover:bg-emerald-600"
+          )}
+          onClick={() => router.push(`/chatMatche/${farmer.id}`)}
+        >
+          <MessageCircle size={18} /> Message Farmer
+        </Button>
+      )}
+    </div>
+  </CardContent>
+</Card>
 
         {/* ================= STATS CARD ================= */}
         {farmer.stats && (

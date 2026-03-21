@@ -193,7 +193,11 @@ export default function OrdersTable({
                                     product_id={item.product.id}
                                     isAllowed={false}
                                   />
-                                  <LoaderBtn className="bg-green-800 text-gray-200" btnName="Product Detail" linkTo={`product/${item.product_id}`} />
+                                  <LoaderBtn
+                                    className="bg-green-800 text-gray-200"
+                                    btnName="Product Detail"
+                                    linkTo={`/product/${item.product_id}`}
+                                  />
                                 </div>
                                 <p className="font-semibold dark:text-[#f5f5dc]">
                                   {(
