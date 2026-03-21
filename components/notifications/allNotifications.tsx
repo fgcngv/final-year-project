@@ -10,6 +10,7 @@ import { timeAgo } from "@/utils/notification_time";
 import { toast } from "sonner";
 import { useState } from "react";
 import { deleteNotification } from "@/utils/services/notification"; // import your helper
+import { useRouter } from "next/navigation";
 
 interface NotificationProps {
   notificationData: Notification[];
@@ -17,6 +18,7 @@ interface NotificationProps {
 
 export default function AllNotifications({ notificationData }: NotificationProps) {
   const {  language } = useTheme();
+  const router = useRouter();
   const [notifications, setNotifications] = useState(notificationData);
 
   const handleDelete = async (id: string) => {
@@ -61,6 +63,8 @@ export default function AllNotifications({ notificationData }: NotificationProps
           : error.message || "Ergaawwan haqachuu hin dandeenye"
       );
     }
+
+    router.refresh();
   };
 
   return (
