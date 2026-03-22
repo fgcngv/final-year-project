@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "./checkTheme";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeToggle from "./theme/theme-toggle";
+import { DropdownMenu } from "./ui/dropdown-menu";
 
 export default function Header({
   cartQuantity,
@@ -41,6 +42,7 @@ export default function Header({
     { name: "Orders", link: `/${orderLink}`, key: "orders" },
     { name: "Today's_Market", link: `/todays_market`, key: "today-market" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
+    { name: "Dashboard", link: `/${role}`, key: "dashboard" },
     { name: "Profile", link: `/profile/${user?.id}`, key: "profile" },
   ];
 
@@ -76,7 +78,7 @@ export default function Header({
         </div>
 
         {/* Desktop Nav */}
-        <nav className="hidden min-[1010px]:flex items-center gap-10 text-sm font-medium">
+        <nav className="hidden min-[1317px]:flex items-center gap-10 text-sm font-medium">
           {headerLinks.map((link) => (
             <Link
               href={link.link}
@@ -89,11 +91,6 @@ export default function Header({
 
           {/* SEARCH */}
           <div className="flex items-center bg-gray-800 px-3 rounded-full">
-            <Search className="w-5 h-5 text-gray-400" />
-            <input
-              className="bg-transparent outline-none ml-2 text-sm placeholder-gray-400 p-2"
-              placeholder="Search products..."
-            />
           </div>
         </nav>
 
@@ -142,7 +139,7 @@ export default function Header({
 
           {/* MOBILE MENU BUTTON */}
           <button
-            className="min-[1010px]:hidden cursor-pointer hover:bg-gray-700 p-1 rounded"
+            className="min-[1317px]:hidden cursor-pointer hover:bg-gray-700 p-1 rounded"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
           >
             {isMobileOpen ? (

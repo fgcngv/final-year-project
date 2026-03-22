@@ -26,6 +26,7 @@ export default function MobileHeader() {
     { name: "Notifications", link: "/notifications", key: "notifications" },
     { name: "Today's_Market", link: `/todays_market`, key: "today-market" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
+    { name: "Dashboard", link: `/${role}`, key: "dashboard" },
     { name: "Profile", link: `/profile/${user?.id}`, key: "profile" },
   ];
   
