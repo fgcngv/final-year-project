@@ -72,7 +72,7 @@ export const deleteData = async (id:string,table:string)=>{
 //   return {error:false,message:"Status Updated Successfully!", updatedUser};
 // }
 
-type EntityType = "user" | "product";
+type EntityType = "user" | "product" | "farmer";
 
 export async function updateStatus(
   entity: EntityType,
@@ -112,6 +112,12 @@ export async function updateStatus(
         updatedRecord = await prisma.user.update({
           where: { id },
           data: { status: newStatus },
+        });
+        break;
+      case "farmer":
+        updatedRecord = await prisma.farmer.update({
+          where: { id },
+            data: { status: newStatus },
         });
         break;
 

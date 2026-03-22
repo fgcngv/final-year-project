@@ -33,8 +33,8 @@ export default function MobileSidebar({ role, userId }: Props) {
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex justify-end p-4">
-          <button onClick={() => setOpen(false)}>
+        <div className="flex justify-end p-4 dark:text-black font-bold">
+          <button onClick={() => setOpen(false)} className="font-bold cursor-pointer hover:bg-green-700 p-1 rounded-2xl hover:text-white">
             <X />
           </button>
         </div>

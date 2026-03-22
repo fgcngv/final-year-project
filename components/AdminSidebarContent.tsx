@@ -4,6 +4,7 @@ import { getRole } from "@/utils/role";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Coffee } from "lucide-react";
 
 const sidebarLinks = [
   {
@@ -52,37 +53,6 @@ export default async function AdminSidebarContent() {
       ? farmerSideBarLinks(userId)
       : sidebarLinks;
 
-  // return (
-  //   <div className="px-4 py-4 ">
-  //     <div className="border text-center bg-green-800 rounded font-bold text-2xl text-green-300 mb-6 p-3">
-  //       Green Coffee
-  //     </div>
-
-  //     {linksToRender.map((section) => (
-  //       <div key={section.key} className="mb-6">
-  //         <h1 className="font-bold text-gray-500 text-sm mb-2">
-  //           {section.label}
-  //         </h1>
-
-  //         <div className="flex flex-col gap-2">
-  //           {section.links.map((link) => (
-  //             <Link
-  //               key={link.key2}
-  //               href={link.link}
-  //               className={cn(
-  //                 "rounded-lg px-4 py-3 text-sm font-semibold transition",
-  //                 "hover:bg-green-700 hover:text-white",
-  //                 "bg-gray-100 text-gray-800"
-  //               )}
-  //             >
-  //               {link.name}
-  //             </Link>
-  //           ))}
-  //         </div>
-  //       </div>
-  //     ))}
-  //   </div>
-  // );
 
   return (
     <div className="px-4 py-4 transition-colors duration-500">
@@ -99,8 +69,9 @@ export default async function AdminSidebarContent() {
         mb-6 
         p-3
         transition-colors
+        flex items-center
       ">
-        Green Coffee
+      <Coffee />  Green Coffee
       </div>
   
       {/* Sections */}

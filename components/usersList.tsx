@@ -28,6 +28,7 @@ interface usersTableProps {
     | "cart"
     | "cart_item"
     | "wishlist";
+    statusEntity:"user" | "product" | "farmer";
 }
 
 // Dummy server function wrapper
@@ -40,7 +41,7 @@ async function serverUpdate(
   // await updateUserStatus(adminId, userId, status)
 }
 
-export default function UsersTable({ data, deleteType }: usersTableProps) {
+export default function UsersTable({ data, deleteType,statusEntity }: usersTableProps) {
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const [users, setUsers] = useState(data);
 
@@ -89,7 +90,7 @@ export default function UsersTable({ data, deleteType }: usersTableProps) {
                 <UserStatusDropdown
                   userId={user.id}
                   currentStatus={user.status}
-                  entity="user"
+                  entity={statusEntity}
                 />
               </TableCell>
               <TableCell className="hidden sm:flex flex-col sm:flex-row md:flex-row gap-1">

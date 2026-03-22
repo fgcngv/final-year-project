@@ -100,6 +100,7 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Coffee } from "lucide-react";
 
 interface Props {
   role: string;
@@ -153,8 +154,8 @@ export default function SidebarContent({ role, userId }: Props) {
       
       {/* Logo */}
       <div className="mb-8">
-        <div className="rounded-xl bg-green-700 dark:bg-green-600 text-center py-3 font-bold text-xl text-white tracking-wide shadow-md">
-          ☕ Green Coffee
+        <div className="rounded-xl bg-green-700 dark:bg-green-600 text-center py-3 font-bold text-xl text-white tracking-wide shadow-md flex items-center gap-1">
+        <Coffee size={40} strokeWidth={2} className="text-amber-700 fill-amber-800" /> Coffee
         </div>
       </div>
 

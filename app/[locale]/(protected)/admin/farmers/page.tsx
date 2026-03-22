@@ -23,7 +23,7 @@ async function Farmers() {
 
   return (
     <div>
-      <UsersList data={data} deleteType="farmer" />
+      <UsersList data={data} deleteType="farmer" statusEntity="farmer" />
     </div>
   );
 }

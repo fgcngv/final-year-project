@@ -159,12 +159,7 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
         </motion.button>
 
         {user && (
-          <Link
-            href={`/${role}`}
-            className="relative mt-3 text-white hover:underline"
-          >
-            {tb("dashboardbtn")}
-          </Link>
+          <LoaderBtn className="relative mt-3 bg-transparent hover:text-black text-white hover:underline" linkTo={`/${role}`} btnName={tb("dashboardbtn")}/>
         )}
       </motion.section>
       {!user && (

@@ -13,7 +13,7 @@ async function Users() {
    
     return ( 
         <div>
-            <UsersList data={data} deleteType="user"  />
+            <UsersList data={data} deleteType="user" statusEntity="user" />
         </div>
      );
 }

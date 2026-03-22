@@ -33,13 +33,12 @@
 // } from "../ui/select";
 // import { Language, Role, Status } from "@prisma/client";
 
-
 // export default function FarmerRegistrationForm() {
 //   const { user } = useUser();
 //   const router = useRouter();
 
 //   const id = user?.id;
-  
+
 //   const [loading, setLoading] = useState(false);
 
 //   const form = useForm({
@@ -59,7 +58,7 @@
 //     z.infer<typeof FarmerRegistrationSchema>
 //   > = async (values) => {
 //     if (!id) return;
-    
+
 //     setLoading(true);
 
 //     try {
@@ -89,7 +88,6 @@
 //       setLoading(false);
 //     }
 //   };
-
 
 //   return (
 //     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-emerald-50">
@@ -236,27 +234,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -319,10 +296,7 @@ export default function FarmerRegistrationForm() {
     if (useClerkData && user) {
       form.setValue("first_name", user.firstName || "");
       form.setValue("last_name", user.lastName || "");
-      form.setValue(
-        "email",
-        user.primaryEmailAddress?.emailAddress || ""
-      );
+      form.setValue("email", user.primaryEmailAddress?.emailAddress || "");
     }
   }, [useClerkData, user, form]);
 
@@ -350,10 +324,7 @@ export default function FarmerRegistrationForm() {
         last_name: finalData.last_name,
         email: finalData.email,
         address: finalData.address || null,
-        language:
-          Language[
-            finalData.language as keyof typeof Language
-          ],
+        language: Language[finalData.language as keyof typeof Language],
 
         //  FORCE ROLE
         role: Role.SELLER,
@@ -368,7 +339,7 @@ export default function FarmerRegistrationForm() {
       //  Updating Clerk role
       await updateClerk("farmer");
 
-      toast.success("Farmer registered successfully 🌱");
+      toast.success("Farmer registered successfully");
       form.reset();
       router.push("/");
     } catch (err: any) {
@@ -396,12 +367,7 @@ export default function FarmerRegistrationForm() {
           <CardContent>
             <Form {...form}>
               <form
-                  onSubmit={form.handleSubmit(
-                    onSubmit,
-                    (errors) => {
-                      console.log("VALIDATION ERRORS:", errors);
-                    }
-                  )}
+                onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-6"
               >
                 {/*  Clerk Toggle */}
@@ -409,9 +375,7 @@ export default function FarmerRegistrationForm() {
                   <input
                     type="checkbox"
                     checked={useClerkData}
-                    onChange={(e) =>
-                      setUseClerkData(e.target.checked)
-                    }
+                    onChange={(e) => setUseClerkData(e.target.checked)}
                   />
                   <label className="text-sm text-gray-600">
                     Use my account information
@@ -481,10 +445,7 @@ export default function FarmerRegistrationForm() {
                       <FormItem>
                         <FormLabel>Address</FormLabel>
                         <FormControl>
-                          <Input
-                            {...field}
-                            placeholder="Village / City"
-                          />
+                          <Input {...field} placeholder="Village / City" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -507,15 +468,11 @@ export default function FarmerRegistrationForm() {
                             <SelectValue placeholder="Select language" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="ENGLISH">
-                              English
-                            </SelectItem>
+                            <SelectItem value="ENGLISH">English</SelectItem>
                             <SelectItem value="AFAN_OROMO">
                               Afan Oromo
                             </SelectItem>
-                            <SelectItem value="AMHARIC">
-                              Amharic
-                            </SelectItem>
+                            <SelectItem value="AMHARIC">Amharic</SelectItem>
                           </SelectContent>
                         </Select>
                       </FormControl>
@@ -530,9 +487,7 @@ export default function FarmerRegistrationForm() {
                   disabled={loading}
                   className="w-full h-12 text-lg bg-green-700 hover:bg-green-800"
                 >
-                  {loading
-                    ? "Registering..."
-                    : "Register Farmer"}
+                  {loading ? "Registering..." : "Register Farmer"}
                 </Button>
               </form>
             </Form>

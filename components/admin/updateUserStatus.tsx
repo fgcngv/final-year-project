@@ -20,7 +20,7 @@ type Status = "ACTIVE" | "INACTIVE" | "DORMANT" | "PAUSED";
 interface StatusDropdownProps {
   userId: string;
   currentStatus: Status; // Current status of the user
-  entity:"user" | "product"  //which table is to be updated
+  entity:"user" | "product" | "farmer"  //which table is to be updated
 }
 
 export function UserStatusDropdown({

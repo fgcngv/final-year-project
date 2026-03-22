@@ -4,6 +4,7 @@ import { getRole } from "@/utils/role";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Coffee } from "lucide-react";
 
 
 // const sidebarLinks = [
@@ -123,8 +124,8 @@ export async function FarmerSidebar() {
   return (
     <div className="flex h-full flex-col p-4 fixed">
       {/* LOGO */}
-      <div className="mb-6 rounded-lg bg-green-800 py-3 text-center text-xl font-bold text-green-200">
-        Green Coffee
+      <div className="mb-6 rounded-lg bg-green-800 py-3 text-center text-xl font-bold text-green-200 flex items-center">
+       <Coffee /> Green Coffee
       </div>
 
       {/* LINKS */}
