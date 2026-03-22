@@ -1,6 +1,8 @@
+import Profile from "@/components/buyer/profile";
 import FarmerProfile from "@/components/farmer/FarmerProfile";
 import Header from "@/components/header";
-import { getFarmerById } from "@/utils/services/admin";
+import { getRole } from "@/utils/role";
+import { getFarmerById, getUserById } from "@/utils/services/admin";
 import { getCartByUserIdForCartQuantity } from "@/utils/services/cart";
 import { getAllNotification } from "@/utils/services/notification";
 import { auth } from "@clerk/nextjs/server";
@@ -12,10 +14,11 @@ async function FarmerProfileById(props: {
     if(!userId) return <div>Not Authenticated!</div>
 
     const param = await props.params;
-    console.log(" parma : ",param.id)
 
     const farmerData = await getFarmerById(param.id);
+    const userData = await getUserById(param.id);
     const unread = await getAllNotification();
+    const role = await getRole();
 
         const cart = await getCartByUserIdForCartQuantity(userId);
       
@@ -24,12 +27,20 @@ async function FarmerProfileById(props: {
           cartQuantity += item.quantity;
         });
     
-      
 
     return ( 
         <div>
           <Header cartQuantity={cartQuantity} notification={unread?.data?.length} />
-            <FarmerProfile isOwnPage={false} farmer={farmerData.data} />
+          {
+            role.toUpperCase() === "FARMER" && (
+              <FarmerProfile isOwnPage={false} farmer={farmerData.data} />
+            )
+          }
+          {
+            role.toUpperCase() !=="FARMER" && (
+              <Profile  isOwnPage={false} user={userData.data}/>
+            )
+          }
         </div>
      );
 }

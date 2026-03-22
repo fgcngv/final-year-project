@@ -62,7 +62,8 @@ the original package.json scripts before adding i18nexus
 
 
 
-
+<!-- next iunternalization website link -->
+https://app.i18nexus.com/projects/iuWmsL8NFjAwf48kBP1RKq/strings
 
 
 

@@ -39,8 +39,9 @@ export default function Header({
     { name: "About", link: "/about", key: "about" },
     { name: "Contact_Us", link: "/contact", key: "contact" },
     { name: "Orders", link: `/${orderLink}`, key: "orders" },
-    { name: "Today's_Market", link: `#`, key: "today-market" },
+    { name: "Today's_Market", link: `/todays_market`, key: "today-market" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
+    { name: "Profile", link: `/profile/${user?.id}`, key: "profile" },
   ];
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);

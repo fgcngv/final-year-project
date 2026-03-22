@@ -480,7 +480,7 @@ export default function FarmerProfile({
     {/*  IMAGE + STATUS DOT */}
     <div className="relative">
       <img
-        src={isOwnPage ? userInfo.user?.imageUrl : farmer.image}
+        src={(isOwnPage || userInfo.user?.id === farmer.id) ? userInfo.user?.imageUrl : farmer.image}
         alt={farmer.first_name}
         className="w-40 h-40 object-cover rounded-2xl border shadow-sm"
       />

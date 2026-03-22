@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import ThemeToggle from "./theme/theme-toggle";
+import LoaderBtn from "./loaderBtn";
 
 
 export default function MobileHeader() {
@@ -25,19 +26,14 @@ export default function MobileHeader() {
     { name: "Notifications", link: "/notifications", key: "notifications" },
     { name: "Today's_Market", link: `/todays_market`, key: "today-market" },
     { name: "Chat_Members", link: `/chats/${user?.id}`, key: "chatmembers" },
+    { name: "Profile", link: `/profile/${user?.id}`, key: "profile" },
   ];
   
   return (
     <div className="md:hidden bg-black text-white px-6 py-4 border-t border-gray-700 animate-slideDown">
-      <nav className="flex flex-col gap-4 text-lg font-medium">
+      <nav className="flex flex-col gap-4 text-lg font-medium justify-start items-start">
         {headerLinks.map((item) => (
-          <Link
-            key={item.key}
-            href={item.link}
-            className="hover:text-green-500 transition"
-          >
-            {item.name}
-          </Link>
+          <LoaderBtn key={item.key} btnName={item.name} linkTo={item.link} className="hover:text-green-500 transition  bg-transparent dark:text-white font-bold border-b-1 border-white"/>
         ))}
 
         {/* USER SECTION */}
