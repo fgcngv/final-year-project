@@ -67,49 +67,6 @@ export async function deleteDataById(
     values:any
   }
   
-
-
-
-
-// export const addProduct = async ({ farmer_id, values }: ProductProps) => {
-//   try {
-//     const data = await prisma.product.create({
-//       data: {
-//         product_name: values.product_name,
-//         price: values.price,
-//         image: values.image,
-//         product_detail: values.product_detail || null,
-//         farmer_id: farmer_id!, // ensure NOT empty b/c it is a foreign key
-//         status: values.status.toUpperCase(), // MUST MATCH ENUM
-//       },
-//     });
-
-//     return {
-//       success: true,
-//       error: false,
-//       message: "Product added successfully!",
-//     };
-//   } catch (error) {
-//     console.log("catch error while adding product!: ", error);
-//     return {
-//       success: false,
-//       error: true,
-//       message: "Something went wrong in catch!!!!",
-//     };
-//   }
-// };
-
-
-
-
-
-
-// add Product with notification
-
-
-
-
-
 export const addProduct = async ({ farmer_id, values }: ProductProps) => {
   try {
     // 1️⃣ Create product
@@ -180,11 +137,6 @@ interface FarmerRegistrationProps {
   role: Role
   status:Status
 }
-
-
-
-
-
 
 
 export const registerFarmer = async ({

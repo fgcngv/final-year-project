@@ -1,5 +1,5 @@
 import FarmerProfile from "@/components/farmer/FarmerProfile";
-import { getFarmerById } from "@/utils/services/admin";
+import { getFarmerById, getUserById } from "@/utils/services/admin";
 import { auth } from "@clerk/nextjs/server";
 
 async function FarmerProfileById(props: {
@@ -12,10 +12,11 @@ async function FarmerProfileById(props: {
     console.log(" parma : ",param.id)
 
     const farmerData = await getFarmerById(param.id);
+    const farmerDataFromUserTable = await getUserById(param.id);
 
     return ( 
         <div>
-            <FarmerProfile isOwnPage={true} farmer={farmerData.data} />
+            <FarmerProfile status={farmerDataFromUserTable?.data?.status} isOwnPage={true} farmer={farmerData.data} />
         </div>
      );
 }
