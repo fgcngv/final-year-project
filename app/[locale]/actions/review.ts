@@ -258,6 +258,103 @@ export async function AddReview(values: unknown) {
 }
 
 
+ const ReportSchema = z.object({
+  orderId: z.string().optional(),
+  farmerId: z.string().optional(),
+  productId: z.string().optional(),
+  type: z.enum(["FARMER", "PRODUCT", "ORDER", "USER"]),
+  reason: z.enum([
+    "SCAM",
+    "POOR_QUALITY",
+    "WRONG_ITEM",
+    "LATE_DELIVERY",
+    "ABUSE",
+    "SPAM",
+    "OTHER",
+  ]),
+  description: z.string().optional(),
+});
+
+export async function AddReport(values: unknown) {
+  const { userId } = await auth();
+  if (!userId) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  const parsed = ReportSchema.safeParse(values);
+  if (!parsed.success) {
+    return { success: false, message: "Invalid report data" };
+  }
+
+  const { orderId, farmerId, productId, type, reason, description } =
+    parsed.data;
+
+  try {
+    if (!orderId && !farmerId && !productId) {
+      return { success: false, message: "No target provided for report" };
+    }
+
+    // Duplicate check
+    if (orderId) {
+      const existing = await prisma.report.findUnique({
+        where: {
+          reporter_id_order_id_type: {
+            reporter_id: userId,
+            order_id: orderId,
+            type,
+          },
+        },
+      });
+      if (existing) {
+        return { success: false, message: "You already reported this order/type" };
+      }
+    }
+
+    // Validate entities
+    if (type === "PRODUCT" && productId) {
+      const product = await prisma.product.findUnique({ where: { id: productId } });
+      if (!product) return { success: false, message: "Product not found" };
+    }
+
+    if (type === "FARMER" && farmerId) {
+      const farmer = await prisma.farmer.findUnique({ where: { id: farmerId } });
+      if (!farmer) return { success: false, message: "Farmer not found" };
+    }
+
+    if (type === "ORDER" && orderId) {
+      const order = await prisma.order.findUnique({ where: { id: orderId } });
+      if (!order) return { success: false, message: "Order not found" };
+    }
+
+    // Create report
+    const report = await prisma.report.create({
+      data: {
+        reporter_id: userId,
+        order_id: orderId || null,
+        farmer_id: farmerId || null,
+        product_id: productId || null,
+        type,
+        reason,
+        description,
+      },
+    });
+
+    // Increment farmer report count
+    if (farmerId) {
+      await prisma.farmer.update({
+        where: { id: farmerId },
+        data: { reportCount: { increment: 1 } },
+      });
+    }
+
+    return { success: true, report };
+  } catch (error) {
+    console.error("Report Error:", error);
+    return { success: false, message: error instanceof Error ? error.message : "Failed to submit report" };
+  }
+}
+
+
 
 
 export async function getReviewsByProductId(productId: string) {

@@ -109,8 +109,10 @@ model User {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  addresses Address[]
-  reviews   Review[]
+  addresses      Address[]
+  reviews        Review[]
+  reportsSent    Report[]  @relation("UserReports")
+  handledReports Report[]  @relation("HandledReports")
 
   // chat integration
   buyerConversations Conversation[] @relation("BuyerConversations")
@@ -132,6 +134,9 @@ model Farmer {
   status     Status    @default(ACTIVE)
   products   Product[] //one farmer can have many products
   reviews    Review[]
+
+  reports     Report[]
+  reportCount Int      @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -158,6 +163,7 @@ model Product {
   reviews      Review[]
 
   description PDescription? // ONE-TO-ONE
+  reports     Report[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -191,6 +197,7 @@ model Order {
   payout       Payout?
   notification Notification[]
   reviews      Review[]
+  reports      Report[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -431,4 +438,59 @@ model UserSession {
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+// Report model
+enum ReportType {
+  FARMER
+  PRODUCT
+  ORDER
+  USER
+}
+
+enum ReportReason {
+  SCAM
+  POOR_QUALITY
+  WRONG_ITEM
+  LATE_DELIVERY
+  ABUSE
+  SPAM
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  UNDER_REVIEW
+  RESOLVED
+  REJECTED
+}
+
+model Report {
+  id String @id @default(cuid())
+
+  reporter_id String
+  farmer_id   String?
+  product_id  String?
+  order_id    String?
+
+  type        ReportType
+  reason      ReportReason
+  description String?
+
+  status ReportStatus @default(PENDING)
+
+  handledBy String?
+  resolution String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reporter User     @relation("UserReports", fields: [reporter_id], references: [id], onDelete: Cascade)
+  farmer   Farmer?  @relation(fields: [farmer_id], references: [id], onDelete: Cascade)
+  product  Product? @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  order    Order?   @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  handledByUser User? @relation("HandledReports", fields: [handledBy], references: [id])
+
+  @@unique([reporter_id, order_id, type])
 }

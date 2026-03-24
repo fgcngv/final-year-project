@@ -19,6 +19,7 @@ import { useTheme } from "./checkTheme";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeToggle from "./theme/theme-toggle";
 import { DropdownMenu } from "./ui/dropdown-menu";
+import LoaderBtn from "./loaderBtn";
 
 export default function Header({
   cartQuantity,
@@ -67,12 +68,7 @@ export default function Header({
     <header className="fixed top-0 left-0 right-0 bg-black text-white px-6 py-4 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* LOGO */}
-        <Link
-          href="/"
-          className="text-2xl max-[355px]:hidden text-green-600 font-bold tracking-wide"
-        >
-          EGC
-        </Link>
+        <LoaderBtn btnName="EGC" linkTo="/" className="text-2xl max-[355px]:hidden text-green-600 bg-transparent font-bold tracking-wide"/>
         <div className=" hidden min-[477px]:block ">
           <ThemeToggle />
         </div>

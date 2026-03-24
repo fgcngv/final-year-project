@@ -1,92 +1,5 @@
 
 
-// "use client";
-
-// import Link from "next/link";
-// import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-// import { Button } from "./ui/button";
-// import { X,Bell} from "lucide-react";
-// import { useState } from "react";
-// import { Notification } from "@prisma/client";
-
-// interface NotificationProp {
-//   data: Notification;
-//   leftNotifications?:number
-// }
-
-// function PopupNotification({ data,leftNotifications }: NotificationProp) {
-//   const [showNotification, setShowNotification] = useState(true);
-
-//   if (!showNotification) return null;
-
-//   // Truncate message if longer than 20 characters
-//   const truncateMessage = (message: string, maxLength: number = 20) => {
-//     if (!message) return "";
-//     return message.length > maxLength
-//       ? message.slice(0, maxLength) + "…"
-//       : message;
-//   };
-
-//   if(!data){
-//     return null
-//   }
-
-//   return (
-//     <Card className="top-20 sm:left-7 fixed z-50 border border-gray-500 bg-transparent p-2 rounded-2xl">
-//       <CardHeader>
-//         <div className="flex justify-between items-center">
-//           <CardTitle className="text-center font-bold text-gray-800">
-//             Notifications
-//           </CardTitle>
-//           <Button
-//             onClick={() => setShowNotification(false)}
-//             className="cursor-pointer"
-//           >
-//             <X />
-//           </Button>
-//         </div>
-//       </CardHeader>
-
-//       <CardContent>
-//         <div>
-//           <Link
-//             href={`/notifications/${data.id}`} // use actual notification id
-//             className="flex gap-1.5 border p-1 rounded border-gray-400 hover:bg-gray-400 justify-center items-center bg-gray-300 active:bg-gray-500"
-//           >
-//             {/* <img
-//               src="/green_coffee.png"
-//               alt="farmer1"
-//               width={50}
-//               height={50}
-//               className="rounded-full"
-//             /> */}
-//             <Bell className="text-green-600" size={30}/>
-//             <div>
-//               <span className="font-bold text-sm">{data?.title}</span>
-//               <div className="text-sm">
-//                 {truncateMessage(data?.message || "")}
-//               </div>
-//             </div>
-            
-//           </Link>
-//             {
-//               leftNotifications ? <Link href={`/notifications`} className="bg-gray-500 text-sm rounded-2xl px-2 p-1 text-center active:bg-gray-300">and {leftNotifications}  other{leftNotifications >1 ? 's' :null}</Link>:null
-//             }
-//         </div>
-//       </CardContent>
-//     </Card>
-//   );
-// }
-
-// export default PopupNotification;
-
-
-
-
-
-
-
-
 
 
 "use client";
@@ -95,7 +8,7 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { X, Bell } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Notification } from "@prisma/client";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -106,33 +19,69 @@ interface NotificationProp {
 
 function PopupNotification({ data, leftNotifications }: NotificationProp) {
   const [showNotification, setShowNotification] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const AUTO_CLOSE_TIME = 5000;
+
+  useEffect(() => {
+    if (!showNotification) return;
+
+    if (!isHovered) {
+      timerRef.current = setTimeout(() => {
+        setShowNotification(false);
+      }, AUTO_CLOSE_TIME);
+    }
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [showNotification, isHovered]);
 
   if (!data) return null;
 
-  const truncateMessage = (message: string, maxLength: number = 20) =>
+  const truncateMessage = (message: string, maxLength: number = 40) =>
     message.length > maxLength ? message.slice(0, maxLength) + "…" : message;
 
   return (
     <AnimatePresence>
       {showNotification && (
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          transition={{ duration: 0.4 }}
+          initial={{ opacity: 0, y: -40, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -40, scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={(_, info) => {
+            if (info.offset.x > 100) setShowNotification(false);
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           className="top-20 sm:left-7 fixed z-50 w-80"
         >
-          <Card className="border border-gray-500 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 rounded-2xl shadow-lg">
+          <Card className="border border-gray-500 dark:border-gray-700 bg-white dark:bg-gray-800 p-2 rounded-2xl shadow-xl relative overflow-hidden">
+            
+            {/* Progress Bar */}
+            <motion.div
+              initial={{ width: "100%" }}
+              animate={{ width: isHovered ? "100%" : "0%" }}
+              transition={{ duration: AUTO_CLOSE_TIME / 1000, ease: "linear" }}
+              className="absolute bottom-0 left-0 h-1 bg-green-500"
+            />
+
             <CardHeader>
               <div className="flex justify-between items-center">
-                <CardTitle className="text-center font-bold text-gray-900 dark:text-white">
+                <CardTitle className="font-bold text-gray-900 dark:text-white text-lg ">
                   Notifications
                 </CardTitle>
                 <Button
                   onClick={() => setShowNotification(false)}
-                  className="cursor-pointer text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+                  variant="ghost"
+                  size="icon"
+                  className="hover:bg-gray-200 bg-gray-400 cursor-pointer dark:hover:bg-gray-700"
                 >
-                  <X size={20} />
+                  <X size={18} />
                 </Button>
               </div>
             </CardHeader>
@@ -140,14 +89,14 @@ function PopupNotification({ data, leftNotifications }: NotificationProp) {
             <CardContent className="space-y-2">
               <Link
                 href={`/notifications/${data.id}`}
-                className="flex gap-2 border border-gray-300 dark:border-gray-600 p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 items-center transition-colors"
+                className="flex gap-3 border border-gray-300 dark:border-gray-600 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 active:scale-[0.98] items-center transition"
               >
                 <Bell className="text-green-600 dark:text-green-400" size={24} />
                 <div className="flex flex-col">
-                  <span className="font-bold text-sm text-gray-900 dark:text-white">
+                  <span className="font-semibold text-sm text-gray-900 dark:text-white">
                     {data.title}
                   </span>
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-xs text-gray-700 dark:text-gray-300">
                     {truncateMessage(data.message || "")}
                   </span>
                 </div>
@@ -156,9 +105,11 @@ function PopupNotification({ data, leftNotifications }: NotificationProp) {
               {leftNotifications && (
                 <Link
                   href="/notifications"
-                  className="inline-block mt-1 bg-gray-300 dark:bg-gray-600 text-sm rounded-2xl px-2 py-1 text-center text-gray-800 dark:text-gray-200 hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+                  className="flex justify-center max-w-40 mt-1 bg-gray-300 dark:bg-gray-600 text-xs rounded-xl px-3 py-1 text-center text-gray-800 dark:text-gray-200 hover:bg-gray-400 items-center dark:hover:bg-gray-500 transition"
                 >
-                  and {leftNotifications} other{leftNotifications > 1 ? "s" : ""}
+                  <span className="text-2xl text-green-500 font-bold">+</span> 
+                  <span>{leftNotifications} more notification
+                  {leftNotifications > 1 ? "s" : ""}</span>
                 </Link>
               )}
             </CardContent>

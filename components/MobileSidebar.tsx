@@ -16,7 +16,7 @@ export default function MobileSidebar({ role, userId }: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="md:hidden p-2"
+        className="min-[1291px]:hidden p-2"
       >
         <Menu />
       </button>

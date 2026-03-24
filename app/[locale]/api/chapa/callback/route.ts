@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -47,7 +45,6 @@ export async function GET(req: Request) {
     return NextResponse.redirect("/check-out/failed");
   }
 
-
   await prisma.$transaction(async (tx) => {
     // mark payment as paid
     await tx.payment.update({
@@ -74,10 +71,10 @@ export async function GET(req: Request) {
       });
     }
 
-        //  Delete user's cart (if exists)
-        await tx.cart.deleteMany({
-          where: { user_id: payment.user_id },
-        });
+    //  Delete user's cart (if exists)
+    await tx.cart.deleteMany({
+      where: { user_id: payment.user_id },
+    });
 
     // 4️ Calculate total amount
     const totalAmount = payment.order.items.reduce(
@@ -104,6 +101,7 @@ export async function GET(req: Request) {
       },
     });
   });
+
 
   return NextResponse.redirect("/check-out/success");
 }

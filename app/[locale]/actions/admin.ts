@@ -1,7 +1,7 @@
 "use server"
 
 import { toast } from "sonner";
-import { PrismaClient, Status } from "@prisma/client";
+import { PrismaClient, Status,NotificationType } from "@prisma/client";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getRole } from "@/utils/role";
 import prisma from "@/lib/prisma";
@@ -74,6 +74,91 @@ export const deleteData = async (id:string,table:string)=>{
 
 type EntityType = "user" | "product" | "farmer";
 
+// export async function updateStatus(
+//   entity: EntityType,
+//   id: string,
+//   newStatus: Status
+// ) {
+//   try {
+//     const { userId } = await auth();
+
+//     if (!userId) {
+//       return { error: true, message: "Not authenticated" };
+//     }
+
+//     const role = await getRole();
+
+//     // Only admins allowed
+//     if (role?.toUpperCase() !== "ADMIN") {
+//       return {
+//         error: true,
+//         message: "Unauthorized: Admin access required",
+//       };
+//     }
+
+//     // Validate status
+//     if (!Object.values(Status).includes(newStatus)) {
+//       return {
+//         error: true,
+//         message: "Invalid status value",
+//       };
+//     }
+
+//     let updatedRecord;
+
+//     //Handle different tables
+//     switch (entity) {
+//       case "user":
+//         updatedRecord = await prisma.user.update({
+//           where: { id },
+//           data: { status: newStatus },
+//         });
+//         break;
+//       case "farmer":
+//         updatedRecord = await prisma.farmer.update({
+//           where: { id },
+//             data: { status: newStatus },
+//         });
+//         break;
+
+//       case "product":
+//         updatedRecord = await prisma.product.update({
+//           where: { id },
+//           data: { status: newStatus },
+//         });
+//         break;
+
+//       default:
+//         return {
+//           error: true,
+//           message: "Invalid entity type",
+//         };
+//     }
+
+//     if (!updatedRecord) {
+//       return {
+//         error: true,
+//         message: "Update failed",
+//       };
+//     }
+
+//     return {
+//       error: false,
+//       message: "Status updated successfully",
+//       data: updatedRecord,
+//     };
+//   } catch (error) {
+//     console.error("Update status error:", error);
+
+//     return {
+//       error: true,
+//       message: "Internal server error",
+//     };
+//   }
+// }
+
+
+
 export async function updateStatus(
   entity: EntityType,
   id: string,
@@ -88,37 +173,57 @@ export async function updateStatus(
 
     const role = await getRole();
 
-    // Only admins allowed
     if (role?.toUpperCase() !== "ADMIN") {
-      return {
-        error: true,
-        message: "Unauthorized: Admin access required",
-      };
+      return { error: true, message: "Unauthorized: Admin access required" };
     }
 
-    // Validate status
     if (!Object.values(Status).includes(newStatus)) {
-      return {
-        error: true,
-        message: "Invalid status value",
-      };
+      return { error: true, message: "Invalid status value" };
     }
 
-    let updatedRecord;
+    let updatedRecord: any;
+    let notifications: { user_id: string; title: string; message: string }[] = [];
 
-    //Handle different tables
     switch (entity) {
       case "user":
         updatedRecord = await prisma.user.update({
           where: { id },
           data: { status: newStatus },
         });
+
+        notifications.push({
+          user_id: id,
+          title: "Account Status Updated",
+          message: `Your account status is now "${newStatus}"`,
+        });
         break;
+
       case "farmer":
         updatedRecord = await prisma.farmer.update({
           where: { id },
-            data: { status: newStatus },
+          data: { status: newStatus },
         });
+
+        // Notify the farmer
+        notifications.push({
+          user_id: id,
+          title: "Farmer Status Updated",
+          message: `Your account status is now "${newStatus}"`,
+        });
+
+        // Optionally, notify all buyers about status change of this farmer's products
+        const buyerIds = await prisma.user.findMany({
+          where: { role: "BUYER" },
+          select: { id: true },
+        });
+
+        notifications.push(
+          ...buyerIds.map((b) => ({
+            user_id: b.id,
+            title: "Farmer Status Changed",
+            message: `Farmer "${updatedRecord.first_name} ${updatedRecord.last_name}" is now "${newStatus}"`,
+          }))
+        );
         break;
 
       case "product":
@@ -126,33 +231,40 @@ export async function updateStatus(
           where: { id },
           data: { status: newStatus },
         });
+
+        // Notify buyers who have this product in wishlist
+        const usersToNotify = await prisma.wishlist.findMany({
+          where: { product_id: id },
+          select: { user_id: true },
+        });
+
+        notifications.push(
+          ...usersToNotify.map((u) => ({
+            user_id: u.user_id,
+            title: "Product Status Updated",
+            message: `"${updatedRecord.product_name}" is now "${newStatus}"`,
+          }))
+        );
         break;
 
       default:
-        return {
-          error: true,
-          message: "Invalid entity type",
-        };
+        return { error: true, message: "Invalid entity type" };
     }
 
-    if (!updatedRecord) {
-      return {
-        error: true,
-        message: "Update failed",
-      };
+    // Create all notifications at once
+    if (notifications.length > 0) {
+      await prisma.notification.createMany({
+        data: notifications.map((n) => ({
+          ...n,
+          type: NotificationType.SYSTEM,
+          priority: 2,
+        })),
+      });
     }
 
-    return {
-      error: false,
-      message: "Status updated successfully",
-      data: updatedRecord,
-    };
+    return { error: false, message: "Status updated successfully", data: updatedRecord };
   } catch (error) {
     console.error("Update status error:", error);
-
-    return {
-      error: true,
-      message: "Internal server error",
-    };
+    return { error: true, message: "Internal server error" };
   }
 }

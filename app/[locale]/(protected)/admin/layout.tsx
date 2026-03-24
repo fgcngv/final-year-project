@@ -68,7 +68,7 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen transition-colors duration-500 bg-gray-100 dark:bg-[#121212]">
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex w-64 border-r border-gray-200 dark:border-[#3c2a21] shadow-sm transition-colors">
+      <div className="hidden min-[1291px]:flex w-64 border-r border-gray-200 dark:border-[#3c2a21] shadow-sm transition-colors">
         <SidebarContent role={resolvedRole} userId={userId} />
       </div>
 

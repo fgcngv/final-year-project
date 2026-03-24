@@ -18,6 +18,7 @@ import {
   User,
 } from "lucide-react";
 import ReviewDialog from "../review/reviewDialog";
+import ReportDialog from "../review/ReportDialog";
 
 type OrderItemType = {
   id: string;
@@ -223,6 +224,13 @@ export default function BuyerDashboardPage() {
                             order_id={order.id}
                             product_id={item.product_id as string}
                           />
+                        )}
+                        {order.status === "CONFIRMED" && (
+                        <ReportDialog
+                          orderId={order.id}
+                          productId={item.product_id}
+                          type="PRODUCT"
+                      />
                         )}
                       </div>
                     ))}
