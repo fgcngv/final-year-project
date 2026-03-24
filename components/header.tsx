@@ -68,7 +68,37 @@ export default function Header({
     <header className="fixed top-0 left-0 right-0 bg-black text-white px-6 py-4 z-50 shadow-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* LOGO */}
-        <LoaderBtn btnName="EGC" linkTo="/" className="text-2xl max-[355px]:hidden text-green-600 bg-transparent font-bold tracking-wide"/>
+        <Link
+  href="/"
+  className="
+    relative inline-flex items-center justify-center
+    text-2xl font-extrabold tracking-wider
+    text-green-700
+    px-1 py-1.5 rounded-xl
+    transition-all duration-300 ease-out
+
+    hover:text-green-800
+    hover:bg-green-600
+    active:scale-95
+
+    before:absolute before:inset-0
+    before:rounded-xl
+    before:bg-green-200
+    before:opacity-0
+    before:scale-75
+    before:transition-all before:duration-300
+
+    hover:before:opacity-100
+    hover:before:scale-100
+
+    shadow-sm hover:shadow-md
+
+    max-[355px]:hidden
+    overflow-hidden
+  "
+>
+  <span className="relative z-10">EGC</span>
+</Link>
         <div className=" hidden min-[477px]:block ">
           <ThemeToggle />
         </div>

@@ -100,6 +100,19 @@ export async function GET(req: Request) {
         status: "PENDING",
       },
     });
+
+
+    // 7 SEND NOTIFICATION TO BUYER
+    await tx.notification.create({
+      data: {
+        user_id: payment.user_id,
+        title: " Payment Successful ",
+        message: `Your order #${payment.order_id.slice(0, 6)} has been placed successfully.`,
+        type: "ORDER",
+        order_id: payment.order_id,
+        priority: 2,
+      },
+    });
   });
 
 
