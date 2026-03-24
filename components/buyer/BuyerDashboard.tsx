@@ -13,12 +13,15 @@ import {
   Bell,
   Heart,
   Home,
+  Mail,
   MessageCircle,
   ShoppingCart,
   User,
 } from "lucide-react";
 import ReviewDialog from "../review/reviewDialog";
 import ReportDialog from "../review/ReportDialog";
+import LoaderBtn from "../loaderBtn";
+import Link from "next/link";
 
 type OrderItemType = {
   id: string;
@@ -206,32 +209,44 @@ export default function BuyerDashboardPage() {
                     {order.items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center gap-3 border-b py-2"
+                        className="border-b-2 pb-2 flex flex-col gap-2"
                       >
-                        <img
-                          src={item.image}
-                          alt={item.product_name}
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
-                        <div className="flex-1">
-                          <p className="font-medium">{item.product_name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            Qty: {item.quantity} • Price: {item.price} ETB
-                          </p>
-                        </div>
-                        {order.status === "CONFIRMED" && (
-                          <ReviewDialog
-                            order_id={order.id}
-                            product_id={item.product_id as string}
+                        <div className="flex  items-center gap-3">
+                          <img
+                            src={item.image}
+                            alt={item.product_name}
+                            className="w-16 h-16 rounded-lg object-cover"
                           />
-                        )}
-                        {order.status === "CONFIRMED" && (
-                        <ReportDialog
-                          orderId={order.id}
-                          productId={item.product_id}
-                          type="PRODUCT"
-                      />
-                        )}
+                          <div className=" flex w-full flex-col min-[425px]:flex-row gap-1">
+                            <div className="flex-1">
+                              <p className="font-medium">{item.product_name}</p>
+                              <p className="text-sm text-muted-foreground">
+                                Qty: {item.quantity} • Price: {item.price} ETB
+                              </p>
+                            </div>
+                            <div className="flex  gap-1 flex-col md:flex-row">
+                              {order.status === "CONFIRMED" && (
+                                <ReviewDialog
+                                  order_id={order.id}
+                                  product_id={item.product_id as string}
+                                />
+                              )}
+                              {order.status === "CONFIRMED" && (
+                                <ReportDialog
+                                  orderId={order.id}
+                                  productId={item.product_id}
+                                  type="PRODUCT"
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <Link
+                          href={`/product/${item.product_id}`}
+                          className="bg-green-900 max-w-45 p-1 text-green-500 hover:bg-pink-600 font-bold rounded-2xl cursor-pointer flex items-center justify-center gap-1 "
+                        >
+                          <Mail /> Connect Farmer
+                        </Link>
                       </div>
                     ))}
 
