@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { deleteNotification } from "@/utils/services/notification"; // import your helper
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 interface NotificationProps {
   notificationData: Notification[];
@@ -20,15 +21,10 @@ export default function AllNotifications({ notificationData }: NotificationProps
   const {  language } = useTheme();
   const router = useRouter();
   const [notifications, setNotifications] = useState(notificationData);
+  const tn = useTranslations("notification");
 
   const handleDelete = async (id: string) => {
-    const confirmDelete = window.confirm(
-      language === "ENGLISH"
-        ? "Are you sure you want to delete this notification?"
-        : language === "AMHARIC"
-        ? "እባክዎ ይህን ማሳወቂያ ማጥፋት ትፈልጋለህ?"
-        : "Ergaawwan kana haquu barbaaddaa?"
-    );
+    const confirmDelete = window.confirm(tn("deleteensure"));
 
     if (!confirmDelete) return;
 
@@ -46,22 +42,10 @@ export default function AllNotifications({ notificationData }: NotificationProps
       // Remove locally
       setNotifications((prev) => prev.filter((n) => n.id !== id));
 
-      toast.success(
-        language === "ENGLISH"
-          ? "Notification deleted"
-          : language === "AMHARIC"
-          ? "ማሳወቂያ ተሰርዟል"
-          : "Ergaawwan haqame"
-      );
+      toast.success(tn("deleted"));
     } catch (error: any) {
       console.error(error);
-      toast.error(
-        language === "ENGLISH"
-          ? error.message || "Failed to delete notification"
-          : language === "AMHARIC"
-          ? error.message || "ማሳወቂያን ማጥፋት አልተሳካም"
-          : error.message || "Ergaawwan haqachuu hin dandeenye"
-      );
+      toast.error(tn("deletefailed"));
     }
 
     router.refresh();
@@ -72,18 +56,10 @@ export default function AllNotifications({ notificationData }: NotificationProps
   {/* Header */}
   <div className="mb-6">
     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-      {language === "ENGLISH"
-        ? "Notifications"
-        : language === "AMHARIC"
-        ? "ማሳወቂያዎች"
-        : "Ergaawwan"}
+      {tn("topic")}
     </h1>
     <p className="text-sm text-gray-500 dark:text-gray-400">
-      {language === "ENGLISH"
-        ? "Stay updated with the latest activities"
-        : language === "AMHARIC"
-        ? "ከአዳዲስ እንቅስቃሴዎች ጋር ዘመናዊ ይሁኑ"
-        : "Hojiilee fi Odeeffannoowwan haaraa hordofaa"}
+      {tn("subtopic")}
     </p>
   </div>
 

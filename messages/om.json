@@ -30,7 +30,9 @@
     "email": "Imeelii Kee",
     "message": "Ergaa kee barreessi...",
     "name": "Maqaa Kee",
-    "subject": "Mata-duree"
+    "subject": "Mata-duree",
+    "search":"Barbaadi...",
+    "msgtitle":"Yaada ykn Ergaa yoo qabaattan"
   },
   "home": {
     "adding": "Dabaluu...",
@@ -51,9 +53,9 @@
     "connection":"Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
     "find":"Maddoota Bunaa Barbaadaa",
     "longDef":"Itoophiyaan bakka dhaloota buna Arabicaati. Jaarraa hedduudhaaf qonnaan bultoonni xixiqqaa biyyee badhaadhaa fi haala qilleensaa xiqqaa adda ta’e keessatti buna misoomsaa turaniiru. Waltajjiin keenya hambaa kana kan eegu yoo ta’u, gabaa addunyaatiif kallattiin dijitaalaa banaadha. ",
-    "sourcing":"🌍 Iddoo Itti oomishamee kallattiidhan argattu! ",
-    "quality":"☕ Buna Magariisa Qulqullina Ol'aanadhaan! ",
-    "relations":"🤝 Qoteebultoota Waliin Hariiroo Kallattii qabna",
+    "sourcing":" Iddoo Itti oomishamee kallattiidhan argattu! ",
+    "quality":" Buna Magariisa Qulqullina Ol'aanadhaan! ",
+    "relations":" Qoteebultoota Waliin Hariiroo Kallattii qabna",
     "builtfor":"Qotee bultootaf kan hojjetame! Bitattootaf Amanamaa kan ta'e!",
     "cardtitle1":"Kenniinsa gatii ifa ta'e ",
     "carddes1":"Qoteebultoonni gatii ifa ta'e kaa'u. Bitattoonni ammoo rakkoo jiru ni argu!",
@@ -67,5 +69,29 @@
     "forb":"Qotee bulaas taatan Bitataas taatan Nu waliin imala Eegalaa!!. ",
     "btn1":"Qotee Bulaa ta'aa",
     "btn2":"Buna ilaalaa "
+  },
+  "notification":{
+    "topic":"Ergaawwan",
+    "subtopic":"Sochiiwwan haaraa yeroo yeroon hordofaa",
+    "deleteensure":"Ergaa kana haquu barbaaddaa?",
+    "deleted":"Ergaa kana milkaa'inaan balleessitaniirtu",
+    "deletefailed":"Ergaa kana balleessun hin milkoofne",
+       "moremsg":"Ergaawwan Dabalataa"
+  },
+  "admin":{
+    "tusers":"Fayyadamtoota Waliigalaa",
+    "tsellers":"Waliigala Qotaabultootaa",
+    "tproduct":"Oomishaalee waliigalaa",
+    "torders":"Ajajoota Waliigala",
+    "revenue":"Galii Waliigalaa",
+    "revenue-generated":"Galii waliigalaa hajjetame",
+    "commision":"Komishinii Waliigalaa Maddisiifame",
+    "ordergraph":"Ajaja Yeroo Waliin",
+    "orderstatus":"Haala Ajaja",
+    "tproducts":"Oomishaalee Ol'aanoo",
+    "tfarmers":"Qonnaan Bultoota Olaanoo",
+    "wishedproducts":"Oomishaalee Hawwii Ta'an Irra Caalaa",
+    "role":"Gahee Fayyadamtootaa",
+    "payment":"Odeeffannoo kanfaltii"
   }
 }

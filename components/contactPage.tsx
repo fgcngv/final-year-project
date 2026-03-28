@@ -141,7 +141,7 @@ export default function ContactForm({
   
               <p className="flex gap-2">
                 <span className="font-semibold flex text-green-800 dark:text-green-400 gap-2">
-                  <Mail /> Email:
+                  <Mail /> {tf("email")}:
                 </span>{" "}
                 birhanugezahegn099@gmail.com
               </p>

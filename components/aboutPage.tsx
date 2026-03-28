@@ -9,6 +9,7 @@ import Header from "@/components/header";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import LoaderBtn from "./loaderBtn";
+import { Coffee, Globe, Handshake } from "lucide-react";
 
 export default function AboutPage({ cartQuantity,notification }: { cartQuantity?: number,notification?:number }) {
 
@@ -167,7 +168,7 @@ export default function AboutPage({ cartQuantity,notification }: { cartQuantity?
           <p className="max-w-3xl mx-auto text-lg text-gray-600 dark:text-gray-300">
             {ta("definition")}
           </p>
-  
+
           <LoaderBtn
             btnName={ta("find")}
             linkTo="/product"
@@ -192,7 +193,7 @@ export default function AboutPage({ cartQuantity,notification }: { cartQuantity?
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl font-bold text-green-900 dark:text-green-400 mb-4">
-            {ta("originTitle")}
+            {ta("title")}
           </h2>
   
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -215,14 +216,14 @@ export default function AboutPage({ cartQuantity,notification }: { cartQuantity?
             "
           >
             <CardContent className="p-6 space-y-4">
-              <p className="font-semibold text-green-800 dark:text-green-400">
-                {ta("sourcing")}
+              <p className="font-semibold flex  gap-2 items-center  text-green-800 dark:text-green-400">
+               <Globe /> {ta("sourcing")}
               </p>
-              <p className="font-semibold text-green-800 dark:text-green-400">
-                {ta("quality")}
+              <p className="font-semibold flex  gap-2 items-center  text-green-800 dark:text-green-400">
+               <Coffee /> {ta("quality")}
               </p>
-              <p className="font-semibold text-green-800 dark:text-green-400">
-                {ta("relations")}
+              <p className="font-semibold flex  gap-2 items-center text-green-800 dark:text-green-400">
+               <Handshake /> {ta("relations")}
               </p>
             </CardContent>
           </Card>

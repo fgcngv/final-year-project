@@ -30,7 +30,8 @@
     "email": "Your Email",
     "message": "Write your message...",
     "name": "Your Name",
-    "subject": "Subject"
+    "subject": "Subject",
+    "search":"Search..."
   },
   "home": {
     "adding": "Adding...",
@@ -51,9 +52,9 @@
     "connection":"Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
     "find":"Explore Coffee Origins",
     "longDef":"Ethiopia is the birthplace of Arabica coffee. For centuries,smallholder farmers have cultivated coffee in rich soils and unique microclimates. Our platform preserves this heritage while openingdirect digital access to global markets.",
-    "sourcing":"🌍 Origin-based sourcing ",
-    "quality":"☕ High-quality green beans",
-    "relations":"🤝 Direct farmer relationships",
+    "sourcing":" Origin-based sourcing ",
+    "quality":" High-quality green beans",
+    "relations":" Direct farmer relationships",
     "builtfor":"Built for Farmers. Trusted by Buyers.",
     "cardtitle1":"Transparent Pricing",
     "carddes1":"Farmers set fair prices. Buyers see full cost breakdowns.",
@@ -67,5 +68,30 @@
     "forb":"Whether you’re a farmer or a buyer — start your journey with us. ",
     "btn1":"Become a Farmer",
     "btn2":"Browse Coffee "
+  },
+  "notification":{
+    "topic":"Notifications",
+    "subtopic":"Stay updated with the latest activities",
+    "deleteensure":"Are you sure you want to delete this notification?",
+    "deleted":"Notification deleted",
+    "deletefailed":"Failed to delete notification",
+    "moremsg":"More Notifications"
+  },
+  "admin":{
+    "tusers":"Total Users",
+    "tsellers":"Total Sellers",
+    "tproduct":"Total Products",
+    "torders":"Total Orders",
+    "revenue":"Revenue Overview",
+    "revenue-generated":"Total Revenue Generated",
+    "commision":"Total Commision Generated",
+    "ordergraph":"Orders Over Time",
+    "orderstatus":"Orders Over Time",
+    "tproducts":"Top Products",
+    "tfarmers":"Top Farmers",
+    "wishedproducts":"Most Wishlisted Products",
+    "role":"User Roles",
+    "payment":"Payment Status"
   }
+
 }

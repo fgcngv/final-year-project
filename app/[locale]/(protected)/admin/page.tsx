@@ -178,7 +178,7 @@ const paymentChartData = Object.entries(statusMap).map(([name, value]) => ({
   
       {/* KPI Cards */}
       <Cards
-        cardName="Total Users"
+        cardName="tusers"
         icon={Users}
         link="/admin/users"
         total={totalUsers}
@@ -186,7 +186,7 @@ const paymentChartData = Object.entries(statusMap).map(([name, value]) => ({
       />
   
       <Cards
-        cardName="Total Seller"
+        cardName="tsellers"
         icon={ShoppingBag}
         link="/admin/farmers"
         total={totalFarmers}
@@ -194,7 +194,7 @@ const paymentChartData = Object.entries(statusMap).map(([name, value]) => ({
       />
   
       <Cards
-        cardName="Total Products"
+        cardName="tproduct"
         icon={Package}
         link="/admin/product"
         total={totalProduct}
@@ -202,7 +202,7 @@ const paymentChartData = Object.entries(statusMap).map(([name, value]) => ({
       />
   
       <Cards
-        cardName="Total Orders"
+        cardName="torders"
         icon={Receipt}
         link="/admin/order"
         total={totalOrders}

@@ -6,6 +6,7 @@ import { CardContent, Card, CardHeader, CardTitle } from "../ui/card";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import LoaderBtn from "../loaderBtn";
+import { useTranslations } from "next-intl";
 
 interface CardProps {
   total?: number;
@@ -16,12 +17,13 @@ interface CardProps {
 }
 
 function Cards({ total, cardName, link, icon: Icon, className }: CardProps) {
+  const ta = useTranslations("admin");
   return (
     <Card
       className={`rounded-2xl shadow-md p-4 transition-colors duration-500 bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] ${className || ""}`}
     >
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-xl font-semibold">{cardName}</CardTitle>
+        <CardTitle className="text-xl font-semibold">{ta(cardName)}</CardTitle>
 
         {/* Dynamic icon */}
         <Icon className="h-8 w-8 text-green-600 dark:text-green-400" />

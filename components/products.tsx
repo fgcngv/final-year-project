@@ -226,6 +226,7 @@ import LoaderBtn from "./loaderBtn";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import ReviewDialog from "./review/reviewDialog";
+import { Volume2 } from "lucide-react";
 
 interface Product {
   id: string;
@@ -256,7 +257,7 @@ export default function ProductsPage({
   const tp = useTranslations("products");
   const tb = useTranslations("button");
   const tc = useTranslations("cart");
-console.log("products : : ",products)
+  const tf = useTranslations("form");
   /* =====================
      SEARCH LOGIC + HIGHLIGHT
   ====================== */
@@ -354,6 +355,18 @@ console.log("products : : ",products)
         : `${product.product_name} ወደ ክፍያ ተመልሷል`
     );
   };
+
+
+
+    /* =========================
+     VOICE
+  ========================== */
+  const speak = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    speechSynthesis.speak(utterance);
+  };
+
 
   /* =====================
      UI
@@ -489,7 +502,7 @@ console.log("products : : ",products)
       <div className="flex justify-center mb-10">
         <input
           type="text"
-          placeholder="Search product..."
+          placeholder={tf("search" )}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="
@@ -620,7 +633,7 @@ console.log("products : : ",products)
                     disable={product.stock === 0}
                   />
 
-                  
+                  {/* <Button onClick={()=>speak(product.product_detail)}><Volume2 /></Button> */}
                 </div>
               </CardFooter>
   

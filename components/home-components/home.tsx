@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import { useState, useMemo } from "react";
 import { addToCart } from "@/utils/services/cartItem";
-import { ShoppingCart, ArrowRight, Coffee } from "lucide-react";
+import { ShoppingCart, ArrowRight, Coffee, Volume2 } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "../checkTheme";
 import { Product, Review } from "@prisma/client";
@@ -41,6 +41,7 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
   const { user } = useUser();
   const router = useRouter();
   const tc = useTranslations("home");
+  const tf = useTranslations("form");
   const tb = useTranslations("button");
   const tcc = useTranslations("cart");
   const { language } = useTheme();
@@ -108,6 +109,15 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
   };
 
   /* =========================
+     VOICE
+  ========================== */
+  const speak = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+    speechSynthesis.speak(utterance);
+  };
+
+  /* =========================
      UI
   ========================== */
 
@@ -159,7 +169,11 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
         </motion.button>
 
         {user && (
-          <LoaderBtn className="relative mt-3 bg-transparent hover:text-black text-white hover:underline" linkTo={`/${role}`} btnName={tb("dashboardbtn")}/>
+          <LoaderBtn
+            className="relative mt-3 bg-transparent hover:text-black text-white hover:underline"
+            linkTo={`/${role}`}
+            btnName={tb("dashboardbtn")}
+          />
         )}
       </motion.section>
       {!user && (
@@ -194,7 +208,7 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
         <div className="flex justify-center mb-10">
           <input
             type="text"
-            placeholder="Search product..."
+            placeholder={`${tf("search")}`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full max-w-xl px-5 py-3 rounded-2xl
@@ -296,24 +310,6 @@ transition-colors  h-full"
                       : "Out of stock"}
                   </p>
 
-                  {/* {reviewData && reviewData?.[product.id]?.length > 0 && (
-                    <div className="mt-4 space-y-3">
-                      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                        Reviews ({reviewData[product.id].length})
-                      </h3>
-
-                      {reviewData[product.id].slice(0, 2).map((r) => (
-                        <ReviewCard
-                          key={r.id}
-                          name={r.name}
-                          date={r.date}
-                          comment={r.comment || ""}
-                          rating={r.rating}
-                          isDialog
-                        />
-                      ))}
-                    </div>
-                  )} */}
                   {reviewData && reviewData?.[product.id]?.length > 0 && (
                     <div className="mt-4">
                       <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -358,6 +354,16 @@ transition-colors"
                       className="w-full bg-green-600 text-white hover:bg-green-700"
                     />
                   </Link>
+                  <Button
+                    onClick={() => speak(product?.product_detail || "")}
+                    className="w-full flex items-center justify-center gap-2 bg-[#3c2a29] text-white
+hover:bg-[#2b1c12]
+dark:bg-[#6f4e37]
+dark:hover:bg-[#5a3d2b]
+transition-colors"
+                  >
+                    <Volume2 />
+                  </Button>
                 </CardFooter>
               </Card>
             </motion.div>
@@ -373,22 +379,9 @@ transition-colors"
 
 
 
-
-
-
-
-
-
-
-
-
-
 //  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
 
 // //  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
-
-
-
 
 // "use client";
 // import { useUser } from "@clerk/nextjs";

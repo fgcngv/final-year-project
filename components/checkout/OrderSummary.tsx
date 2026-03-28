@@ -159,7 +159,7 @@ export default function OrderSummary({
           <span className="font-semibold">Estimated Delivery</span>
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          Within 3-5 business days in Addis Ababa
+          Delivery is based on your Agreement with the farmer
         </p>
       </div>
 
@@ -169,7 +169,9 @@ export default function OrderSummary({
         <div>
           <p className="text-sm font-medium">100% Satisfaction Guarantee</p>
           <p className="text-xs text-gray-600 dark:text-gray-300">
-            Full refund if not satisfied with quality
+            Make shure You are carefully following this platfor for your order information, <br />
+            When the order is delivered to you you can rate the products quality, <br />
+            Full refund if not  delivered
           </p>
         </div>
       </div>
