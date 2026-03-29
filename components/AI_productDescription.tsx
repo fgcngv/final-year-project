@@ -16,6 +16,7 @@ import { Button } from "./ui/button";
 import AnimatedTypewriter from "./ai-clone/animated_type";
 import { useState } from "react";
 import { PDescription } from "@prisma/client";
+import { Volume2 } from "lucide-react";
 
 interface productDescriptionProps {
   id: string;
@@ -44,6 +45,13 @@ function generateAIResponse(field: string, value: string) {
       return `Here are more details: "${value}".`;
   }
 }
+
+const speakProductDetail = (text: string) => {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  speechSynthesis.speak(utterance);
+};
+
 
 function AIProductDescription({ id, data }: productDescriptionProps) {
   const [aiResponse, setAiResponse] = useState(false);
@@ -88,9 +96,12 @@ function AIProductDescription({ id, data }: productDescriptionProps) {
               )}
 
               {/* Trigger Button */}
-              <Button className="cursor-pointer mt-3" onClick={handleAiResponse}>
+                <div className="flex  mt-3 gap-1 justify-center items-center">
+                <Button className="cursor-pointer" onClick={handleAiResponse}>
                 Ask AI about the origin
               </Button>
+              <Button onClick={()=>speakProductDetail(aiText)} className="cursor-pointer"><Volume2 /></Button>
+                </div>
             </div>
           </div>
         </CardContent>

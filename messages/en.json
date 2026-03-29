@@ -1,4 +1,7 @@
 {
+  "language":{
+    "lang":"english"
+  },
   "button": {
     "add": "Add to Cart",
     "buy": "Buy Now",

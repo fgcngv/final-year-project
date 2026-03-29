@@ -44,7 +44,15 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
   const tf = useTranslations("form");
   const tb = useTranslations("button");
   const tcc = useTranslations("cart");
-  const { language } = useTheme();
+  const tln = useTranslations("language");
+  console.log("language : ", tln("lang"));
+
+  const platformDescription =
+    tln("lang") === "አማርኛ"
+      ? "እንኳን ደህና መጡ!. ይህ ፕላትፎርም ከአካባቢ ገበሬዎች ትኩስ ምርቶችን በቀጥታ ለመግዛት እና ለመሸጥ ይረዳዎታል።. እቃዎችን መፈለግ ፣ ዋጋዎችን መመልከት እና እቃዎችን ቀላል በሆነ ሁኔታ ወደ ጋሪዎ መጨመር ትችላላችሁ።. ማንበብ ካልቻሉ የምርት ዝርዝሮችን ለመስማት የማዳመጥ አዝራሩን ብቻ ይጫኑ።. ይህ መድረክ ቀላል፣ ፈጣን እና ለእርስዎ የተሰራ ነው።. አሁን ማሰስ ይጀምሩ!. "
+      : tln("lang") === "oromoo"
+      ? " እንኳን ደህና መጡ!. ይህ ፕላትፎርም ከአካባቢ ገበሬዎች ትኩስ ምርቶችን በቀጥታ ለመግዛት እና ለመሸጥ ይረዳዎታል።. እቃዎችን መፈለግ ፣ ዋጋዎችን መመልከት እና እቃዎችን ቀላል በሆነ ሁኔታ ወደ ጋሪዎ መጨመር ትችላላችሁ።. ማንበብ ካልቻሉ የምርት ዝርዝሮችን ለመስማት የማዳመጥ አዝራሩን ብቻ ይጫኑ።. ይህ መድረክ ቀላል፣ ፈጣን እና ለእርስዎ የተሰራ ነው።. አሁን ማሰስ ይጀምሩ!. "
+      : "Welcome!. This platform helps you buy and sell fresh products directly from local farmers. You can search for products, check prices, and add items to your cart easily. If you cannot read, just press the listen button to hear product details. You can also use the smart AI button to generate and listen to product descriptions automatically. Simple, fast, and made for you. Start exploring now!";
 
   const [loadingId, setLoadingId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,9 +117,36 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
   };
 
   /* =========================
-     VOICE
-  ========================== */
+  //    VOICE
+  // ========================== */
   const speak = (text: string) => {
+    const voices = speechSynthesis.getVoices();
+
+    const lang = tln("lang");
+
+    let selectedVoice;
+
+    if (lang === "አማርኛ") {
+      selectedVoice = voices.find((v) => v.lang.includes("am"));
+    } else if (lang === "oromoo") {
+      selectedVoice = voices.find((v) => v.lang.includes("am"));
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    if (selectedVoice) {
+      utterance.voice = selectedVoice;
+    } else {
+      utterance.lang = "en-US"; // fallback
+    }
+
+    utterance.rate = 0.8;
+    speechSynthesis.speak(utterance);
+  };
+
+  
+  // we don't use this when the language of the data from the database is successfully controled
+  const speakProductDetail = (text: string) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = "en-US";
     speechSynthesis.speak(utterance);
@@ -176,6 +211,14 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
           />
         )}
       </motion.section>
+
+      <button
+        className="p-3 bottom-7 right-0  fixed z-50 bg-green-800 rounded-2xl w-25 flex items-center justify-center m-2 cursor-pointer hover:bg-green-500"
+        onClick={() => speak(platformDescription)}
+      >
+        <Volume2 />
+      </button>
+
       {!user && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -199,8 +242,8 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
       )}
       {/* FEATURED */}
       <section className="py-20 px-6 md:px-20">
-        <h2 className="text-4xl font-bold text-center text-[#4b2e16] dark:text-[#e6ccb2] transition-colors">
-          <Coffee className="text-green-700" />
+        <h2 className="text-4xl font-bold text-center text-[#4b2e16] dark:text-[#e6ccb2] transition-colors gap-2 flex items-center justify-center">
+          <Coffee size={60} className=" fill-green-900" />
           {tc("featured")}
         </h2>
 
@@ -236,136 +279,140 @@ transition-colors"
         >
           {filteredProducts.map((product) => (
             <motion.div key={product.id} variants={item}>
-              <Card
-                className="
-rounded-3xl
-shadow-md hover:shadow-xl
-border border-gray-200 dark:border-[#3c2a21]
-hover:border-green-500
-transition-all duration-300
-bg-white dark:bg-[#1f140d]
-overflow-hidden flex flex-col
-transition-colors  h-full"
-              >
-                {/* IMAGE */}
-                <div className="relative group">
-                  <Link href={`/product/${product.id}`}>
-                    <img
-                      src={product.image}
-                      alt={product.product_name}
-                      className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105"
-                      loading="lazy"
-                    />
-                  </Link>
-
-                  <Button
-                    onClick={() => handleBuyNow(product.id)}
-                    variant="secondary"
-                    className="absolute bottom-3 right-3 bg-blue-700 text-white hover:bg-blue-600"
-                    disabled={product.stock === 0}
-                  >
-                    {tb("buy")}
-                  </Button>
-                </div>
-
-                {/* CONTENT */}
-                <CardContent className="p-5 flex flex-col gap-2 flex-grow">
-                  <h2 className="text-lg font-semibold">
-                    {product.product_name}
-                  </h2>
-
-                  <p className="text-2xl font-bold text-green-700">
-                    {product.price} Brr
-                  </p>
-                  <p className="text-lg font-semibold text-gray-600 dark:text-gray-300">
-                    <i>{product.product_detail}</i>
-                  </p>
-
-                  <div className="flex items-center gap-2 mt-2">
-                    <Button
-                      onClick={() => decreaseQty(product.id)}
-                      size="sm"
-                      className="bg-red-700 text-white"
-                    >
-                      -
-                    </Button>
-
-                    <span>{getQty(product.id)}</span>
+              {product.status !== "INACTIVE" && (
+                <Card
+                  className="
+  rounded-3xl
+  shadow-md hover:shadow-xl
+  border border-gray-200 dark:border-[#3c2a21]
+  hover:border-green-500
+  transition-all duration-300
+  bg-white dark:bg-[#1f140d]
+  overflow-hidden flex flex-col
+  transition-colors  h-full"
+                >
+                  {/* IMAGE */}
+                  <div className="relative group">
+                    <Link href={`/product/${product.id}`}>
+                      <img
+                        src={product.image}
+                        alt={product.product_name}
+                        className="w-full h-52 object-cover transition-all duration-300 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </Link>
 
                     <Button
-                      onClick={() =>
-                        increaseQty(product.id, product.stock || 1)
-                      }
-                      size="sm"
+                      onClick={() => handleBuyNow(product.id)}
+                      variant="secondary"
+                      className="absolute bottom-3 right-3 bg-blue-700 text-white hover:bg-blue-600"
                       disabled={product.stock === 0}
-                      className="bg-green-700 text-white"
                     >
-                      +
+                      {tb("buy")}
                     </Button>
                   </div>
 
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {product.stock > 0
-                      ? `${product.stock} left in stock`
-                      : "Out of stock"}
-                  </p>
+                  {/* CONTENT */}
+                  <CardContent className="p-5 flex flex-col gap-2 flex-grow">
+                    <h2 className="text-lg font-semibold">
+                      {product.product_name}
+                    </h2>
 
-                  {reviewData && reviewData?.[product.id]?.length > 0 && (
-                    <div className="mt-4">
-                      <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        Reviews ({reviewData[product.id].length})
-                      </h3>
+                    <p className="text-2xl font-bold text-green-700">
+                      {product.price} Brr
+                    </p>
+                    <p className="text-lg font-semibold text-gray-600 dark:text-gray-300">
+                      <i>{product.product_detail}</i>
+                    </p>
 
-                      <div className="max-h-28 overflow-y-auto pr-1 space-y-3">
-                        {reviewData[product.id].slice(0, 2).map((r) => (
-                          <ReviewCard
-                            key={r.id}
-                            name={r.name}
-                            date={r.date}
-                            comment={r.comment || ""}
-                            rating={r.rating}
-                            isDialog
-                          />
-                        ))}
-                      </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Button
+                        onClick={() => decreaseQty(product.id)}
+                        size="sm"
+                        className="bg-red-700 text-white"
+                      >
+                        -
+                      </Button>
+
+                      <span>{getQty(product.id)}</span>
+
+                      <Button
+                        onClick={() =>
+                          increaseQty(product.id, product.stock || 1)
+                        }
+                        size="sm"
+                        disabled={product.stock === 0}
+                        className="bg-green-700 text-white"
+                      >
+                        +
+                      </Button>
                     </div>
-                  )}
-                </CardContent>
 
-                {/* FOOTER */}
-                <CardFooter className="p-5 pt-0 flex flex-col gap-3 mt-auto">
-                  <Button
-                    onClick={() => handleAddToCart(product.id)}
-                    disabled={loadingId === product.id || product.stock === 0}
-                    className="w-full flex items-center justify-center gap-2 bg-[#3c2a21] text-white
-hover:bg-[#2b1c12]
-dark:bg-[#6f4e37]
-dark:hover:bg-[#5a3d2b]
-transition-colors"
-                  >
-                    <ShoppingCart size={18} />
-                    {loadingId === product.id ? tc("adding") : tb("add")}
-                  </Button>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {product.stock > 0
+                        ? `${product.stock} left in stock`
+                        : "Out of stock"}
+                    </p>
 
-                  <Link href={`/product/${product.id}`} className="w-full">
-                    <LoaderBtn
-                      disable={product.stock === 0}
-                      btnName={tb("detail")}
-                      className="w-full bg-green-600 text-white hover:bg-green-700"
-                    />
-                  </Link>
-                  <Button
-                    onClick={() => speak(product?.product_detail || "")}
-                    className="w-full flex items-center justify-center gap-2 bg-[#3c2a29] text-white
-hover:bg-[#2b1c12]
-dark:bg-[#6f4e37]
-dark:hover:bg-[#5a3d2b]
-transition-colors"
-                  >
-                    <Volume2 />
-                  </Button>
-                </CardFooter>
-              </Card>
+                    {reviewData && reviewData?.[product.id]?.length > 0 && (
+                      <div className="mt-4">
+                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                          Reviews ({reviewData[product.id].length})
+                        </h3>
+
+                        <div className="max-h-28 overflow-y-auto pr-1 space-y-3">
+                          {reviewData[product.id].slice(0, 2).map((r) => (
+                            <ReviewCard
+                              key={r.id}
+                              name={r.name}
+                              date={r.date}
+                              comment={r.comment || ""}
+                              rating={r.rating}
+                              isDialog
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+
+                  {/* FOOTER */}
+                  <CardFooter className="p-5 pt-0 flex flex-col gap-3 mt-auto">
+                    <Button
+                      onClick={() => handleAddToCart(product.id)}
+                      disabled={loadingId === product.id || product.stock === 0}
+                      className="w-full flex items-center justify-center gap-2 bg-[#3c2a21] text-white
+  hover:bg-[#2b1c12]
+  dark:bg-[#6f4e37]
+  dark:hover:bg-[#5a3d2b]
+  transition-colors"
+                    >
+                      <ShoppingCart size={18} />
+                      {loadingId === product.id ? tc("adding") : tb("add")}
+                    </Button>
+
+                    <Link href={`/product/${product.id}`} className="w-full">
+                      <LoaderBtn
+                        disable={product.stock === 0}
+                        btnName={tb("detail")}
+                        className="w-full bg-green-600 text-white hover:bg-green-700"
+                      />
+                    </Link>
+                    <Button
+                      onClick={() =>
+                        speakProductDetail(product?.product_detail || "")
+                      }
+                      className="w-full flex items-center justify-center gap-2 bg-[#3c2a29] text-white
+  hover:bg-[#2b1c12]
+  dark:bg-[#6f4e37]
+  dark:hover:bg-[#5a3d2b]
+  transition-colors"
+                    >
+                      <Volume2 />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              )}
             </motion.div>
           ))}
         </motion.div>
@@ -373,6 +420,7 @@ transition-colors"
     </div>
   );
 }
+
 
 
 
@@ -743,24 +791,6 @@ transition-colors"
 //                       : "Out of stock"}
 //                   </p>
 
-//                   {/* {reviewData && reviewData?.[product.id]?.length > 0 && (
-//                     <div className="mt-4 space-y-3">
-//                       <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-//                         Reviews ({reviewData[product.id].length})
-//                       </h3>
-
-//                       {reviewData[product.id].slice(0, 2).map((r) => (
-//                         <ReviewCard
-//                           key={r.id}
-//                           name={r.name}
-//                           date={r.date}
-//                           comment={r.comment || ""}
-//                           rating={r.rating}
-//                           isDialog
-//                         />
-//                       ))}
-//                     </div>
-//                   )} */}
 //                   {reviewData && reviewData?.[product.id]?.length > 0 && (
 //                     <div className="mt-4">
 //                       <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
