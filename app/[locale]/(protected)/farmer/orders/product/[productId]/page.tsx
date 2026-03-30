@@ -35,7 +35,9 @@ async function GetProductBYId(props: {
         <ProductBYId isDashboard product={data} />
       </div>
       <div className="lg:pt-20">
-        <AIProductDescription id={productId} data={Pdescription?.data} />
+        {/* <AIProductDescription id={productId} data={Pdescription?.data} />
+         */}
+         <AIProductDescription />
       </div>
     </div>
   );
