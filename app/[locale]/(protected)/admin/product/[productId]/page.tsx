@@ -55,7 +55,7 @@ async function GetProductBYId(props: {
       /> */}
       <div className="lg:pt-20">
         {/* <AIProductDescription id={productId} data={Pdescription?.data} /> */}
-        <AIProductDescription   />
+        <AIProductDescription product={data}  />
       </div>
     </div>
   );

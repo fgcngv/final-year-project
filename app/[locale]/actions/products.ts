@@ -49,6 +49,7 @@ export const getProductById = async(id:string)=>{
         }
     });
 
+
     if(!data){
         return {success: false,error:true,message:"Product Not Found!"}
     }
@@ -57,6 +58,15 @@ export const getProductById = async(id:string)=>{
 }
 
 
+
+
+export const singleProduct = async(id:string)=>{
+  const data = await prisma.product.findUnique({
+    where:{id},
+});
+
+return data
+}
 
 // export const deleteProductById = async (id: string) => {
 //     try {
