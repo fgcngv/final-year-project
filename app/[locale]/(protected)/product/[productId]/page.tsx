@@ -55,7 +55,8 @@ async function GetProductBYId(props: {
         linkTo="/product"
       />
       <div className="lg:pt-20">
-        <AIProductDescription id={productId} data={Pdescription?.data} />
+        {/* <AIProductDescription id={productId} data={Pdescription?.data} /> */}
+        <AIProductDescription />
       </div>
     </div>
   );
