@@ -20,7 +20,7 @@ import { Volume2 } from "lucide-react";
 interface Product {
   id: string;
   product_name: string;
-  product_detail?:string;
+  // product_detail?:string;
   image: string;
   price: number;
   stock: number;
@@ -282,7 +282,7 @@ export default function ProductsPage({
                   </div>
   
                 </CardContent>
-                <i>{product.product_detail}</i>
+                {/* <i>{product.product_detail}</i> */}
 
                 {/* FOOTER */}
                 <CardFooter className="flex flex-col gap-3 p-4 mt-auto">
@@ -315,7 +315,7 @@ export default function ProductsPage({
                       disable={product.stock === 0}
                     />
   
-                    <Button onClick={()=>speak(product.product_detail || "")}><Volume2 /></Button>
+                    {/* <Button onClick={()=>speak(product.product_detail || "")}><Volume2 /></Button> */}
                   </div>
                 </CardFooter>
     
