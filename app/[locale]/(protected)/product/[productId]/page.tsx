@@ -1,4 +1,4 @@
-import { getProductById } from "@/app/[locale]/actions/products";
+import { getProductById, singleProduct } from "@/app/[locale]/actions/products";
 import AIProductDescription from "@/components/AI_productDescription";
 import LoaderBtn from "@/components/loaderBtn";
 import ProductBYId from "@/components/ProductById";
@@ -33,7 +33,8 @@ async function GetProductBYId(props: {
   const Pdescription = await getProductDescriptionByProductId(data?.id);
 
 
-  console.log("Pdescription : ", Pdescription);
+   const single_prod = await singleProduct(productId);
+   console.log("single product : ",single_prod)
   
 
     //  Now it is safe to query Prisma
@@ -56,7 +57,11 @@ async function GetProductBYId(props: {
       />
       <div className="lg:pt-20">
         {/* <AIProductDescription id={productId} data={Pdescription?.data} /> */}
-        <AIProductDescription product={data}/>
+        {
+          single_prod && (
+            <AIProductDescription product={single_prod}/>
+          )
+        }
       </div>
     </div>
   );

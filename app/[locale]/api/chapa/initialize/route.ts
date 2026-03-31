@@ -8,20 +8,20 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    console.log("INIT CHAPA CALLED");
+    // console.log("INIT CHAPA CALLED");
 
-    console.log("ENV CHECK:", {
-      base: process.env.CHAPA_BASE_URL,
-      callback: process.env.CHAPA_CALLBACK_URL,
-      return: process.env.CHAPA_RETURN_URL,
-    });
+    // console.log("ENV CHECK:", {
+    //   base: process.env.CHAPA_BASE_URL,
+    //   callback: process.env.CHAPA_CALLBACK_URL,
+    //   return: process.env.CHAPA_RETURN_URL,
+    // });
 
-    console.log("Calling Chapa from:", process.env.CHAPA_CALLBACK_URL);
+    // console.log("Calling Chapa from:", process.env.CHAPA_CALLBACK_URL);
 
 
     // 1️ Authenticate user
     const { userId } = await auth();
-    console.log("AUTH USERID:", userId);
+    // console.log("AUTH USERID:", userId);
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 
     // 2 Parse request body
     const body = await req.json();
-    console.log("REQUEST BODY:", body);
+    // console.log("REQUEST BODY:", body);
 
     const payment_id = body.payment_id;
     if (!payment_id) {
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       where: { id: payment_id },
       include: { order: true },
     });
-    console.log("PAYMENT FETCHED:", payment);
+    // console.log("PAYMENT FETCHED:", payment);
 
     if (!payment || payment.status !== "UNPAID") {
       return NextResponse.json({ error: "Invalid payment" }, { status: 400 });
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
     const shortUuid = uuidv4().split("-")[0]; // first 8 chars
     let orderIdPart = payment.order_id.slice(0, 30); // take first 30 chars if very long
 const tx_ref = `order-${orderIdPart}-${shortUuid}`;
-    console.log("TX_REF:", tx_ref);
+    // console.log("TX_REF:", tx_ref);
 
     // 6️ Prepare request body
     const chapaRequestBody = {
@@ -77,7 +77,7 @@ const tx_ref = `order-${orderIdPart}-${shortUuid}`;
         description: `Payment for order ${payment.order_id}`,
       },
     };
-    console.log("CHAPA REQUEST BODY:", chapaRequestBody);
+    // console.log("CHAPA REQUEST BODY:", chapaRequestBody);
 
     // 7️ Save tx_ref in DB
     await prisma.payment.update({
@@ -96,10 +96,10 @@ const tx_ref = `order-${orderIdPart}-${shortUuid}`;
     });
 
     const data = await chapaRes.json();
-    console.log("CHAPA RESPONSE:", data);
+    // console.log("CHAPA RESPONSE:", data);
 
     if (!data?.data?.checkout_url) {
-      console.error("CHAPA INIT FAILED:", data);
+      // console.error("CHAPA INIT FAILED:", data);
       return NextResponse.json({ error: "Server error", details: data }, { status: 500 });
     }
     
@@ -108,7 +108,7 @@ const tx_ref = `order-${orderIdPart}-${shortUuid}`;
     return NextResponse.json({ checkout_url: data.data.checkout_url });
 
   } catch (err) {
-    console.error("CHAPA INIT ERROR:", err);
+    // console.error("CHAPA INIT ERROR:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

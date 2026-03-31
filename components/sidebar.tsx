@@ -7,104 +7,6 @@ import { cn } from "@/lib/utils";
 import { Coffee } from "lucide-react";
 
 
-// const sidebarLinks = [
-//   {
-//     label: "MENU",
-//     key: "dashboard",
-//     links: [
-//       {
-//         name: "Dashboard",
-//         link: "/admin",
-//         key2: "dashboard",
-//       },
-//     ],
-//   },
-//   {
-//     label: "MANAGE",
-//     key: "manage",
-//     links: [
-//       { name: "Users", link: "/admin/users", key2: "users" },
-//       { name: "Farmers", link: "/admin/farmers", key2: "farmers" },
-//       { name: "Products", link: "/admin/product", key2: "products" },
-//       { name: "Messages", link: "/admin/messages", key2: "messages" },
-//       { name: "Orders", link: "/admin/order", key2: "order" },
-//       { name: "Home", link: "/", key2: "home" },
-//     ],
-//   },
-// ];
-
-// const farmerSideBarLinks = (userId: string) => [
-//   {
-//     label: "MENU",
-//     key: "dashboard",
-//     links: [
-//       {
-//         name: "Dashboard",
-//         link: "/farmer",
-//         key2: "dashboard",
-//       },
-//     ],
-//   },
-//   {
-//     label: "MANAGE",
-//     key: "manage",
-//     links: [
-//       {
-//         name: "Orders",
-//         link: `/farmer/orders`,
-//         key2: "orders",
-//       },
-//       {
-//         name: "Cart",
-//         link: `/cart/${userId}`,
-//         key2: "cart",
-//       },
-//     ],
-//   },
-// ];
-
-// async function Sidebar() {
-//   const { userId } = await auth();
-//   const role = await getRole();
-
-//   // Choose links based on role
-//   const linksToRender =
-//     (role === "farmer" || role === "seller" || role === "SELLER") && userId
-//       ? farmerSideBarLinks(userId)
-//       : sidebarLinks;
-
-//   return (
-//     <div className="px-2 fixed">
-//       <div className="border text-center cursor-pointer bg-green-800 rounded font-bold text-2xl text-green-300 mb-4 md:p-3 w-full z-10">
-//         Green Coffee
-//       </div>
-
-//       {linksToRender.map((section) => (
-//         <div key={section.key}>
-//           <h1 className="font-bold">{section.label}</h1>
-//           <div className="flex flex-col pl-3 gap-2">
-//             {section.links.map((link) => (
-//               <Link
-//                 key={link.key2}
-//                 href={link.link}
-//                 className={cn(
-//                   "rounded-lg px-4 py-3 text-sm font-semibold transition",
-//                   "hover:bg-green-700 hover:text-white",
-//                     "bg-gray-100 text-gray-800")}
-//               >
-//                 {link.name}
-//               </Link>
-//             ))}
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export default Sidebar;
-
-
 
 // Farmer side bar
 export async function FarmerSidebar() {
@@ -116,8 +18,8 @@ export async function FarmerSidebar() {
       ? [
           { name: "Dashboard", link: "/farmer" },
           { name: "Orders", link: "/farmer/orders" },
-          { name: "Cart", link: `/cart/${userId}` },
           { name: "Profile", link: `/farmer/profile/${userId}` },
+          { name: "Home", link: `/` },
         ]
       : [{ name: "Dashboard", link: "/admin" }];
 

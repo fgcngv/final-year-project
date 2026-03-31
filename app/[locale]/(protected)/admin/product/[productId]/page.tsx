@@ -1,4 +1,4 @@
-import { getProductById } from "@/app/[locale]/actions/products";
+import { getProductById, singleProduct } from "@/app/[locale]/actions/products";
 import AIProductDescription from "@/components/AI_productDescription";
 import LoaderBtn from "@/components/loaderBtn";
 import ProductBYId from "@/components/ProductById";
@@ -23,6 +23,8 @@ async function GetProductBYId(props: {
       }
     
   const ProductData = await getProductById(productId);
+  const single_prod = await singleProduct(productId);
+  console.log("single product : ",single_prod)
 
   const data = ProductData?.data;
 

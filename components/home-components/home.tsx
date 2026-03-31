@@ -319,7 +319,7 @@ transition-colors"
                     </h2>
 
                     <p className="text-2xl font-bold text-green-700">
-                      {product.price} Brr
+                      {product.price} ETB
                     </p>
                     <p className="text-lg font-semibold text-gray-600 dark:text-gray-300">
                       <i>{product.product_detail}</i>
@@ -350,7 +350,7 @@ transition-colors"
 
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       {product.stock > 0
-                        ? `${product.stock} left in stock`
+                        ? `${product.stock} Kg left in stock`
                         : "Out of stock"}
                     </p>
 
@@ -427,7 +427,20 @@ transition-colors"
 
 
 
-//  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // //  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
 
 // //  PLEASE DO NOT DELETE THE ABOVE CODE. THE BELOW CODE MAY CAUSE ERROR: SO AT THAT TIME YOU SHOULD USE THE ABOVE CODE. IT IS PERFECTILY WORKING CODE WITHOUT DYNAMIC LANGUAGE CONVERSION
 

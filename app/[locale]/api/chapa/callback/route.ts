@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
-  console.log(" CHAPA CALLBACK HIT");
-  console.log("Full URL:", req.url);
+  // console.log(" CHAPA CALLBACK HIT");
+  // console.log("Full URL:", req.url);
 
   const { searchParams } = new URL(req.url);
   const tx_ref = searchParams.get("tx_ref");
 
-  console.log("Search Params:", searchParams.toString());
+  // console.log("Search Params:", searchParams.toString());
 
   if (!tx_ref) {
     return NextResponse.redirect("/check-out/failed");
@@ -25,10 +25,10 @@ export async function GET(req: Request) {
 
   const result = await verifyRes.json();
 
-  console.log("CHAPA VERIFY RESULT:", result);
+  // console.log("CHAPA VERIFY RESULT:", result);
 
   if (result.status !== "success" || result.data?.status !== "success") {
-    console.error("Chapa payment failed:", result);
+    // console.error("Chapa payment failed:", result);
     return NextResponse.redirect("/check-out/failed");
   }
 
@@ -45,6 +45,8 @@ export async function GET(req: Request) {
     return NextResponse.redirect("/check-out/failed");
   }
 
+
+  // data base transaction starts here
   await prisma.$transaction(async (tx) => {
     // mark payment as paid
     await tx.payment.update({

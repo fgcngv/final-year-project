@@ -163,7 +163,7 @@ export default function FarmerDashboard() {
         <div className="grid gap-6 md:grid-cols-4">
           <StatCard title="Total Harvest" value="2,450 kg" icon={<Leaf />} />
           <StatCard title="Available Lots" value="6" icon={<Package />} />
-          <StatCard title="Monthly Earnings" value="$4,200" icon={<DollarSign />} />
+          <StatCard title="Monthly Earnings" value="4,200 ETB" icon={<DollarSign />} />
           <StatCard title="Demand Trend" value="High" icon={<TrendingUp />} />
         </div>
 
@@ -215,9 +215,9 @@ export default function FarmerDashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-3 text-sm">
-              <SaleRow buyer="Export Buyer – Germany" amount="$1,200" status="Completed" />
-              <SaleRow buyer="Local Cooperative" amount="$850" status="Pending" />
-              <SaleRow buyer="Roastery – UAE" amount="$2,150" status="Completed" />
+              <SaleRow buyer="Export Buyer – Germany" amount="1,200 ETB" status="Completed" />
+              <SaleRow buyer="Local Cooperative" amount="850 ETB" status="Pending" />
+              <SaleRow buyer="Roastery – UAE" amount="2,150 ETB" status="Completed" />
             </div>
           </CardContent>
         </Card>

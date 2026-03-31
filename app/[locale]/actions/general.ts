@@ -4,6 +4,42 @@ import prisma from "@/lib/prisma";
 import { Language, Role, Status } from "@prisma/client";
 
 
+
+import { clerkClient } from "@clerk/nextjs/server";
+
+export const setUserDefaultRole = async (userId: string) => {
+  try {
+    const client = await clerkClient();
+
+    const user = await client.users.getUser(userId);
+
+    //  Only assign if no role exists
+    if (!user.publicMetadata?.role) {
+      await client.users.updateUser(userId, {
+        publicMetadata: {
+          role: "buyer",
+        },
+      });
+    }
+
+    return {
+      success: true,
+      error: false,
+      message: "Default role set to buyer",
+    };
+  } catch (error: any) {
+    console.error("Error setting default role:", error);
+
+    return {
+      success: false,
+      error: true,
+      message: "Failed to set default role",
+    };
+  }
+};
+
+
+
 export async function deleteDataById(
     id: string,
   
@@ -171,6 +207,15 @@ export const registerFarmer = async ({
           Status.ACTIVE,
       },
     });
+
+        // 2Update Clerk role to "seller"
+        const client = await clerkClient();
+        await client.users.updateUser(id, {
+          publicMetadata: {
+            role: "farmer", // upgrade buyer → seller
+          },
+        });
+    
 
     return {
       success: true,

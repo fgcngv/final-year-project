@@ -3,7 +3,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Package,User, ShoppingCart } from "lucide-react";
+import { Home, Package,User, Grid } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,7 @@ export default function MobileNav({ userId }: { userId: string }) {
   const links = [
     { name: "Home", href: "/farmer", icon: Home },
     { name: "Orders", href: "/farmer/orders", icon: Package },
-    { name: "Cart", href: `/cart/${userId}`, icon: ShoppingCart },
+    { name: "Main Page", href: `/`, icon: Grid },
     { name: "Profile", href: `/farmer/profile/${userId}`, icon: User },
   ];
 
@@ -39,3 +39,6 @@ export default function MobileNav({ userId }: { userId: string }) {
     </nav>
   );
 }
+
+
+

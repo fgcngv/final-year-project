@@ -167,6 +167,7 @@ export default function AIProductDescription({ product }: AIProductDescriptionPr
       setLoading(true);
       const prompt = createPrompt(product);
 
+
       const locale = "en";
       const res = await fetch(`/${locale}/api/generate-description`, {
         method: "POST",

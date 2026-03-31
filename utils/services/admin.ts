@@ -328,7 +328,7 @@ export const getAllOrderItems = async () => {
           order:{
             include:{
               user:true,
-              items:true
+              items:true,
             }
           },
           product:true,

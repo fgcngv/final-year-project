@@ -24,9 +24,9 @@ export default function AllNotifications({ notificationData }: NotificationProps
   const tn = useTranslations("notification");
 
   const handleDelete = async (id: string) => {
-    const confirmDelete = window.confirm(tn("deleteensure"));
+    // const confirmDelete = window.confirm(tn("deleteensure"));
 
-    if (!confirmDelete) return;
+    // if (!confirmDelete) return;
 
     try {
       const result = await deleteNotification(id);
@@ -44,12 +44,20 @@ export default function AllNotifications({ notificationData }: NotificationProps
 
       toast.success(tn("deleted"));
     } catch (error: any) {
-      console.error(error);
       toast.error(tn("deletefailed"));
     }
 
     router.refresh();
   };
+
+
+  if(notifications.length <= 0) {
+    return (
+      <div className="flex w-full h-screen items-center justify-center text-2xl font-bold">
+        Notififation Not Found!
+      </div>
+    )
+  }
 
   return (
 <div className="max-w-3xl mx-auto px-4 py-18">
