@@ -11,15 +11,48 @@ import z, { email } from "zod";
 // });
 
 // updated AddProductSchema
+// export const AddProductSchema = z.object({
+//   product_name:z.string().min(3,"product name should be greater than 2 character").trim(),
+//   // farmer_id:z.string(),
+//   price: z.coerce.number().positive(),
+//   quantity: z.coerce.number().min(0, "Quantity cannot be negative"),  image: z
+//   .any()
+//   .refine((file) => file instanceof File, "Image is required"),
+//   product_detail:z.string().max(500,"detail would be at most 500 character"),
+//   status: z.string().default("ACTIVE"),
+// });
+
 export const AddProductSchema = z.object({
-  product_name:z.string().min(3,"product name should be greater than 2 character").trim(),
-  // farmer_id:z.string(),
-  price: z.coerce.number().positive(),
-  quantity: z.coerce.number().min(0, "Quantity cannot be negative"),  image: z
-  .any()
-  .refine((file) => file instanceof File, "Image is required"),
-  product_detail:z.string().max(500,"detail would be at most 500 character"),
-  status: z.string().default("ACTIVE"),
+  product_name: z
+    .string()
+    .min(3, "Product name must be at least 3 characters")
+    .max(100, "Too long")
+    // Allow letters (all languages), numbers, space, ., -
+    .regex(/^[\p{L}\p{N}\s.,-]+$/u, "Invalid characters"),
+
+  price: z.coerce
+    .number()
+    .min(1, "Price must be greater than 0"),
+
+  quantity: z.coerce
+    .number()
+    .min(1, "Quantity must be at least 1"),
+
+  product_detail: z
+    .string()
+    .max(500, "Description too long")
+    .optional(),
+
+  status: z.string(),
+
+  image: z
+    .instanceof(File, { message: "Image is required" })
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: "Max file size is 5MB",
+    })
+    .refine((file) => file.type.startsWith("image/"), {
+      message: "File must be an image",
+    }),
 });
 
 

@@ -103,9 +103,67 @@ export async function deleteDataById(
     values:any
   }
   
+// export const addProduct = async ({ farmer_id, values }: ProductProps) => {
+//   try {
+//     // 1️ Create product
+//     const product = await prisma.product.create({
+//       data: {
+//         product_name: values.product_name,
+//         price: values.price,
+//         stock: values.quantity,
+//         image: values.image,
+//         product_detail: values.product_detail || null,
+//         farmer_id: farmer_id!, // foreign key
+//         status: values.status.toUpperCase(), // enum-safe
+//       },
+//     });
+
+//     // 2️ Find users to notify (BUYERS + ADMINS)
+//     const usersToNotify = await prisma.user.findMany({
+//       where: {
+//         role: {
+//           in: ["BUYER", "ADMIN"],
+//         },
+//       },
+//       select: {
+//         id: true,
+//       },
+//     });
+
+//     // 3️ Create notifications
+//     if (usersToNotify.length > 0) {
+//       await prisma.notification.createMany({
+//         data: usersToNotify.map((user) => ({
+//           user_id: user.id,
+//           title: "New Product Added",
+//           message: `${product.product_name} is now available.`,
+//           type: "PRODUCT",
+//           product_id: product.id,
+//           priority: 2,
+//         })),
+//       });
+//     }
+
+//     return {
+//       success: true,
+//       error: false,
+//       message: "Product added successfully!",
+//     };
+//   } catch (error) {
+//     console.error("Error while adding product:", error);
+
+//     return {
+//       success: false,
+//       error: true,
+//       message: "Failed to add product. You may not approved by Admin! please contact them!",
+//     };
+//   }
+// };
+
+
 export const addProduct = async ({ farmer_id, values }: ProductProps) => {
   try {
-    // 1️⃣ Create product
+    // 1. Create product
     const product = await prisma.product.create({
       data: {
         product_name: values.product_name,
@@ -113,12 +171,33 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
         stock: values.quantity,
         image: values.image,
         product_detail: values.product_detail || null,
-        farmer_id: farmer_id!, // foreign key
-        status: values.status.toUpperCase(), // enum-safe
+        farmer_id: farmer_id!,
+        status: values.status.toUpperCase(),
       },
     });
 
-    // 2️⃣ Find users to notify (BUYERS + ADMINS)
+    // 2. Translation helper
+    const getNotificationContent = (lang: string, productName: string) => {
+      switch (lang) {
+        case "AMHARIC":
+          return {
+            title: "አዲስ ምርት ተጨመረ",
+            message: `${productName} አሁን ይገኛል።`,
+          };
+        case "OROMO":
+          return {
+            title: "Oomishni haaraan dabalameera",
+            message: `${productName} amma ni argama.`,
+          };
+        default:
+          return {
+            title: "New Product Added",
+            message: `${productName} is now available.`,
+          };
+      }
+    };
+
+    // 3. Get users (BUYER + ADMIN)
     const usersToNotify = await prisma.user.findMany({
       where: {
         role: {
@@ -127,22 +206,64 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
       },
       select: {
         id: true,
+        language: true,
       },
     });
 
-    // 3️⃣ Create notifications
-    if (usersToNotify.length > 0) {
-      await prisma.notification.createMany({
-        data: usersToNotify.map((user) => ({
+    // 4. Create notifications for users
+    const userNotifications = usersToNotify.map((user) => {
+      const content = getNotificationContent(
+        user.language,
+        product.product_name
+      );
+
+      return prisma.notification.create({
+        data: {
           user_id: user.id,
-          title: "New Product Added",
-          message: `${product.product_name} is now available.`,
+          title: content.title,
+          message: content.message,
           type: "PRODUCT",
           product_id: product.id,
           priority: 2,
-        })),
+        },
+      });
+    });
+
+    //  5. Get farmer
+    const farmer = await prisma.farmer.findUnique({
+      where: { id: farmer_id! },
+      select: {
+        id: true,
+        language: true,
+      },
+    });
+
+    // 6. Create farmer notification (IMPORTANT )
+    let farmerNotification: any = null;
+
+    if (farmer) {
+      const content = getNotificationContent(
+        farmer.language,
+        product.product_name
+      );
+
+      farmerNotification = prisma.notification.create({
+        data: {
+          user_id: farmer.id, // ⚠️ works ONLY if farmer exists in User table
+          title: content.title,
+          message: content.message,
+          type: "PRODUCT",
+          product_id: product.id,
+          priority: 1,
+        },
       });
     }
+
+    // 7. Execute all notifications
+    await Promise.all([
+      ...userNotifications,
+      farmerNotification,
+    ].filter(Boolean));
 
     return {
       success: true,
@@ -155,11 +276,11 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
     return {
       success: false,
       error: true,
-      message: "Failed to add product. You may not approved by Admin! please contact them!",
+      message:
+        "Failed to add product. You may not be approved by Admin! Please contact them!",
     };
   }
 };
-
 
 
 

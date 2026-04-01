@@ -35,7 +35,17 @@
     "name": "Maqaa Kee",
     "subject": "Mata-duree",
     "search":"Barbaadi...",
-    "msgtitle":"Yaada ykn Ergaa yoo qabaattan"
+    "msgtitle":"Yaada ykn Ergaa yoo qabaattan",
+    "newProduct":"Oomisha Haaraa Dabaluu",
+    "productName":"Maqaa Oomisha",
+    "productPrice":"Gatii Oomisha (USD)",
+    "productRegion":"Naannoo Oomisha",
+    "productQuantity":"Baay'ina Oomisha (kg)",
+    "productImage":"Suuraa Oomisha",
+    "productDescription:":"Oomisha bunaa keessan ibsa bal'aa kenni, akkasumas dhangala'aa, haala qopheessuu, fi amala adda ta'e kan isa adda godhu.",
+    "productImageDescription":"Suuraa qulqullina ol'aanaa kan oomisha bunaa keessan. Kun bittootaaf gatii fi mul'ata bunaa keessanii agarsiisa.",
+    "Uploading":"Suuraa olkaa'aa...",
+    "submit":"Ergi"
   },
   "home": {
     "adding": "Dabaluu...",
@@ -96,5 +106,15 @@
     "wishedproducts":"Oomishaalee Hawwii Ta'an Irra Caalaa",
     "role":"Gahee Fayyadamtootaa",
     "payment":"Odeeffannoo kanfaltii"
+  },
+  "farmerdashboard":{
+    "title":"Dashboard Qotee Bulaa",
+    "welcome":"Baga nagaan dhuftan dashboard keessaniitti! Asitti oomishaalee bunaa keessan, ajajoota keessan ilaalu, fi hojii daldalaa keessan hordofuu dandeessu. Menu deeggarsaa fayyadamuun kutaa garaagaraa dashboard keessanii qorachuu dandeessu.",
+    "products":"Oomishaalee Keessan",
+    "orders":"Ajajoota Keessan",
+    "sales":"Hojii Daldalaa",
+    "manageproducts":"Oomishaalee Bunaa Keessan Bulchaa",
+    "vieworders":"Ajajoota Keessan Ilaalaa fi Bulchaa",
+    "trackperformance":"Hojii Daldalaa Keessan Hordofaa"
   }
 }

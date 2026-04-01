@@ -34,7 +34,17 @@
     "message": "መልእክትዎን ይጻፉ...",
     "name": "እባክዎ ስምዎን ይጻፉ",
     "subject": "አንቀጽ",
-    "search":"ይፈልጉ..."
+    "search":"ይፈልጉ...",
+    "newProduct":"አዲስ ምርት ያክሉ",
+    "productName":"የምርት ስም",
+    "productPrice":"የምርት ዋጋ (Birr)",
+    "productRegion":"የምርት ክልል",
+    "productQuantity":"የምርት ብዛት (ኪ.ግ)",
+    "productImage":"የምርት ምስል",
+    "productDescription:":"የቡና ምርትዎን ዝርዝር መግለጫ ያቀርቡ፣ ከፍተኛ ስሜት ማስታወቂያዎች፣ የማምረት ዘዴ፣ እና የሚያሳዩ ሌሎች ባለቤትነቶች.",
+    "productImageDescription":"የቡና ምርትዎን የጥራት ምስል ይጫኑ። ይህ ለገዢዎች የቡናዎን ጥራትና መልኩን ማየት ይረዳቸዋል.",
+    "Uploading":"ምስል በመጫን ላይ...",
+    "submit":"አስቀምጥ"
   },
   "home": {
     "adding": "እንደሚጨምር...",
@@ -94,6 +104,16 @@
     "wishedproducts":" በብዙ ሰዎች ዝርዝር የተጨመሩ ምርቶች",
     "role":" የተጠቃሚ ሚናዎች",
     "payment":" የክፍያ ሁኔታ"
-  }
+  },
+  "farmerdashboard":{
+    "title":"የገበሬዎች ዳሽቦርድ",
+    "welcome":"ወደ ዳሽቦርድ በደህና መጡ! እዚህ ላይ የቡና ምርቶችን መቆጣጠሪያ፣ የትዕዛዞችን እይታ፣ እና የሽያጭ አ performance ን መከታተያ መስጠት ይችላሉ. ከፍተኛ መሣሪያ መንገዶችን በመጠቀም ዳሽቦርድ ውስጥ በተለያዩ ክፍሎች መጓጓል.",
+    "products":"የእርስዎ ምርቶች",
+    "orders":"የእርስዎ ትዕዛዞች",
+    "sales":"የሽያጭ አ performance",
+    "manageproducts":"የቡና ምርቶችን መቆጣጠሪያ",
+    "vieworders":"የእርስዎን ትዕዛዞች መመልከቻ",
+    "trackperformance":"Track Your Sales Performance"
+   }
 
 }

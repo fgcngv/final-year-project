@@ -12,7 +12,9 @@
     "submitting": "Submitting..."
   },
   "cart": {
-    "added": "Added to cart!"
+    "added": "Added to cart!",
+    "title":"Your Cart",
+    "summarytitle":"Order Summary"
   },
   "contact": {
     "contactus": "Contact Us",
@@ -34,7 +36,17 @@
     "message": "Write your message...",
     "name": "Your Name",
     "subject": "Subject",
-    "search":"Search..."
+    "search":"Search...",
+    "newProduct":"Add New Product",
+    "productName":"Product Name",
+    "productPrice":"Product Price (USD)",
+    "productRegion":"Product Region",
+    "productQuantity":"Product Quantity (kg)",
+    "productImage":"Product Image",
+    "productDescription:":"Provide a detailed description of your coffee product, including flavor notes, processing method, and any unique characteristics that make it stand out.",
+    "productImageDescription":"Upload a high-quality image of your coffee product. This helps buyers see the quality and appearance of your coffee.",
+    "Uploading":"Uploading image...",
+    "submit":"Submit"
   },
   "home": {
     "adding": "Adding...",
@@ -95,6 +107,15 @@
     "wishedproducts":"Most Wishlisted Products",
     "role":"User Roles",
     "payment":"Payment Status"
+  },
+  "farmerdashboard":{
+    "title":"Farmer Dashboard",
+    "welcome":"Welcome to your dashboard! Here you can manage your coffee products, view orders, and track your sales performance. Use the navigation menu to explore different sections of your dashboard.",
+    "products":"Your Products",
+    "orders":"Your Orders",
+    "sales":"Sales Performance",
+    "manageproducts":"Manage Your Coffee Products",
+    "vieworders":"View and Manage Your Orders",
+    "trackperformance":"Track Your Sales Performance"
   }
-
 }
