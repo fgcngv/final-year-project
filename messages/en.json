@@ -132,5 +132,17 @@
     "Logout":"Logout",
     "home":"Home",
     "addproduct":"Add Product"
+  },
+  "dialog":{
+    "title":"Update Farm Location",
+    "success":"Location updated successfully!",
+    "standInFarming":"Please stand inside your farming area for accurate GPS location To update your farm's location, we need to access your device's GPS. This will allow us to pinpoint your farm on the map and help buyers find you more easily.",
+    "description":"Please allow access to your location and click the button below to update your farm's location on the map.",
+    "areYouSure":"Are you sure you want to update your farm's location? Buyers will see this location to pick up your products, so make sure it's accurate.",
+    "notify":"Farm location not set. Your Customers want to get the exact location of your farming are! so add your farming area location by clicking the Update Location button above",
+    "cancel":"Cancel",
+    "update":"Update Location",
+    "updating":"Updating...",
+    "confirm":"Confirm"
   }
 }

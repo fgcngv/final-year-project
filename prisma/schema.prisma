@@ -124,16 +124,22 @@ model User {
 }
 
 model Farmer {
-  id         String    @id //clerk id
+  id         String   @id //clerk id
   first_name String
   last_name  String
-  email      String    @unique
+  email      String   @unique
   address    String?
-  language   Language  @default(ENGLISH)
-  role       Role      @default(SELLER)
-  status     Status    @default(ACTIVE)
-  products   Product[] //one farmer can have many products
-  reviews    Review[]
+  language   Language @default(ENGLISH)
+  role       Role     @default(SELLER)
+  status     Status   @default(ACTIVE)
+
+  // farm location
+  latitude          Float?
+  longitude         Float?
+  locationUpdatedAt DateTime?
+
+  products Product[] //one farmer can have many products
+  reviews  Review[]
 
   reports     Report[]
   reportCount Int      @default(0)
@@ -479,7 +485,7 @@ model Report {
 
   status ReportStatus @default(PENDING)
 
-  handledBy String?
+  handledBy  String?
   resolution String?
 
   createdAt DateTime @default(now())

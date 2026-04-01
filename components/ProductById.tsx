@@ -3,7 +3,7 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { motion } from "framer-motion";
 import { Heart, Leaf, Star } from "lucide-react";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import Header from "./header";
 import LoaderBtn from "./loaderBtn";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import FarmLocationMap from "./farmer/FarmLocationMap";
 
 export default function ProductById({ product, isDashboard,cartQuantity,notification}: { product: any; isDashboard?: boolean, cartQuantity?:number,notification?:number}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -229,6 +230,23 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
             )}
           </motion.div>
         </CardContent>
+        <CardFooter className="border-t bg-gradient-to-r from-green-100 to-green-50 dark:from-green-900 dark:to-green-800 py-4">
+
+            {product?.farmer?.latitude && product?.farmer?.longitude && (
+              <div className="w-full z-0">
+                <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">Farm Location</h2>  
+                <FarmLocationMap
+                  latitude={product.farmer.latitude}
+                  longitude={product.farmer.longitude}
+                  farmerName={`${product.farmer.first_name} ${product.farmer.last_name}'s Farm`}
+                />
+              </div>
+            )}
+            {!product?.farmer?.latitude && !product?.farmer?.longitude && (
+              <p className="text-center text-gray-500 dark:text-gray-300">Farm location not available. You can Inform the farmer to add the exact Location of His/Her Product <i>(Go To chat and Inform Him/Her)</i></p>
+            )}
+
+        </CardFooter>
       </Card>
     </motion.div>
   );

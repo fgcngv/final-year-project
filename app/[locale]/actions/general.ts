@@ -5,7 +5,7 @@ import { Language, Role, Status } from "@prisma/client";
 
 
 
-import { clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export const setUserDefaultRole = async (userId: string) => {
   try {
@@ -342,7 +342,7 @@ export const registerFarmer = async ({
       success: true,
       error: false,
       data: farmer,
-      message: "Farmer registered successfully 🌱",
+      message: "Farmer registered successfully ",
     };
   } catch (error: any) {
     console.error("Error while registering farmer:", error);
@@ -360,6 +360,51 @@ export const registerFarmer = async ({
       success: false,
       error: true,
       message: "Failed to register farmer. Please try again.",
+    };
+  }
+};
+
+
+export const updateFarmerLocation = async ({
+  latitude,
+  longitude,
+}: {
+  latitude: number;
+  longitude: number;
+}) => {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return {
+        success: false,
+        error: true,
+        message: "Unauthorized",
+      };
+    }
+
+    const updated = await prisma.farmer.update({
+      where: { id: userId },
+      data: {
+        latitude,
+        longitude,
+        locationUpdatedAt: new Date(),
+      },
+    });
+
+    return {
+      success: true,
+      error: false,
+      data: updated,
+      message: "Location updated successfully ",
+    };
+  } catch (error) {
+    console.error("Error updating location:", error);
+
+    return {
+      success: false,
+      error: true,
+      message: error,
     };
   }
 };

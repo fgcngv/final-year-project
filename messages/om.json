@@ -131,5 +131,17 @@
     "Logout":"Logout",
     "home":"Home",
     "addproduct":"Add Product"
-  }
+  },
+  "dialog":{
+    "title":"Iddoo Oomisha Keessan Haaraa",
+    "success":"Iddoo haaraa milkaa'inaan olkaa'ame!",
+    "standInFarming":"Iddoo qonna keessanii keessatti dhaabbadhaa siif sirrii ta'uu isaa mirkaneessuuf. Iddoo qonna keessanii haaraa olkaa'uuf, GPS meeshaa keessanii fayyadamuun iddoo qonna keessanii kaartaa irratti argisiisuuf nu gargaara, akkasumas bittootaaf si argamsiisuuf.",
+    "description":"Mee iddoo keessanii argachuuf hayyama kenni, akkasumas iddoo qonna keessanii kaartaa irratti haaraa olkaa'uuf buttonii gadii tuqaa.",
+    "areYouSure":"Iddoo qonna keessanii haaraa olkaa'uuf mirkaneessaa? Bittoonni iddoo kana irraa oomishaalee keessan fudhachuuf itti argamu, kanaaf sirrii ta'uu isaa mirkaneessaa.",
+    "notify":"Iddoo qonnaa hin kaa'amne. Maamiltoonni keessan iddoo qonna keessanii sirriitti argachuuf barbaadu! Kanaaf iddoo qonna keessanii dabaluuf buttonii olii kana cuqaasun dabalaa tuqaa",
+    "cancel":"Haqi",
+    "update":"Iddoo Haaraa Olkaa'i",
+    "confirm":"Mirkaneessi",
+      "updating":"Olkaa'aa jira..."
+}
 }

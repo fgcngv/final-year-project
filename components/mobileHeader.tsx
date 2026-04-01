@@ -31,7 +31,7 @@ export default function MobileHeader() {
   ];
   
   return (
-    <div className="min-[1317px]:hidden bg-black text-white px-6 py-4 border-t border-gray-700 animate-slideDown">
+    <div className="min-[1317px]:hidden bg-black text-white px-6 py-4 z-10 border-t border-gray-700 animate-slideDown">
       <nav className="flex flex-col gap-4 text-lg font-medium justify-start items-start">
         {headerLinks.map((item) => (
           <LoaderBtn key={item.key} btnName={item.name} linkTo={item.link} className="hover:text-green-500 transition  bg-transparent dark:text-white font-bold border-b-1 border-white"/>
