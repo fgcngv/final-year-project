@@ -16,7 +16,7 @@ async function AdminLayout({ children }: { children: React.ReactNode }) {
       
       {/* ================= DESKTOP SIDEBAR ================= */}
       <aside className="hidden md:flex w-64 flex-shrink-0 border-r border-border bg-card">
-        <FarmerSidebar />
+        <FarmerSidebar  />
       </aside>
 
       {/* ================= MAIN AREA ================= */}

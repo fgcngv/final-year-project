@@ -108,7 +108,7 @@ export default function AddProduct() {
 
   return (
     <Dialog>
-      <DialogTrigger className="px-4 py-2 bg-green-600 font-bold text-white flex items-center hover:bg-green-700 active:bg-green-800 rounded-md">
+      <DialogTrigger className="px-4 z-100 py-2 bg-green-600 font-bold text-white flex items-center hover:bg-green-700 active:bg-green-800 rounded-md">
         <Plus className="mr-2 h-4 w-4" />
         {tf("newProduct")}
       </DialogTrigger>

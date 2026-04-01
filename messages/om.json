@@ -116,5 +116,20 @@
     "manageproducts":"Oomishaalee Bunaa Keessan Bulchaa",
     "vieworders":"Ajajoota Keessan Ilaalaa fi Bulchaa",
     "trackperformance":"Hojii Daldalaa Keessan Hordofaa"
+  },
+  "sidebar":{
+    "dashboard":"Dashboard",
+    "products":"Oomishaalee",
+    "orders":"Ajajoota",
+    "sales":"Hojii Daldalaa",
+    "searchplaceholder":"Search products...",
+    "searchresult":"Search Results for \"{query}\"",
+    "noresult":"No products found for \"{query}\"",
+    "Orders":"Orders",
+    "Products":"Products",
+    "Profile":"Profile",
+    "Logout":"Logout",
+    "home":"Home",
+    "addproduct":"Add Product"
   }
 }

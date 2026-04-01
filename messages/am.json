@@ -114,6 +114,21 @@
     "manageproducts":"የቡና ምርቶችን መቆጣጠሪያ",
     "vieworders":"የእርስዎን ትዕዛዞች መመልከቻ",
     "trackperformance":"Track Your Sales Performance"
-   }
+   }, 
+   "sidebar":{
+    "dashboard":"Dashboard",
+    "products":"Oomishaalee",
+    "orders":"Ajajoota",
+    "sales":"Hojii Daldalaa",
+    "searchplaceholder":"Search products...",
+    "searchresult":"Search Results for \"{query}\"",
+    "noresult":"No products found for \"{query}\"",
+    "Orders":"Orders",
+    "Products":"Products",
+    "Profile":"Profile",
+    "Logout":"Logout",
+    "home":"Home",
+    "addproduct":"Add Product"
+  }
 
 }

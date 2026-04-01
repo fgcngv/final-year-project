@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Coffee } from "lucide-react";
+import AddProduct from "./form/add-product";
 
 
 
@@ -12,6 +13,7 @@ import { Coffee } from "lucide-react";
 export async function FarmerSidebar() {
   const { userId } = await auth();
   const role = await getRole();
+  
 
   const links =
    ( role === "farmer" || role === "seller" || role === "SELLER") && userId
@@ -24,7 +26,7 @@ export async function FarmerSidebar() {
       : [{ name: "Dashboard", link: "/admin" }];
 
   return (
-    <div className="flex h-full flex-col p-4 fixed">
+    <div className="flex h-full z-50 bg-gray-900 flex-col p-4 fixed">
       {/* LOGO */}
       <div className="mb-6 rounded-lg bg-green-800 py-3 text-center text-xl font-bold text-green-200 flex items-center">
        <Coffee /> Green Coffee
@@ -45,6 +47,10 @@ export async function FarmerSidebar() {
             {item.name}
           </Link>
         ))}
+        <div className=" border-t border-gray-700 mt-4 pt-4 bottom-0">  
+            <h2 className="text-sm font-semibold mt-4 mb-2 text-gray-300 botto-0">Add New Product</h2>
+        </div>
+        <AddProduct />
       </nav>
     </div>
   );
