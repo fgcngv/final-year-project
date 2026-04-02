@@ -1,6 +1,5 @@
 
 
-
 import { LucideIcon } from "lucide-react";
 import { CardContent, Card, CardHeader, CardTitle } from "../ui/card";
 import Link from "next/link";
@@ -18,6 +17,7 @@ interface CardProps {
 
 function Cards({ total, cardName, link, icon: Icon, className }: CardProps) {
   const ta = useTranslations("admin");
+  const tb = useTranslations("button");
   return (
     <Card
       className={`rounded-2xl shadow-md p-4 transition-colors duration-500 bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] ${className || ""}`}
@@ -31,7 +31,7 @@ function Cards({ total, cardName, link, icon: Icon, className }: CardProps) {
 
       <CardContent>
         <p className="text-4xl font-bold">{total ?? 0}</p>
-        <LoaderBtn className="mt-4 w-full bg-transparent cursor-pointer text-gray-800 dark:text-[#f5f5dc]  border-2 border-gray-300 dark:border-[#3c2a21] hover:text-white dark:hover:text-black" btnName="View All" linkTo={link} />
+        <LoaderBtn className="mt-4 w-full bg-transparent cursor-pointer text-gray-800 dark:text-[#f5f5dc]  border-2 border-gray-300 dark:border-[#3c2a21] hover:text-white dark:hover:text-black" btnName={tb("detail")} linkTo={link} />
 
       </CardContent>
     </Card>

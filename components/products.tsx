@@ -24,6 +24,10 @@ interface Product {
   image: string;
   price: number;
   stock: number;
+  status?: string;
+  farmer?: {
+    status?: string;
+  };
 }
 
 interface ProductsProps {
@@ -51,14 +55,37 @@ export default function ProductsPage({
   /* =====================
      SEARCH LOGIC + HIGHLIGHT
   ====================== */
+  // const filteredProducts = useMemo(() => {
+  //   const cleaned = searchTerm.trim().toLowerCase();
+  //   if (!cleaned) return products;
+
+  //   return products.filter((product) =>
+  //     product.product_name.toLowerCase().includes(cleaned)
+  //   );
+  // }, [searchTerm, products]);
+
   const filteredProducts = useMemo(() => {
     const cleaned = searchTerm.trim().toLowerCase();
-    if (!cleaned) return products;
+  
+    return products.filter((product) => {
+      // excludING if farmer is INACTIVE
+      if (product.farmer?.status === "INACTIVE") return false;
 
-    return products.filter((product) =>
-      product.product_name.toLowerCase().includes(cleaned)
-    );
+      // EXCLUDING IF PRODOCT STATUS IS INACTIVE
+      if(product.status === "INACTIVE") return false;
+      if(product.status === "PAUSED") return false;
+
+  
+      //  excludeING out of stock 
+      if (product.stock === 0) return false;
+  
+      // search filter
+      if (!cleaned) return true;
+  
+      return product.product_name.toLowerCase().includes(cleaned);
+    });
   }, [searchTerm, products]);
+
 
   const highlightText = (text: string) => {
     const cleaned = searchTerm.trim();
@@ -77,6 +104,8 @@ export default function ProductsPage({
       )
     );
   };
+
+
 
   if (!products || products.length === 0) {
     return (

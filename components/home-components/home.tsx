@@ -204,11 +204,26 @@ export default function HomePage({ role, products, reviewData }: roleProps) {
         </motion.button>
 
         {user && (
-          <LoaderBtn
-            className="relative mt-3 bg-transparent hover:text-black text-white hover:underline"
-            linkTo={`/${role}`}
-            btnName={tb("dashboardbtn")}
-          />
+          <div>
+            {
+              role.toUpperCase() === "BUYER" && (
+                <LoaderBtn
+                className="relative mt-3 bg-transparent hover:text-black text-white hover:underline"
+                linkTo={`/${role}`}
+                btnName={"Go to Orders"}
+              />
+              )
+            }
+            {
+              role.toUpperCase() !== "BUYER" && (
+                <LoaderBtn
+                className="relative mt-3 bg-transparent hover:text-black text-white hover:underline"
+                linkTo={`/${role}`}
+                btnName={"Go to Orders"}
+              />
+              )
+            }
+          </div>
         )}
       </motion.section>
 
