@@ -66,8 +66,7 @@ export default function OrderSummary({
         return;
       }
 
-      // response.order_id is returned from createOrder
-      // createOrder already created the payment
+
       const payment_id = response.payment_id;
 
       // Initialize Chapa
@@ -197,7 +196,7 @@ export default function OrderSummary({
         </div>
         <div>
           <p className="font-medium">Need help with your order?</p>
-          <p className="text-sm text-gray-600 dark:text-gray-300">Call us at +251 900 123 456</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Call us at +251 961 06 43 70</p>
         </div>
       </div>
     </CardContent>

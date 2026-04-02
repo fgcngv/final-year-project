@@ -29,7 +29,6 @@ async function SeePage() {
       );
 
      const cartItemss = data?.items;
-     console.log("orderItems : orderItems : " ,data)
 
       const subtotal = cartItemss.reduce((sum, item) => sum + (item.product?.price * item.quantity), 0);
       const shippingFee = 0;

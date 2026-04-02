@@ -8,16 +8,6 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   try {
-    // console.log("INIT CHAPA CALLED");
-
-    // console.log("ENV CHECK:", {
-    //   base: process.env.CHAPA_BASE_URL,
-    //   callback: process.env.CHAPA_CALLBACK_URL,
-    //   return: process.env.CHAPA_RETURN_URL,
-    // });
-
-    // console.log("Calling Chapa from:", process.env.CHAPA_CALLBACK_URL);
-
 
     // 1️ Authenticate user
     const { userId } = await auth();
