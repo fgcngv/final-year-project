@@ -6,6 +6,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Coffee } from "lucide-react";
 import AddProduct from "./form/add-product";
+import { getTranslations } from "next-intl/server";
 
 
 
@@ -13,17 +14,19 @@ import AddProduct from "./form/add-product";
 export async function FarmerSidebar() {
   const { userId } = await auth();
   const role = await getRole();
+  const ts = await getTranslations("sidebar");
+  const tf = await getTranslations("form");
   
 
   const links =
    ( role === "farmer" || role === "seller" || role === "SELLER") && userId
       ? [
-          { name: "Dashboard", link: "/farmer" },
-          { name: "Orders", link: "/farmer/orders" },
-          { name: "Profile", link: `/farmer/profile/${userId}` },
-          { name: "Home", link: `/` },
+          { name: ts("dashboard"), link: "/farmer" },
+          { name: ts("orders"), link: "/farmer/orders" },
+          { name: ts("Profile"), link: `/farmer/profile/${userId}` },
+          { name: ts("home"), link: `/` },
         ]
-      : [{ name: "Dashboard", link: "/admin" }];
+      : [{ name: ts("dashboard"), link: "/admin" }];
 
   return (
     <div className="flex h-full z-50 bg-gray-900 flex-col p-4 fixed">
@@ -48,7 +51,7 @@ export async function FarmerSidebar() {
           </Link>
         ))}
         <div className=" border-t border-gray-700 mt-4 pt-4 bottom-0">  
-            <h2 className="text-sm font-semibold mt-4 mb-2 text-gray-300 botto-0">Add New Product</h2>
+            <h2 className="text-sm font-semibold mt-4 mb-2 text-gray-300 botto-0">{tf("newProduct")}</h2>
         </div>
         <AddProduct />
       </nav>

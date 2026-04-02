@@ -116,20 +116,16 @@
     "trackperformance":"Track Your Sales Performance"
    }, 
    "sidebar":{
-    "dashboard":"Dashboard",
-    "products":"Oomishaalee",
-    "orders":"Ajajoota",
-    "sales":"Hojii Daldalaa",
-    "searchplaceholder":"Search products...",
-    "searchresult":"Search Results for \"{query}\"",
-    "noresult":"No products found for \"{query}\"",
-    "Orders":"Orders",
-    "Products":"Products",
-    "Profile":"Profile",
-    "Logout":"Logout",
-    "home":"Home",
-    "addproduct":"Add Product"
-  },
+    "dashboard":"ዳሽቦርድ",
+    "products":"ምርቶች",
+    "orders":"ትዕዛዞች",
+    "sales":"ሽያጭ",
+    "searchplaceholder":"ምርቶችን ይፈልጉ...",
+    "searchresult":"\"{query}\" የሚገኙ ውጤቶች",
+    "noresult":"\"{query}\" የሚገኙ ምርቶች አልተገኙም",
+    "Profile":"መገለጫ",
+    "home":"መነሻ"
+    },
   "dialog":{
     "title":"የእርሻ አካባቢን የጂፒኤስ ቦታ መቀየር",
     "success":"አካባቢ በተሳካ ተሻሽሏል!",

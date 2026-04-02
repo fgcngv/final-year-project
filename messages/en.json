@@ -121,7 +121,7 @@
   "sidebar":{
     "dashboard":"Dashboard",
     "products":"Oomishaalee",
-    "orders":"Ajajoota",
+    "orders":"Orders",
     "sales":"Hojii Daldalaa",
     "searchplaceholder":"Search products...",
     "searchresult":"Search Results for \"{query}\"",

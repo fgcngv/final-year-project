@@ -1,11 +1,13 @@
 
+// "use client";
 
 import { LucideIcon } from "lucide-react";
 import { CardContent, Card, CardHeader, CardTitle } from "../ui/card";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import LoaderBtn from "../loaderBtn";
-import { useTranslations } from "next-intl";
+// import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 interface CardProps {
   total?: number;
@@ -15,9 +17,9 @@ interface CardProps {
   className?: string; // <-- new optional className prop
 }
 
-function Cards({ total, cardName, link, icon: Icon, className }: CardProps) {
-  const ta = useTranslations("admin");
-  const tb = useTranslations("button");
+async function Cards({ total, cardName, link, icon: Icon, className }: CardProps) {
+  const ta = await getTranslations("admin");
+  const tb = await getTranslations("button");
   return (
     <Card
       className={`rounded-2xl shadow-md p-4 transition-colors duration-500 bg-white dark:bg-[#1f140d] text-gray-800 dark:text-[#f5f5dc] ${className || ""}`}
