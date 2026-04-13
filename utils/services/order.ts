@@ -224,6 +224,49 @@ export const OrdersByBuyerId = async () => {
 
 
 
+  export const getOrdersByPaymentId = async (paymentId: string) => {
+    const { userId } = await auth();
+  
+    if (!userId) {
+      return { success: false, error: true };
+    }
+  
+    try {
+      const orders = await prisma.order.findMany({
+        where: { payment_id: paymentId },
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
+          },
+          address: true,
+        },
+        orderBy: { createdAt: "desc" },
+      });
+  
+      const mapped = orders.map((order) => ({
+        id: order.id,
+        createdAt: order.createdAt.toISOString(),
+        address: order.address,
+        items: order.items,
+        total: order.items.reduce(
+          (sum, i) => sum + i.price * i.quantity,
+          0
+        ),
+      }));
+  
+      return {
+        success: true,
+        data: mapped,
+      };
+    } catch (err) {
+      console.error(err);
+      return { success: false, error: true };
+    }
+  };
+
+
 export const ConfirmOrderDelivery = async (orderId: string) => {
   const { userId } = await auth();
 
