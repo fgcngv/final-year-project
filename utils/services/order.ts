@@ -359,6 +359,46 @@ export async function updateOrderStatus(
 }
 
 
+export const updateOrderItemsStatusByFarmer = async (
+  orderId: string,
+  farmerId: string,
+  status: OrderStatus
+) => {
+  try {
+    await prisma.orderItem.updateMany({
+      where: {
+        order_id: orderId,
+        product: {
+          farmer_id: farmerId,
+        },
+      },
+      data: {
+        status,
+      },
+    });
+
+    //OPTIONAL: auto update main order status
+    const remaining = await prisma.orderItem.count({
+      where: {
+        order_id: orderId,
+        NOT: { status: "DELIVERED" },
+      },
+    });
+
+    if (remaining === 0) {
+      await prisma.order.update({
+        where: { id: orderId },
+        data: { status: "DELIVERED" },
+      });
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { success: false };
+  }
+};
+
+
   export const CancelOrder = async (orderId:string,action?:string)=>{
     const {userId} = await auth();
 

@@ -105,7 +105,7 @@ console.log("orderItemsData : ",orderItemsData)
     
                 {/* Actions */}
                 <div className="mt-3 flex gap-2 flex-wrap">
-                  {items?.order?.status === "PAID" && (
+                  {(items?.order?.status === "PAID" ) && (
                     <>
                       <form
                         action={async () => {
@@ -268,6 +268,19 @@ console.log("orderItemsData : ",orderItemsData)
                         </form>
                       </>
                     )}
+
+{items?.order?.status === "SHIPPED" && (
+                    <form
+                      action={async () => {
+                        "use server";
+                        await updateOrderStatus(items.order.id, "DELIVERED");
+                      }}
+                    >
+                      <button className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-3 py-1 rounded text-xs transition">
+                        Mark Delivered
+                      </button>
+                    </form>
+                  )}
   
                     <BuyerPopup user={items.order.user} />
                   </td>
@@ -283,3 +296,183 @@ console.log("orderItemsData : ",orderItemsData)
 }
 
 export default OrdersPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import BuyerPopup from "@/components/farmer/buyerPopup";
+// import FarmerOrdersProducts from "@/components/farmer/farmerOrdersProduct";
+// import { getAllOrderItems } from "@/utils/services/admin";
+// import { updateOrderItemsStatusByFarmer } from "@/utils/services/order";
+// import { getAllProductByFarmerId } from "@/utils/services/product";
+// import { auth } from "@clerk/nextjs/server";
+// import Link from "next/link";
+
+// async function OrdersPage() {
+//   const { userId } = await auth();
+
+//   if (!userId) {
+//     return (
+//       <div>
+//         Not Authenticated! please <Link href={"../sign-in"}>Login</Link>
+//       </div>
+//     );
+//   }
+
+//   const orderItems = await getAllOrderItems();
+//   const orderItemsData = orderItems?.data || [];
+
+//   const FarmerProduct = await getAllProductByFarmerId();
+
+//   // 🔥 GROUP ITEMS BY ORDER
+//   const groupedOrders = orderItemsData.reduce((acc: any, item: any) => {
+//     const orderId = item.order.id;
+
+//     if (!acc[orderId]) {
+//       acc[orderId] = {
+//         order: item.order,
+//         items: [],
+//       };
+//     }
+
+//     acc[orderId].items.push(item);
+//     return acc;
+//   }, {});
+
+//   const orders = Object.values(groupedOrders);
+
+//   return (
+//     <div className="min-h-screen bg-background text-foreground">
+//       <FarmerOrdersProducts products={FarmerProduct} />
+
+//       <div className="mt-20 space-y-6 p-4 md:p-8">
+
+//         <h1 className="text-2xl font-bold text-emerald-600">
+//           Farmer Orders
+//         </h1>
+
+//         {orders.length === 0 && (
+//           <p className="text-muted-foreground">No orders found</p>
+//         )}
+
+//         {orders.map((group: any) => {
+//           const order = group.order;
+
+//           // filter only this farmer's items
+//           const myItems = group.items.filter(
+//             (item: any) => item.product.farmer_id === userId
+//           );
+
+//           if (myItems.length === 0) return null;
+
+//           return (
+//             <div
+//               key={order.id}
+//               className="border rounded-2xl p-4 bg-card shadow-sm"
+//             >
+//               {/* HEADER */}
+//               <div className="flex justify-between items-center mb-4">
+//                 <div>
+//                   <p className="font-semibold">
+//                     Order #{order.id.slice(0, 6)}
+//                   </p>
+//                   <p className="text-xs text-muted-foreground">
+//                     {new Date(order.createdAt).toLocaleString()}
+//                   </p>
+//                 </div>
+
+//                 {/* STATUS */}
+//                 <span className={`px-3 py-1 text-xs rounded-full font-semibold
+//                   ${order.status === "PENDING" && "bg-amber-200 text-amber-900"}
+//                   ${order.status === "PAID" && "bg-blue-200 text-blue-900"}
+//                   ${order.status === "SHIPPED" && "bg-purple-200 text-purple-900"}
+//                   ${order.status === "DELIVERED" && "bg-emerald-200 text-emerald-900"}
+//                 `}>
+//                   {order.status}
+//                 </span>
+
+//                 <BuyerPopup user={order.user} />
+//               </div>
+
+//               {/* ITEMS */}
+//               <div className="space-y-3">
+//                 {myItems.map((item: any) => (
+//                   <div
+//                     key={item.id}
+//                     className="flex items-center gap-4 border-b pb-3"
+//                   >
+//                     <img
+//                       src={item.product.image}
+//                       className="w-12 h-12 rounded-lg object-cover"
+//                     />
+
+//                     <div className="flex-1">
+//                       <p className="font-medium">
+//                         {item.product.product_name}
+//                       </p>
+//                       <p className="text-sm text-muted-foreground">
+//                         Qty: {item.quantity}
+//                       </p>
+//                     </div>
+
+//                     <p className="font-semibold">
+//                       ${item.quantity * item.product.price}
+//                     </p>
+//                   </div>
+//                 ))}
+//               </div>
+
+//               {/* ACTIONS */}
+//               <div className="mt-4 flex gap-2">
+//                 {order.status === "PAID" && (
+//                   <form
+//                     action={async () => {
+//                       "use server";
+//                       await updateOrderItemsStatusByFarmer(
+//                         order.id,
+//                         userId,
+//                         "SHIPPED"
+//                       );
+//                     }}
+//                   >
+//                     <button className="bg-blue-600 text-white px-3 py-1 rounded text-xs">
+//                       Mark Shipped
+//                     </button>
+//                   </form>
+//                 )}
+
+//                 {order.status === "SHIPPED" && (
+//                   <form
+//                     action={async () => {
+//                       "use server";
+//                       await updateOrderItemsStatusByFarmer(
+//                         order.id,
+//                         userId,
+//                         "DELIVERED"
+//                       );
+//                     }}
+//                   >
+//                     <button className="bg-emerald-600 text-white px-3 py-1 rounded text-xs">
+//                       Mark Delivered
+//                     </button>
+//                   </form>
+//                 )}
+//               </div>
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default OrdersPage;

@@ -284,6 +284,44 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
 
 
 
+export const updateProduct = async ({
+  product_id,
+  values,
+}: {
+  product_id: string;
+  values: any;
+}) => {
+  try {
+    await prisma.product.update({
+      where: { id: product_id },
+      data: {
+        product_name: values.product_name,
+        price: values.price,
+        stock: values.quantity,
+        image: values.image,
+        product_detail: values.product_detail || null,
+        status: values.status.toUpperCase(),
+      },
+    });
+
+    return {
+      success: true,
+      error: false,
+      message: "Product updated successfully!",
+    };
+  } catch (error) {
+    console.error("Error updating product:", error);
+
+    return {
+      success: false,
+      error: true,
+      message: "Failed to update product",
+    };
+  }
+};
+
+
+
 interface FarmerRegistrationProps {
   id:string
   first_name:string
@@ -363,6 +401,104 @@ export const registerFarmer = async ({
     };
   }
 };
+
+
+export const updateFarmer = async ({
+  id,
+  values,
+}: {
+  id: string;
+  values: any;
+}) => {
+  try {
+    const farmer = await prisma.farmer.update({
+      where: { id },
+      data: {
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
+        address: values.address || null,
+        language: values.language,
+        // ❌ do NOT change role/status here unless admin
+      },
+    });
+
+    return {
+      success: true,
+      error: false,
+      data: farmer,
+      message: "Farmer updated successfully",
+    };
+  } catch (error: any) {
+    console.error("Error updating farmer:", error);
+
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        error: true,
+        message: "Email already exists",
+      };
+    }
+
+    return {
+      success: false,
+      error: true,
+      message: "Failed to update farmer",
+    };
+  }
+};
+
+
+export const updateUserProfile = async ({
+  id,
+  values,
+}: {
+  id: string;
+  values: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    address?: string;
+    language: Language;
+  };
+}) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
+        address: values.address || null,
+        language: values.language,
+      },
+    });
+
+    return {
+      success: true,
+      error: false,
+      data: updatedUser,
+      message: "Profile updated successfully",
+    };
+  } catch (error: any) {
+    console.error("Update user error:", error);
+
+    if (error.code === "P2002") {
+      return {
+        success: false,
+        error: true,
+        message: "Email already exists",
+      };
+    }
+
+    return {
+      success: false,
+      error: true,
+      message: "Failed to update profile",
+    };
+  }
+};
+
 
 
 export const updateFarmerLocation = async ({

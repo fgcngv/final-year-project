@@ -19,7 +19,7 @@ export default function FarmerDashboard() {
       <div className="mx-auto max-w-7xl space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-4 items-start md:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
               {tf("title")}

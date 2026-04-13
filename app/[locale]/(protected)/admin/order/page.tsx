@@ -13,7 +13,7 @@ export default async function OrdersPage() {
   // OPTIONAL: Check role from DB if ADMIN
 
   const result = await getAllOrders();
-  console.log("all orders : ",result.data)
+  console.log("all orders : ",result)
 
   if(!result || !result.data){
     return <div>No orders Exist</div>

@@ -26,11 +26,10 @@ async function FarmerProfileById(props: {
         cart?.items?.forEach(item => {
           cartQuantity += item.quantity;
         });
-    
 
     return ( 
         <div>
-          <Header cartQuantity={cartQuantity} notification={unread?.data?.length} />
+          <Header  cartQuantity={cartQuantity} notification={unread?.data?.length} />
           {
             role.toUpperCase() === "FARMER" && (
               <FarmerProfile isOwnPage={false} farmer={farmerData.data} />

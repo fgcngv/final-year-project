@@ -29,93 +29,192 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AddProductSchema } from "@/lib/schema";
 import { useRouter } from "next/navigation";
 import z from "zod";
-import { addProduct } from "@/app/[locale]/actions/general";
+import { addProduct, updateProduct } from "@/app/[locale]/actions/general";
 import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
-import { Plus } from "lucide-react";
+import { Edit, Edit2, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-export default function AddProduct() {
+type AddProductProps = {
+  isEdit?: boolean;
+  product?: any;
+};
+
+export default function AddProduct({ isEdit = false, product }: AddProductProps) {
   const { user } = useUser();
   const id = user?.id;
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const tf = useTranslations("form");
 
+  // const form = useForm({
+  //   resolver: zodResolver(AddProductSchema),
+  //   defaultValues: {
+  //     product_name: "",
+  //     image: undefined,
+  //     price: 0,
+  //     quantity: 0,
+  //     product_detail: "",
+  //     status: "active",
+  //   },
+  // });
+  
   const form = useForm({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
-      product_name: "",
-      image: undefined,
-      price: 0,
-      quantity: 0,
-      product_detail: "",
-      status: "active",
+      product_name: product?.product_name || "",
+      image: product?.image || undefined,
+      price: product?.price || 0,
+      quantity: product?.stock || 0,
+      product_detail: product?.product_detail || "",
+      status: product?.status?.toLowerCase() || "active",
     },
   });
+
+
+  // const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
+  //   values
+  // ) => {
+  //   if (!id) return;
+
+  //   setLoading(true);
+
+  //   try {
+  //     const file = values.image;
+
+  //     if (!file) {
+  //       toast.error("Image is required");
+  //       return;
+  //     }
+
+  //     // Generate unique filename
+  //     const fileExt = file.name.split(".").pop();
+  //     const fileName = `${id}-${Date.now()}.${fileExt}`;
+
+  //     // Upload image
+  //     const { error } = await supabase.storage
+  //       .from("Ethiopian-green-coffee-product-images")
+  //       .upload(fileName, file);
+
+  //     if (error) throw new Error(error.message);
+
+  //     // Get public URL
+  //     const { data } = supabase.storage
+  //       .from("Ethiopian-green-coffee-product-images")
+  //       .getPublicUrl(fileName);
+
+  //     const imageUrl = data.publicUrl;
+
+  //     // Send to backend
+  //     const added = await addProduct({
+  //       farmer_id: id,
+  //       values: {
+  //         ...values,
+  //         image: imageUrl,
+  //       },
+  //     });
+
+  //     toast.success(added.message);
+  //     router.refresh();
+  //     form.reset();
+  //   } catch (err: any) {
+  //     toast.error(err.message || "Upload failed");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
     values
   ) => {
     if (!id) return;
-
+  
     setLoading(true);
-
+  
     try {
-      const file = values.image;
-
-      if (!file) {
-        toast.error("Image is required");
-        return;
+      let imageUrl = product?.image || "";
+  
+      //  Upload only if new image selected
+      if (values.image) {
+        const file = values.image;
+  
+        const fileExt = file.name.split(".").pop();
+        const fileName = `${id}-${Date.now()}.${fileExt}`;
+  
+        const { error } = await supabase.storage
+          .from("Ethiopian-green-coffee-product-images")
+          .upload(fileName, file);
+  
+        if (error) throw new Error(error.message);
+  
+        const { data } = supabase.storage
+          .from("Ethiopian-green-coffee-product-images")
+          .getPublicUrl(fileName);
+  
+        imageUrl = data.publicUrl;
       }
-
-      // Generate unique filename
-      const fileExt = file.name.split(".").pop();
-      const fileName = `${id}-${Date.now()}.${fileExt}`;
-
-      // Upload image
-      const { error } = await supabase.storage
-        .from("Ethiopian-green-coffee-product-images")
-        .upload(fileName, file);
-
-      if (error) throw new Error(error.message);
-
-      // Get public URL
-      const { data } = supabase.storage
-        .from("Ethiopian-green-coffee-product-images")
-        .getPublicUrl(fileName);
-
-      const imageUrl = data.publicUrl;
-
-      // Send to backend
-      const added = await addProduct({
-        farmer_id: id,
-        values: {
-          ...values,
-          image: imageUrl,
-        },
-      });
-
-      toast.success(added.message);
+  
+      //  EDIT
+      if (isEdit && product?.id) {
+        const updated = await updateProduct({
+          product_id: product.id,
+          values: {
+            ...values,
+            image: imageUrl,
+          },
+        });
+  
+        toast.success(updated.message);
+      }
+  
+      // ADD
+      else {
+        if (!values.image) {
+          toast.error("Image is required");
+          return;
+        }
+  
+        const added = await addProduct({
+          farmer_id: id,
+          values: {
+            ...values,
+            image: imageUrl,
+          },
+        });
+  
+        toast.success(added.message);
+      }
+  
       router.refresh();
       form.reset();
     } catch (err: any) {
-      toast.error(err.message || "Upload failed");
+      toast.error(err.message || "Operation failed");
     } finally {
       setLoading(false);
     }
   };
 
+
   return (
     <Dialog>
       <DialogTrigger className="px-4 z-100 py-2 bg-green-600 font-bold text-white flex items-center hover:bg-green-700 active:bg-green-800 rounded-md">
-        <Plus className="mr-2 h-4 w-4" />
-        {tf("newProduct")}
+        {isEdit ? (
+          <>
+           <Edit className="mr-2" />
+            </>
+            ) : <>
+             <Plus className="mr-2" />
+             </>}
+        {/* {tf("newProduct")} */}
+        {isEdit ? "Edit Product" : tf("newProduct")}
       </DialogTrigger>
 
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle>{tf("newProduct")}</DialogTitle>
+          <DialogTitle>
+            {/* {tf("newProduct")} */}
+            {isEdit ? "Edit Product" : tf("newProduct")}
+          </DialogTitle>
           <DialogDescription>
             {tf("productImageDescription")}
           </DialogDescription>

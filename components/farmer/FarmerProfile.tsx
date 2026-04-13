@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { motion } from "framer-motion";
@@ -32,6 +30,9 @@ import { toast } from "sonner";
 import UpdateFarmLocationButton from "./UpdateFarmLocationButton";
 import FarmLocationMap from "./FarmLocationMap";
 import { useTranslations } from "next-intl";
+import FarmerRegistrationForm from "../form/farmer_registration";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 // 🔹 Define props type (adjust if you create proper TypeScript types)
 type FarmerProfileProps = {
@@ -253,12 +254,41 @@ export default function FarmerProfile({
 
               {/* ACTIONS */}
               {isOwnPage ? (
-                <Button className="mt-4 rounded-xl flex gap-2 bg-emerald-700 hover:bg-emerald-600">
-                  <Edit size={18} /> Edit Profile
-                </Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="mt-4 rounded-xl flex gap-2 bg-emerald-700 hover:bg-emerald-600">
+                      <Edit2 size={18} />
+                      Edit Profile
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>Edit Profile</DialogTitle>
+                    </DialogHeader>
+
+                    <FarmerRegistrationForm farmer={farmer} isEdit />
+                  </DialogContent>
+                </Dialog>
               ) : userInfo.user?.id === farmer.id ? (
                 <h1 className="bg-green-600 text-xl font-bold text-center rounded-2xl text-white p-2">
                   This is your own profile
+                  <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="mt-4 rounded-xl flex gap-2 bg-emerald-700 hover:bg-emerald-600">
+                      <Edit2 size={18} />
+                      Edit Profile
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>Edit Profile</DialogTitle>
+                    </DialogHeader>
+
+                    <FarmerRegistrationForm farmer={farmer} isEdit />
+                  </DialogContent>
+                </Dialog>
                 </h1>
               ) : (
                 <Button
@@ -282,11 +312,10 @@ export default function FarmerProfile({
                 </Button>
               )}
             </div>
-
           </CardContent>
           <CardFooter className="border-t flex flex-col gap-2 bg-gradient-to-r from-green-100 z-0 to-green-50 dark:from-green-900 dark:to-green-800 py-4">
-                        {/* LOCATION UPDATE (only for own profile) */}
-                        {(isOwnPage || userInfo.user?.id === farmer.id) && (
+            {/* LOCATION UPDATE (only for own profile) */}
+            {(isOwnPage || userInfo.user?.id === farmer.id) && (
               <UpdateFarmLocationButton />
             )}
 

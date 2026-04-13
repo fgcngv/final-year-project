@@ -50,7 +50,7 @@ export default function ChapaVerifyClient() {
           const orderId = data.orderId || "unknown"; // replace with real orderId if available
           setTimeout(() => router.push(`/check-out/success/${orderId}`), 2000);
         } else {
-          setStatus("Payment failed! Check logs below.");
+          setStatus("Payment failedddd! Check logs below.");
         }
       })
       .catch((err) => {

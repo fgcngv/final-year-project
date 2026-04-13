@@ -1,10 +1,12 @@
 
 import Header from "@/components/header";
+import { getAllUnreadNotifications } from "@/utils/services/notification";
 
-function OrdersPage({cartQuantity}:{cartQuantity?:number}) {
+async function OrdersPage({cartQuantity}:{cartQuantity?:number}) {
+          const unread = await getAllUnreadNotifications();
     return ( 
         <div>
-            <Header cartQuantity={cartQuantity}/>
+            <Header notification={unread?.data?.length} cartQuantity={cartQuantity}/>
             <div className="pt-18">
             orders page
 

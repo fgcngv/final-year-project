@@ -41,7 +41,6 @@ export default function OrdersTable({
 }: Props) {
   const [openOrder, setOpenOrder] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-
   // Filter orders based on search
   const filteredOrders = orders.filter((order) => {
     const customerName =

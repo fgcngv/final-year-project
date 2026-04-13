@@ -15,6 +15,7 @@ import LoaderBtn from "./loaderBtn";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import FarmLocationMap from "./farmer/FarmLocationMap";
+import AddProduct from "./form/add-product";
 
 export default function ProductById({ product, isDashboard,cartQuantity,notification}: { product: any; isDashboard?: boolean, cartQuantity?:number,notification?:number}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -224,9 +225,10 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
             )}
   
             {isDashboard && (
-              <Button className="rounded-xl cursor-pointer bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-800">
-                Edit
-              </Button>
+              // <Button className="rounded-xl cursor-pointer bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-800">
+              //   Edit
+              // </Button>
+              <AddProduct isEdit={true} product={product} />
             )}
           </motion.div>
         </CardContent>
