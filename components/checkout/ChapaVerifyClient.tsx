@@ -131,9 +131,9 @@ export default function ChapaVerifyClient() {
           setStatus("Payment successful! Redirecting...");
           console.log("data from API:", data);
           // Use orderId from API/database to navigate dynamically
-          const orderId = data.orderId[0] || "unknown"; // replace with real orderId if available
+          // const orderId = data.orderId[0] || "unknown"; // replace with real orderId if available
           const paymentId = data.paymentId || "unknown"; // replace with real paymentId if available
-          console.log("Redirecting to order ID:", orderId);
+          // console.log("Redirecting to order ID:", orderId);
           setTimeout(() => router.push(`/check-out/success/${paymentId}`), 2000);
         } else {
           setStatus("Payment failedddd! Check logs below.");
