@@ -233,7 +233,9 @@ export const OrdersByBuyerId = async () => {
   
     try {
       const orders = await prisma.order.findMany({
-        where: { payment_id: paymentId },
+        where: { payment_id: paymentId,
+          user_id: userId
+         },
         include: {
           items: {
             include: {
