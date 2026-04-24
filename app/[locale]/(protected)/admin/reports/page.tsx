@@ -28,6 +28,8 @@ import AdminReportsDashboard from "@/components/admin/AdminReportsDashboard";
 export default async function Page() {
   const result = await getReports();
 
+  console.log("first result", result.data);
+
   if (!result.success) {
     return <div className="p-10 text-red-500">Failed to load</div>;
   }

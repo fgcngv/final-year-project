@@ -1,7 +1,7 @@
 "use server"
 
 import { toast } from "sonner";
-import { PrismaClient, Status,NotificationType } from "@prisma/client";
+import { PrismaClient, Status,NotificationType, ReportStatus } from "@prisma/client";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { getRole } from "@/utils/role";
 import prisma from "@/lib/prisma";
@@ -334,7 +334,8 @@ export async function updateReportStatus({
   status,
 }: {
   reportId: string;
-  status: "UNDER_REVIEW" | "RESOLVED" | "REJECTED";
+// status: "UNDER_REVIEW" | "RESOLVED" | "REJECTED";
+  status:ReportStatus;
 }) {
   const { userId } = await auth();
 

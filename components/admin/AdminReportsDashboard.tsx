@@ -212,12 +212,14 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { updateReportStatus } from "@/app/[locale]/actions/admin";
 import LoaderBtn from "../loaderBtn";
+import { ReportStatus } from "@prisma/client";
 
 interface Report {
   id: string;
   type: "FARMER" | "PRODUCT" | "ORDER" | "USER";
   reason: string;
-  status: "UNDER_REVIEW" | "RESOLVED" | "REJECTED";
+  // status: "UNDER_REVIEW" | "RESOLVED" | "REJECTED";
+  status:ReportStatus;
   description?: string | null;
   createdAt: Date;
 
