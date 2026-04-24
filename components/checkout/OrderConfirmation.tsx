@@ -33,7 +33,6 @@
 //     }).format(new Date(iso));
 //   }
 
-
 //   useEffect(() => {
 //     const timer = setInterval(() => {
 //       setCountdown((prev) => (prev > 0 ? prev - 1 : 0));
@@ -68,13 +67,13 @@
 //             >
 //               <Check className="h-12 w-12 text-green-700" />
 //             </motion.div>
-  
+
 //             <h1 className="text-4xl font-bold mb-2">Order Confirmed!</h1>
 //             <p className="text-lg opacity-90">
 //               Thank you for supporting Ethiopian coffee farmers
 //             </p>
 //           </div>
-  
+
 //           <CardContent className="p-8 space-y-8">
 //             {/* Order ID */}
 //             <div className="text-center">
@@ -86,7 +85,7 @@
 //                 </code>
 //               </div>
 //             </div>
-  
+
 //             {/* Order Details */}
 //             <div className="grid grid-cols-2 gap-4">
 //               {[
@@ -104,7 +103,7 @@
 //                 </div>
 //               ))}
 //             </div>
-  
+
 //             {/* Next Steps */}
 //             <div className="space-y-4">
 //               <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-100">What happens next?</h3>
@@ -123,7 +122,7 @@
 //                 ))}
 //               </div>
 //             </div>
-  
+
 //             {/* Action Buttons */}
 //             <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 dark:border-gray-700">
 //               <Button
@@ -134,14 +133,14 @@
 //                 <Download className="h-5 w-5" />
 //                 Download Receipt
 //               </Button>
-  
+
 //               <Button
 //                 className="flex-1 gap-2 py-6"
 //                 onClick={() => (window.location.href = "/orders")}
 //               >
 //                 View Order Details
 //               </Button>
-  
+
 //               <Button
 //                 variant="ghost"
 //                 className="flex-1 gap-2 py-6"
@@ -151,7 +150,7 @@
 //                 Back to Home
 //               </Button>
 //             </div>
-  
+
 //             {/* Countdown */}
 //             <div className="text-center text-sm text-gray-500 dark:text-gray-400">
 //               <p>
@@ -167,20 +166,15 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Package, Truck, Home } from "lucide-react";
+import { Check, Package, Truck, Home, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/router";
+import LoaderBtn from "../loaderBtn";
 
 interface Order {
   id: string;
@@ -203,6 +197,7 @@ export default function OrderConfirmation({
   const totalItems = orders.reduce((sum, o) => sum + o.items.length, 0);
 
   const address = orders[0]?.address;
+  const router = useRouter();
 
   function formatDate(date: string) {
     return new Date(date).toLocaleDateString("en-US", {
@@ -211,6 +206,14 @@ export default function OrderConfirmation({
       day: "numeric",
     });
   }
+
+  const { user } = useUser();
+  const role = user?.publicMetadata?.role;
+
+  let orderLink = "";
+  role === "admin" || role === "ADMIN"
+    ? (orderLink = `${role}/order`)
+    : (orderLink = `${role}`);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -238,7 +241,7 @@ export default function OrderConfirmation({
               <Check className="w-12 h-12 text-green-200" />
             </motion.div>
 
-            <h1 className="text-3xl font-bold">Payment Successful 🎉</h1>
+            <h1 className="text-3xl font-bold">Payment Successful </h1>
             <p className="opacity-90 mt-2">
               Your orders have been placed successfully
             </p>
@@ -254,9 +257,21 @@ export default function OrderConfirmation({
 
             {/* SUMMARY */}
             <div className="grid grid-cols-2 gap-4">
-              <CardItem icon={<Package />} label="Total Orders" value={orders.length} />
-              <CardItem icon={<Package />} label="Total Items" value={totalItems} />
-              <CardItem icon={<span>💰</span>} label="Total Paid" value={`${totalAmount} Birr`} />
+              <CardItem
+                icon={<Package />}
+                label="Total Orders"
+                value={orders.length}
+              />
+              <CardItem
+                icon={<Package />}
+                label="Total Items"
+                value={totalItems}
+              />
+              <CardItem
+                icon={<span>💰</span>}
+                label="Total Paid"
+                value={`${totalAmount} Birr`}
+              />
               <CardItem
                 icon={<Truck />}
                 label="Delivery"
@@ -284,9 +299,7 @@ export default function OrderConfirmation({
                     className="p-3 border rounded-lg flex justify-between"
                   >
                     <span className="font-mono text-sm">{order.id}</span>
-                    <span className="font-semibold">
-                      {order.total} Birr
-                    </span>
+                    <span className="font-semibold">{order.total} Birr</span>
                   </div>
                 ))}
               </div>
@@ -294,12 +307,11 @@ export default function OrderConfirmation({
 
             {/* ACTIONS */}
             <div className="flex gap-3 pt-4">
-              <Button
-                className="flex-1"
-                onClick={() => (window.location.href = "/orders")}
-              >
-                View Orders
-              </Button>
+              <LoaderBtn
+                className="bg-gray-200 hover:bg-gray-600 font-bold"
+                btnName="View Orders"
+                linkTo={`/${orderLink}`}
+              />
 
               <Button
                 variant="outline"
@@ -308,6 +320,16 @@ export default function OrderConfirmation({
               >
                 <Home className="mr-2 h-4 w-4" />
                 Home
+              </Button>
+            </div>
+            <div>
+              <Button
+                variant="outline"
+                className="flex-1 gap-2 py-6"
+                onClick={() => window.print()}
+              >
+                <Download className="h-5 w-5" />
+                Download Receipt
               </Button>
             </div>
 

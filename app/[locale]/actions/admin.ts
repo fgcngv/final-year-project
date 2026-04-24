@@ -268,3 +268,92 @@ export async function updateStatus(
     return { error: true, message: "Internal server error" };
   }
 }
+
+
+// export async function getReports() {
+//   const { userId } = await auth();
+
+//   if (!userId) {
+//     return { success: false, error: "Unauthorized" };
+//   }
+
+//   try {
+//     const reports = await prisma.report.findMany({
+//       orderBy: { createdAt: "desc" },
+//     });
+
+//     return { success: true, data: reports };
+//   } catch (err) {
+//     console.error(err);
+//     return { success: false, error: "Failed to fetch reports" };
+//   }
+// }
+export async function getReports() {
+  const reports = await prisma.report.findMany({
+    include: {
+      reporter: {
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+          email: true,
+        },
+      },
+      product: {
+        select: {
+          id: true,
+          product_name: true,
+        },
+      },
+      farmer: {
+        select: {
+          id: true,
+          first_name: true,
+          last_name: true,
+        },
+      },
+      order: {
+        select: {
+          id: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return {
+    success: true,
+    data: reports,
+  };
+}
+
+export async function updateReportStatus({
+  reportId,
+  status,
+}: {
+  reportId: string;
+  status: "UNDER_REVIEW" | "RESOLVED" | "REJECTED";
+}) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const updated = await prisma.report.update({
+      where: { id: reportId },
+      data: {
+        status,
+        handledBy: userId,
+      },
+    });
+
+    return { success: true, data: updated };
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: "Failed to update report" };
+  }
+}

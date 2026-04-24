@@ -59,7 +59,7 @@ export default async function Home() {
   // pages/index.tsx or app/page.tsx
 
   const products = productsData.data ?? [];
-
+console.log("products data : ", productsData);
   // Fetch reviews for each product
   const reviewsMap: Record<string, any[]> = {};
 

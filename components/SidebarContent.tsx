@@ -122,6 +122,7 @@ const sidebarLinks = [
       { name: "Products", link: "/admin/product", key2: "products" },
       { name: "Messages", link: "/admin/messages", key2: "messages" },
       { name: "Orders", link: "/admin/order", key2: "order" },
+      { name: "Reports", link: "/admin/reports", key2: "report" },
       { name: "Home", link: "/", key2: "home" },
     ],
   },

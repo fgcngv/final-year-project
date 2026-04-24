@@ -34,7 +34,7 @@ export const getAllProducts= async ()=>{
         return{
             success:false,
             error:true,
-            massage:"Something went wrong in catch!"
+            massage:`Something went wrong in catch! ${error}`
         }
 
     }
