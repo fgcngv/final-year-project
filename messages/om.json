@@ -1,6 +1,6 @@
 {
-  "language":{
-    "lang":"oromoo"
+  "language": {
+    "lang": "oromoo"
   },
   "button": {
     "add": "Gara kuusaatti dabali",
@@ -34,18 +34,18 @@
     "message": "Ergaa kee barreessi...",
     "name": "Maqaa Kee",
     "subject": "Mata-duree",
-    "search":"Barbaadi...",
-    "msgtitle":"Yaada ykn Ergaa yoo qabaattan",
-    "newProduct":"Oomisha Haaraa Dabaluu",
-    "productName":"Maqaa Oomisha",
-    "productPrice":"Gatii Oomisha (ETB/kg)",
-    "productRegion":"Naannoo Oomisha",
-    "productQuantity":"Baay'ina Oomisha (kg)",
-    "productImage":"Suuraa Oomisha",
-    "productDescription:":"Oomisha bunaa keessan ibsa bal'aa kenni, akkasumas dhangala'aa, haala qopheessuu, fi amala adda ta'e kan isa adda godhu.",
-    "productImageDescription":"Suuraa qulqullina ol'aanaa kan oomisha bunaa keessan. Kun bittootaaf gatii fi mul'ata bunaa keessanii agarsiisa.",
-    "Uploading":"Suuraa olkaa'aa...",
-    "submit":"Ergi"
+    "search": "Barbaadi...",
+    "msgtitle": "Yaada ykn Ergaa yoo qabaattan",
+    "newProduct": "Oomisha Haaraa Dabaluu",
+    "productName": "Maqaa Oomisha",
+    "productPrice": "Gatii Oomisha (ETB/kg)",
+    "productRegion": "Naannoo Oomisha",
+    "productQuantity": "Baay'ina Oomisha (kg)",
+    "productImage": "Suuraa Oomisha",
+    "productDescription:": "Oomisha bunaa keessan ibsa bal'aa kenni, akkasumas dhangala'aa, haala qopheessuu, fi amala adda ta'e kan isa adda godhu.",
+    "productImageDescription": "Suuraa qulqullina ol'aanaa kan oomisha bunaa keessan. Kun bittootaaf gatii fi mul'ata bunaa keessanii agarsiisa.",
+    "Uploading": "Suuraa olkaa'aa...",
+    "submit": "Ergi"
   },
   "home": {
     "adding": "Dabaluu...",
@@ -56,92 +56,104 @@
     "shopnnowbtn": "Amma Bitadhu",
     "signoption": "Seenaa Galchuu yookaan Seenaa Haaraa",
     "subheader": "Kun marsariitii Next.js afaan hedduu fayyadamu kan next-intl ti."
-  },  
-"products":{
-    "title":"Oomishaalee Hunda"
   },
-  "about":{
-    "title":"Gabaa Buna Magariisa Itiyoophiyaa ",
-    "definition":" Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
-    "connection":"Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
-    "find":"Maddoota Bunaa Barbaadaa",
-    "longDef":"Itoophiyaan bakka dhaloota buna Arabicaati. Jaarraa hedduudhaaf qonnaan bultoonni xixiqqaa biyyee badhaadhaa fi haala qilleensaa xiqqaa adda ta’e keessatti buna misoomsaa turaniiru. Waltajjiin keenya hambaa kana kan eegu yoo ta’u, gabaa addunyaatiif kallattiin dijitaalaa banaadha. ",
-    "sourcing":" Iddoo Itti oomishamee kallattiidhan argattu! ",
-    "quality":" Buna Magariisa Qulqullina Ol'aanadhaan! ",
-    "relations":" Qoteebultoota Waliin Hariiroo Kallattii qabna",
-    "builtfor":"Qotee bultootaf kan hojjetame! Bitattootaf Amanamaa kan ta'e!",
-    "cardtitle1":"Kenniinsa gatii ifa ta'e ",
-    "carddes1":"Qoteebultoonni gatii ifa ta'e kaa'u. Bitattoonni ammoo rakkoo jiru ni argu!",
-    "cardtitle2":"Hordoffii cimaa",
-    "carddes2":"Buna qotee bulaa irraa naannoo ati barbaadduu waqtii ati barbaaddutti argachuu dandeessa",
-    "cardtitle3":"Kanfaltii Naga qabeessa",
-    "carddes3":"Sirna kanfaltii ammayyaawaa, karaa qotee bulaas ta'ee butataan hin miidhamneen ",
-    "empower":"Qonnaan Bultoota Itoophiyaa jajjabeessuu",
-    "digitaltools":"Qonnaan bultoonni buna galmeessuuf, ajaja isaanii akka bulchan, fi bitoota addunyaa waliin mari’achuuf meeshaalee dijitaalaa ni kennina — galii fi deeggarsa hawaasaa raabsame dabalatee.",
-    "join":"Nu waliin warraaqsa bunaa addunyaadhaf jedhutti dabalamaa!",
-    "forb":"Qotee bulaas taatan Bitataas taatan Nu waliin imala Eegalaa!!. ",
-    "btn1":"Qotee Bulaa ta'aa",
-    "btn2":"Buna ilaalaa "
+  "products": {
+    "title": "Oomishaalee Hunda"
   },
-  "notification":{
-    "topic":"Ergaawwan",
-    "subtopic":"Sochiiwwan haaraa yeroo yeroon hordofaa",
-    "deleteensure":"Ergaa kana haquu barbaaddaa?",
-    "deleted":"Ergaa kana milkaa'inaan balleessitaniirtu",
-    "deletefailed":"Ergaa kana balleessun hin milkoofne",
-       "moremsg":"Ergaawwan Dabalataa"
+  "about": {
+    "title": "Gabaa Buna Magariisa Itiyoophiyaa ",
+    "definition": " Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
+    "connection": "Qonnaan bultoota buna Itoophiyaa kallattiin bittoota addunyaa waliin walqunnamsiisuu - iftoomina, naamusa, fi qonna irraa hanga gabaatti hordofamuu danda'u",
+    "find": "Maddoota Bunaa Barbaadaa",
+    "longDef": "Itoophiyaan bakka dhaloota buna Arabicaati. Jaarraa hedduudhaaf qonnaan bultoonni xixiqqaa biyyee badhaadhaa fi haala qilleensaa xiqqaa adda ta’e keessatti buna misoomsaa turaniiru. Waltajjiin keenya hambaa kana kan eegu yoo ta’u, gabaa addunyaatiif kallattiin dijitaalaa banaadha. ",
+    "sourcing": " Iddoo Itti oomishamee kallattiidhan argattu! ",
+    "quality": " Buna Magariisa Qulqullina Ol'aanadhaan! ",
+    "relations": " Qoteebultoota Waliin Hariiroo Kallattii qabna",
+    "builtfor": "Qotee bultootaf kan hojjetame! Bitattootaf Amanamaa kan ta'e!",
+    "cardtitle1": "Kenniinsa gatii ifa ta'e ",
+    "carddes1": "Qoteebultoonni gatii ifa ta'e kaa'u. Bitattoonni ammoo rakkoo jiru ni argu!",
+    "cardtitle2": "Hordoffii cimaa",
+    "carddes2": "Buna qotee bulaa irraa naannoo ati barbaadduu waqtii ati barbaaddutti argachuu dandeessa",
+    "cardtitle3": "Kanfaltii Naga qabeessa",
+    "carddes3": "Sirna kanfaltii ammayyaawaa, karaa qotee bulaas ta'ee butataan hin miidhamneen ",
+    "empower": "Qonnaan Bultoota Itoophiyaa jajjabeessuu",
+    "digitaltools": "Qonnaan bultoonni buna galmeessuuf, ajaja isaanii akka bulchan, fi bitoota addunyaa waliin mari’achuuf meeshaalee dijitaalaa ni kennina — galii fi deeggarsa hawaasaa raabsame dabalatee.",
+    "join": "Nu waliin warraaqsa bunaa addunyaadhaf jedhutti dabalamaa!",
+    "forb": "Qotee bulaas taatan Bitataas taatan Nu waliin imala Eegalaa!!. ",
+    "btn1": "Qotee Bulaa ta'aa",
+    "btn2": "Buna ilaalaa "
   },
-  "admin":{
-    "tusers":"Fayyadamtoota Waliigalaa",
-    "tsellers":"Waliigala Qotaabultootaa",
-    "tproduct":"Oomishaalee waliigalaa",
-    "torders":"Ajajoota Waliigala",
-    "revenue":"Galii Waliigalaa",
-    "revenue-generated":"Galii waliigalaa hajjetame",
-    "commision":"Komishinii Waliigalaa Maddisiifame",
-    "ordergraph":"Ajaja Yeroo Waliin",
-    "orderstatus":"Haala Ajaja",
-    "tproducts":"Oomishaalee Ol'aanoo",
-    "tfarmers":"Qonnaan Bultoota Olaanoo",
-    "wishedproducts":"Oomishaalee Hawwii Ta'an Irra Caalaa",
-    "role":"Gahee Fayyadamtootaa",
-    "payment":"Odeeffannoo kanfaltii"
+  "notification": {
+    "topic": "Ergaawwan",
+    "subtopic": "Sochiiwwan haaraa yeroo yeroon hordofaa",
+    "deleteensure": "Ergaa kana haquu barbaaddaa?",
+    "deleted": "Ergaa kana milkaa'inaan balleessitaniirtu",
+    "deletefailed": "Ergaa kana balleessun hin milkoofne",
+    "moremsg": "Ergaawwan Dabalataa"
   },
-  "farmerdashboard":{
-    "title":"Dashboard Qotee Bulaa",
-    "welcome":"Baga nagaan dhuftan dashboard keessaniitti! Asitti oomishaalee bunaa keessan, ajajoota keessan ilaalu, fi hojii daldalaa keessan hordofuu dandeessu. Menu deeggarsaa fayyadamuun kutaa garaagaraa dashboard keessanii qorachuu dandeessu.",
-    "products":"Oomishaalee Keessan",
-    "orders":"Ajajoota Keessan",
-    "sales":"Hojii Daldalaa",
-    "manageproducts":"Oomishaalee Bunaa Keessan Bulchaa",
-    "vieworders":"Ajajoota Keessan Ilaalaa fi Bulchaa",
-    "trackperformance":"Hojii Daldalaa Keessan Hordofaa"
+  "admin": {
+    "tusers": "Fayyadamtoota Waliigalaa",
+    "tsellers": "Waliigala Qotaabultootaa",
+    "tproduct": "Oomishaalee waliigalaa",
+    "torders": "Ajajoota Waliigala",
+    "revenue": "Galii Waliigalaa",
+    "revenue-generated": "Galii waliigalaa hajjetame",
+    "commision": "Komishinii Waliigalaa Maddisiifame",
+    "ordergraph": "Ajaja Yeroo Waliin",
+    "orderstatus": "Haala Ajaja",
+    "tproducts": "Oomishaalee Ol'aanoo",
+    "tfarmers": "Qonnaan Bultoota Olaanoo",
+    "wishedproducts": "Oomishaalee Hawwii Ta'an Irra Caalaa",
+    "role": "Gahee Fayyadamtootaa",
+    "payment": "Odeeffannoo kanfaltii"
   },
-  "sidebar":{
-    "dashboard":"Dashboard",
-    "products":"Oomishaalee",
-    "orders":"Ajajoota",
-    "sales":"Hojii Daldalaa",
-    "searchplaceholder":"Search products...",
-    "searchresult":"Search Results for \"{query}\"",
-    "noresult":"No products found for \"{query}\"",
-    "Orders":"Orders",
-    "Products":"Products",
-    "Profile":"Profile",
-    "Logout":"Logout",
-    "home":"Baafata Jalqabaa",
-    "addproduct":"Add Product"
+  "farmerdashboard": {
+    "title": "Dashboard Qotee Bulaa",
+    "welcome": "Baga nagaan dhuftan dashboard keessaniitti! Asitti oomishaalee bunaa keessan, ajajoota keessan ilaalu, fi hojii daldalaa keessan hordofuu dandeessu. Menu deeggarsaa fayyadamuun kutaa garaagaraa dashboard keessanii qorachuu dandeessu.",
+    "products": "Oomishaalee Keessan",
+    "orders": "Ajajoota Keessan",
+    "sales": "Hojii Daldalaa",
+    "manageproducts": "Oomishaalee Bunaa Keessan Bulchaa",
+    "vieworders": "Ajajoota Keessan Ilaalaa fi Bulchaa",
+    "trackperformance": "Hojii Daldalaa Keessan Hordofaa"
   },
-  "dialog":{
-    "title":"Iddoo Oomisha Keessan Haaraa",
-    "success":"Iddoo haaraa milkaa'inaan olkaa'ame!",
-    "standInFarming":"Iddoo qonna keessanii keessatti dhaabbadhaa siif sirrii ta'uu isaa mirkaneessuuf. Iddoo qonna keessanii haaraa olkaa'uuf, GPS meeshaa keessanii fayyadamuun iddoo qonna keessanii kaartaa irratti argisiisuuf nu gargaara, akkasumas bittootaaf si argamsiisuuf.",
-    "description":"Mee iddoo keessanii argachuuf hayyama kenni, akkasumas iddoo qonna keessanii kaartaa irratti haaraa olkaa'uuf buttonii gadii tuqaa.",
-    "areYouSure":"Iddoo qonna keessanii haaraa olkaa'uuf mirkaneessaa? Bittoonni iddoo kana irraa oomishaalee keessan fudhachuuf itti argamu, kanaaf sirrii ta'uu isaa mirkaneessaa.",
-    "notify":"Iddoo qonnaa hin kaa'amne. Maamiltoonni keessan iddoo qonna keessanii sirriitti argachuuf barbaadu! Kanaaf iddoo qonna keessanii dabaluuf buttonii olii kana cuqaasun dabalaa tuqaa",
-    "cancel":"Haqi",
-    "update":"Iddoo Haaraa Olkaa'i",
-    "confirm":"Mirkaneessi",
-      "updating":"Olkaa'aa jira..."
-}
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "products": "Oomishaalee",
+    "orders": "Ajajoota",
+    "sales": "Hojii Daldalaa",
+    "searchplaceholder": "Search products...",
+    "searchresult": "Search Results for \"{query}\"",
+    "noresult": "No products found for \"{query}\"",
+    "Orders": "Orders",
+    "Products": "Products",
+    "Profile": "Profile",
+    "Logout": "Logout",
+    "home": "Baafata Jalqabaa",
+    "addproduct": "Add Product"
+  },
+  "dialog": {
+    "title": "Iddoo Oomisha Keessan Haaraa",
+    "success": "Iddoo haaraa milkaa'inaan olkaa'ame!",
+    "standInFarming": "Iddoo qonna keessanii keessatti dhaabbadhaa siif sirrii ta'uu isaa mirkaneessuuf. Iddoo qonna keessanii haaraa olkaa'uuf, GPS meeshaa keessanii fayyadamuun iddoo qonna keessanii kaartaa irratti argisiisuuf nu gargaara, akkasumas bittootaaf si argamsiisuuf.",
+    "description": "Mee iddoo keessanii argachuuf hayyama kenni, akkasumas iddoo qonna keessanii kaartaa irratti haaraa olkaa'uuf buttonii gadii tuqaa.",
+    "areYouSure": "Iddoo qonna keessanii haaraa olkaa'uuf mirkaneessaa? Bittoonni iddoo kana irraa oomishaalee keessan fudhachuuf itti argamu, kanaaf sirrii ta'uu isaa mirkaneessaa.",
+    "notify": "Iddoo qonnaa hin kaa'amne. Maamiltoonni keessan iddoo qonna keessanii sirriitti argachuuf barbaadu! Kanaaf iddoo qonna keessanii dabaluuf buttonii olii kana cuqaasun dabalaa tuqaa",
+    "cancel": "Haqi",
+    "update": "Iddoo Haaraa Olkaa'i",
+    "confirm": "Mirkaneessi",
+    "updating": "Olkaa'aa jira..."
+  },
+  "orderspage": {
+    "titile": "Dashboard Ajajoota",
+    "torders": "Ajajoota Waliigalaa",
+    "trevenue": "Galii Waliigalaa",
+    "porders": "Ajajoota Adeemsa irra jiran",
+    "sorders": "Ajajoota Fe'man",
+    "dorders": "Ajajoota Ergaman",
+    "corders": "Ajajoota Haqaman",
+    "norders": "Ajajni hin jiru",
+    "conorders": "Ajajoota Raggaasifaman",
+    "orderdetails": "Odeeffannoo Ajajaa"
+  }
 }

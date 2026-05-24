@@ -1,148 +1,445 @@
 
 
 
+// "use client";
+
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
+// import { Badge } from "@/components/ui/badge";
+// import { Progress } from "@/components/ui/progress";
+// import { Leaf, TrendingUp, Package, DollarSign, MapPin } from "lucide-react";
+// import AddProduct from "../form/add-product";
+// import { useTranslations } from "next-intl";
+
+// export default function FarmerDashboard() {
+//   const tf = useTranslations("farmerdashboard");
+
+//   return (
+//     <div className="min-h-screen bg-background p-6 text-foreground transition-colors">
+//       <div className="mx-auto max-w-7xl space-y-8">
+        
+//         {/* Header */}
+//         <div className="flex flex-col gap-4 items-start md:justify-between">
+//           <div>
+//             <h1 className="text-3xl font-bold tracking-tight">
+//               {tf("title")}
+//             </h1>
+//             <p className="text-muted-foreground">
+//               {tf("welcome")}
+//             </p>
+//           </div>
+//           <AddProduct />
+//         </div>
+
+//         {/* Stats */}
+//         <div className="grid gap-6 md:grid-cols-4">
+//           <StatCard title="Total Harvest" value="2,450 kg" icon={<Leaf />} />
+//           <StatCard title="Available Lots" value="6" icon={<Package />} />
+//           <StatCard title="Monthly Earnings" value="4,200 ETB" icon={<DollarSign />} />
+//           <StatCard title="Demand Trend" value="High" icon={<TrendingUp />} />
+//         </div>
+
+//         {/* Main Grid */}
+//         <div className="grid gap-6 lg:grid-cols-3">
+          
+//           {/* Harvest Status */}
+//           <Card className="lg:col-span-2">
+//             <CardHeader>
+//               <CardTitle>Harvest Progress</CardTitle>
+//             </CardHeader>
+//             <CardContent className="space-y-4">
+//               <HarvestRow region="Yirgacheffe" progress={80} grade="Grade 1" />
+//               <HarvestRow region="Sidamo" progress={55} grade="Grade 2" />
+//               <HarvestRow region="Guji" progress={35} grade="Grade 1" />
+//             </CardContent>
+//           </Card>
+
+//           {/* Profile */}
+//           <Card>
+//             <CardHeader>
+//               <CardTitle>Farm Profile</CardTitle>
+//             </CardHeader>
+//             <CardContent className="space-y-4 text-sm">
+//               <div className="flex items-center gap-2 text-muted-foreground">
+//                 <MapPin size={16} /> Oromia, Ethiopia
+//               </div>
+//               <div>
+//                 Farm Size: <strong>3.2 hectares</strong>
+//               </div>
+//               <div>Certification:</div>
+//               <div className="flex gap-2">
+//                 <Badge className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500">
+//                   Organic
+//                 </Badge>
+//                 <Badge variant="outline">Fair Trade</Badge>
+//               </div>
+//               <Button variant="outline" className="w-full">
+//                 Edit Profile
+//               </Button>
+//             </CardContent>
+//           </Card>
+//         </div>
+
+//         {/* Sales */}
+//         <Card>
+//           <CardHeader>
+//             <CardTitle>Recent Sales</CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             <div className="space-y-3 text-sm">
+//               <SaleRow buyer="Export Buyer – Germany" amount="1,200 ETB" status="Completed" />
+//               <SaleRow buyer="Local Cooperative" amount="850 ETB" status="Pending" />
+//               <SaleRow buyer="Roastery – UAE" amount="2,150 ETB" status="Completed" />
+//             </div>
+//           </CardContent>
+//         </Card>
+//       </div>
+//     </div>
+//   );
+// }
+
+// function StatCard({ title, value, icon }: { title: string; value: string; icon: React.ReactNode }) {
+//   return (
+//     <Card>
+//       <CardContent className="flex items-center gap-4 p-6">
+//         <div className="rounded-xl bg-emerald-100 p-3 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 transition-colors">
+//           {icon}
+//         </div>
+//         <div>
+//           <p className="text-sm text-muted-foreground">{title}</p>
+//           <p className="text-xl font-semibold">{value}</p>
+//         </div>
+//       </CardContent>
+//     </Card>
+//   );
+// }
+
+// function HarvestRow({ region, progress, grade }: { region: string; progress: number; grade: string }) {
+//   return (
+//     <div className="space-y-2">
+//       <div className="flex justify-between text-sm">
+//         <span className="font-medium">{region}</span>
+//         <Badge variant="secondary">{grade}</Badge>
+//       </div>
+//       <Progress value={progress} />
+//     </div>
+//   );
+// }
+
+// function SaleRow({ buyer, amount, status }: { buyer: string; amount: string; status: string }) {
+//   return (
+//     <div className="flex items-center justify-between rounded-lg border bg-card p-3 transition-colors">
+//       <div>
+//         <p className="font-medium">{buyer}</p>
+//         <p className="text-emerald-600 dark:text-emerald-400">{amount}</p>
+//       </div>
+//       <Badge
+//         className={
+//           status === "Completed"
+//             ? "bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500"
+//             : ""
+//         }
+//         variant={status === "Completed" ? "default" : "outline"}
+//       >
+//         {status}
+//       </Badge>
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Leaf, TrendingUp, Package, DollarSign, MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DollarSign,
+  Package,
+  ShoppingCart,
+  Star,
+  AlertTriangle,
+} from "lucide-react";
 import AddProduct from "../form/add-product";
-import { useTranslations } from "next-intl";
 
-export default function FarmerDashboard() {
-  const tf = useTranslations("farmerdashboard");
+/* ================= TYPES ================= */
 
-  return (
-    <div className="min-h-screen bg-background p-6 text-foreground transition-colors">
-      <div className="mx-auto max-w-7xl space-y-8">
-        
-        {/* Header */}
-        <div className="flex flex-col gap-4 items-start md:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {tf("title")}
-            </h1>
-            <p className="text-muted-foreground">
-              {tf("welcome")}
-            </p>
-          </div>
-          <AddProduct />
-        </div>
+type OrderStatus =
+  | "PENDING"
+  | "PAID"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CONFIRMED"
+  | "CANCELLED";
 
-        {/* Stats */}
-        <div className="grid gap-6 md:grid-cols-4">
-          <StatCard title="Total Harvest" value="2,450 kg" icon={<Leaf />} />
-          <StatCard title="Available Lots" value="6" icon={<Package />} />
-          <StatCard title="Monthly Earnings" value="4,200 ETB" icon={<DollarSign />} />
-          <StatCard title="Demand Trend" value="High" icon={<TrendingUp />} />
-        </div>
+type Order = {
+  id: string;
+  status: OrderStatus;
+  items: { id: string }[];
+  user: {
+    first_name: string;
+  };
+};
 
-        {/* Main Grid */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          
-          {/* Harvest Status */}
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle>Harvest Progress</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <HarvestRow region="Yirgacheffe" progress={80} grade="Grade 1" />
-              <HarvestRow region="Sidamo" progress={55} grade="Grade 2" />
-              <HarvestRow region="Guji" progress={35} grade="Grade 1" />
-            </CardContent>
-          </Card>
+type Product = {
+  id: string;
+  product_name: string;
+  stock: number;
+  price: number;
+};
 
-          {/* Profile */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Farm Profile</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <MapPin size={16} /> Oromia, Ethiopia
-              </div>
-              <div>
-                Farm Size: <strong>3.2 hectares</strong>
-              </div>
-              <div>Certification:</div>
-              <div className="flex gap-2">
-                <Badge className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500">
-                  Organic
-                </Badge>
-                <Badge variant="outline">Fair Trade</Badge>
-              </div>
-              <Button variant="outline" className="w-full">
-                Edit Profile
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+type Alert = {
+  id: string;
+  message: string;
+};
 
-        {/* Sales */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Sales</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3 text-sm">
-              <SaleRow buyer="Export Buyer – Germany" amount="1,200 ETB" status="Completed" />
-              <SaleRow buyer="Local Cooperative" amount="850 ETB" status="Pending" />
-              <SaleRow buyer="Roastery – UAE" amount="2,150 ETB" status="Completed" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
+type DashboardData = {
+  stats: {
+    revenue: number;
+    totalOrders: number;
+    products: number;
+    rating: number;
+  };
+  recentOrders: Order[];
+  topProducts: Product[];
+  alerts: Alert[];
+};
+
+type Props = {
+  data: DashboardData;
+};
+
+/* ================= HELPERS ================= */
+
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("en-ET").format(value) + " ETB";
 }
 
-function StatCard({ title, value, icon }: { title: string; value: string; icon: React.ReactNode }) {
+function getStatusColor(status: OrderStatus) {
+  switch (status) {
+    case "DELIVERED":
+    case "CONFIRMED":
+      return "bg-emerald-600 text-white";
+    case "PENDING":
+      return "bg-yellow-500 text-white";
+    case "CANCELLED":
+      return "bg-red-500 text-white";
+    case "PROCESSING":
+      return "bg-blue-500 text-white";
+    case "SHIPPED":
+      return "bg-purple-500 text-white";
+    case "PAID":
+      return "bg-indigo-500 text-white";
+    default:
+      return "bg-gray-400 text-white";
+  }
+}
+
+/* ================= COMPONENTS ================= */
+
+function KPI({
+  title,
+  value,
+  icon,
+}: {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+}) {
   return (
-    <Card>
-      <CardContent className="flex items-center gap-4 p-6">
-        <div className="rounded-xl bg-emerald-100 p-3 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400 transition-colors">
-          {icon}
-        </div>
+    <Card className="border border-border">
+      <CardContent className="flex items-center justify-between p-4">
         <div>
           <p className="text-sm text-muted-foreground">{title}</p>
-          <p className="text-xl font-semibold">{value}</p>
+          <p className="text-2xl font-bold tracking-tight">{value}</p>
         </div>
+        <div className="text-muted-foreground">{icon}</div>
       </CardContent>
     </Card>
   );
 }
 
-function HarvestRow({ region, progress, grade }: { region: string; progress: number; grade: string }) {
+function OrderRow({ order }: { order: Order }) {
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between text-sm">
-        <span className="font-medium">{region}</span>
-        <Badge variant="secondary">{grade}</Badge>
+    <div className="flex justify-between items-center border rounded-lg p-3">
+      <div>
+        <p className="font-medium">{order.user.first_name}</p>
+        <p className="text-sm text-muted-foreground">
+          {order.items.length} items
+        </p>
       </div>
-      <Progress value={progress} />
+      <Badge className={getStatusColor(order.status)}>
+        {order.status}
+      </Badge>
     </div>
   );
 }
 
-function SaleRow({ buyer, amount, status }: { buyer: string; amount: string; status: string }) {
+function ProductCard({ product }: { product: Product }) {
+  const lowStock = product.stock < 5;
+
   return (
-    <div className="flex items-center justify-between rounded-lg border bg-card p-3 transition-colors">
-      <div>
-        <p className="font-medium">{buyer}</p>
-        <p className="text-emerald-600 dark:text-emerald-400">{amount}</p>
+    <Card className="border border-border">
+      <CardContent className="p-4 space-y-2">
+        <p className="font-semibold">{product.product_name}</p>
+
+        <p
+          className={`text-sm ${
+            lowStock ? "text-red-500" : "text-muted-foreground"
+          }`}
+        >
+          Stock: {product.stock}
+        </p>
+
+        <p className="text-emerald-600 font-medium">
+          {formatCurrency(product.price)}
+        </p>
+
+        {lowStock && (
+          <Badge className="bg-red-500 text-white text-xs">
+            Low Stock
+          </Badge>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function AlertRow({ alert }: { alert: Alert }) {
+  return (
+    <div className="flex items-center gap-2 rounded-md bg-red-50 dark:bg-red-900/20 p-2 text-sm text-red-600 dark:text-red-400">
+      <AlertTriangle size={16} />
+      {alert.message}
+    </div>
+  );
+}
+
+/* ================= MAIN ================= */
+
+export default function FarmerDashboard({ data }: Props) {
+  if (!data) {
+    return <div className="p-6">Loading dashboard...</div>;
+  }
+
+  const { stats, recentOrders, topProducts, alerts } = data;
+
+  return (
+    <div className="min-h-screen p-6 bg-background text-foreground">
+      <div className="max-w-7xl mx-auto space-y-6">
+
+        {/* HEADER */}
+        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">Farmer Dashboard</h1>
+            <p className="text-muted-foreground">
+              Overview of your coffee business
+            </p>
+          </div>
+          {/* <AddProduct /> */}
+        </div>
+
+        {/* KPI */}
+        <div className="grid gap-4 md:grid-cols-4">
+          <KPI
+            title="Revenue"
+            value={formatCurrency(stats.revenue)}
+            icon={<DollarSign />}
+          />
+          <KPI
+            title="Orders"
+            value={stats.totalOrders}
+            icon={<ShoppingCart />}
+          />
+          <KPI
+            title="Products"
+            value={stats.products}
+            icon={<Package />}
+          />
+          <KPI
+            title="Rating"
+            value={`${stats.rating} ⭐`}
+            icon={<Star />}
+          />
+        </div>
+
+        {/* MAIN GRID */}
+        <div className="grid gap-6 lg:grid-cols-3">
+
+          {/* ORDERS */}
+          <Card className="lg:col-span-2 border border-border">
+            <CardHeader>
+              <CardTitle>Recent Orders</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+            {!recentOrders || recentOrders.length === 0 ? (
+  <p className="text-muted-foreground text-sm">
+    No orders yet
+  </p>
+) : (
+  recentOrders.map((order) => (
+    <OrderRow key={order.id} order={order} />
+  ))
+)}
+            </CardContent>
+          </Card>
+
+          {/* ALERTS */}
+          <Card className="border border-border">
+            <CardHeader>
+              <CardTitle>Alerts</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {alerts?.length === 0 ? (
+                <p className="text-muted-foreground text-sm">
+                  No issues 
+                </p>
+              ) : (
+                alerts?.map((alert) => (
+                  <AlertRow key={alert.id} alert={alert} />
+                ))
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* PRODUCTS */}
+        <Card className="border border-border">
+          <CardHeader>
+            <CardTitle>Top Selling Products</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 md:grid-cols-3">
+            {topProducts?.length === 0 ? (
+              <p className="text-muted-foreground">
+                No products yet
+              </p>
+            ) : (
+              topProducts?.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            )}
+          </CardContent>
+        </Card>
       </div>
-      <Badge
-        className={
-          status === "Completed"
-            ? "bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500"
-            : ""
-        }
-        variant={status === "Completed" ? "default" : "outline"}
-      >
-        {status}
-      </Badge>
     </div>
   );
 }

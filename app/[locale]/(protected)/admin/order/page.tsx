@@ -7,7 +7,6 @@ import { redirect } from "next/navigation";
 
 export default async function OrdersPage() {
   const { userId } = await auth();
-
   if (!userId) redirect("/sign-in");
 
   // OPTIONAL: Check role from DB if ADMIN
@@ -29,7 +28,6 @@ export default async function OrdersPage() {
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-3xl font-bold">Orders Dashboard</h1>
 
       <OrdersTable
         orders={result.data}

@@ -15,6 +15,7 @@ import { ChevronDown } from "lucide-react";
 import { Input } from "../ui/input";
 import ReviewDialog from "../review/reviewDialog";
 import LoaderBtn from "../loaderBtn";
+import { useTranslations } from "next-intl";
 
 interface Props {
   orders: any[];
@@ -41,6 +42,8 @@ export default function OrdersTable({
 }: Props) {
   const [openOrder, setOpenOrder] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const to = useTranslations("orderspage");
+
   // Filter orders based on search
   const filteredOrders = orders.filter((order) => {
     const customerName =
@@ -70,16 +73,17 @@ export default function OrdersTable({
   return (
     <div className="space-y-6 transition-colors duration-500">
       {/* KPI CARDS */}
+      <h1 className="text-3xl font-extrabold text-center">{to("titile")}</h1>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
-          { label: "Total Orders", value: totalOrders },
+          { label: to("torders"), value: totalOrders },
           {
-            label: "Total Revenue",
+            label: to("trevenue"),
             value: `${totalRevenue?.toLocaleString()} ETB`,
           },
-          { label: "Pending Orders", value: statusStats?.PENDING || 0 },
-          { label: "Delivered Orders", value: statusStats?.DELIVERED || 0 },
-          { label: "Confirmed Orders", value: statusStats?.CONFIRMED || 0 },
+          { label: to("porders"), value: statusStats?.PENDING || 0 },
+          { label: to("dorders"), value: statusStats?.DELIVERED || 0 },
+          { label: to("conorders"), value: statusStats?.CONFIRMED || 0 },
         ].map((card, i) => (
           <Card
             key={i}

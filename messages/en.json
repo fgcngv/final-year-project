@@ -144,5 +144,17 @@
     "update":"Update Location",
     "updating":"Updating...",
     "confirm":"Confirm"
+  },
+  "orderspage":{
+    "titile":"Orders Dashboard",
+    "torders":"Total Orders",
+    "porders":"Pending Orders",
+    "trevenue":"Total Revenue",
+    "sorders":"Shipped Orders",
+    "dorders":"Delivered Orders",
+    "corders":"Cancelled Orders",
+    "norders":"No orders found",
+    "conorders":"Confirmed Orders",
+    "orderdetails":"Order Details"
   }
 }

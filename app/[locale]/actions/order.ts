@@ -12,109 +12,10 @@ interface CartItem {
   price: number;
 }
 
-// export const createOrder = async (items: CartItem[]) => {
-//   const { userId } = await auth();
-//   if (!userId) {
-//     return { success: false, error: true, message: "User not authenticated" };
-//   }
 
-//   const address = await prisma.address.findFirst({
-//     where: { userId },
-//   });
-
-//   if (!address) {
-//     return {
-//       success: false,
-//       error: true,
-//       message: "No address found, please save your address information!",
-//     };
-//   }
-
-//   try {
-//     const result = await prisma.$transaction(async (tx) => {
-//       // 0️ Find user's cart
-//       const cart = await tx.cart.findUnique({
-//         where: { user_id: userId },
-//         include: { items: true },
-//       });
-
-//       if (!cart || cart.items.length === 0) {
-//         throw new Error("Cart is empty");
-//       }
-
-//       // 1️ Create Order
-//       const order = await tx.order.create({
-//         data: {
-//           user_id: userId,
-//           address_id: address.id,
-//           status: "PENDING",
-//         },
-//       });
-
-//       let totalAmount = 0;
-
-//       // 2️ Create OrderItems (NO stock deduction here)
-//       for (const item of items) {
-//         const product = await tx.product.findUnique({
-//           where: { id: item.product_id },
-//         });
-
-//         if (!product) throw new Error("Product not found");
-//         if (product.status !== "ACTIVE") {
-//           throw new Error(`${product.product_name} is not available`);
-//         }
-//         if (product.stock < item.quantity) {
-//           throw new Error(`Insufficient stock for ${product.product_name}`);
-//         }
-
-//         await tx.orderItem.create({
-//           data: {
-//             order_id: order.id,
-//             product_id: product.id,
-//             quantity: item.quantity,
-//             price: product.price,
-//           },
-//         });
-
-//         totalAmount += product.price * item.quantity;
-//       }
-
-//       // 3️ Create Payment (UNPAID)
-//       const payment = await tx.payment.create({
-//         data: {
-//           order_id: order.id,
-//           user_id: userId,
-//           amount: totalAmount,
-//           method: "CARD",
-//           status: "UNPAID",
-//           provider: "CHAPA",
-//         },
-//       });
-
-//       // 4️ DELETE CART (IMPORTANT)
-//       await tx.cart.delete({
-//         where: { user_id: userId },
-//       });
-
-//       return { order, payment };
-//     });
-
-//     return {
-//       success: true,
-//       order_id: result.order.id,
-//       payment_id: result.payment.id,
-//       amount: result.payment.amount,
-//     };
-//   } catch (error: any) {
-//     console.error(error);
-//     return {
-//       success: false,
-//       message: error.message || "Order creation failed",
-//     };
-//   }
-// };
 export const createOrder = async (items: CartItem[]) => {
   const { userId } = await auth();
+
   if (!userId) {
     return { success: false, message: "User not authenticated" };
   }
@@ -129,19 +30,23 @@ export const createOrder = async (items: CartItem[]) => {
 
   try {
     const result = await prisma.$transaction(async (tx) => {
-      // 🔥 1. GET PRODUCTS WITH FARMER_ID
+
+      // 1. GET PRODUCTS
       const products = await tx.product.findMany({
         where: {
           id: { in: items.map((i) => i.product_id) },
         },
       });
 
-      // 🔥 2. GROUP BY FARMER
+      // 2. GROUP PRODUCTS BY FARMER
       const grouped: Record<string, any[]> = {};
 
       for (const item of items) {
         const product = products.find((p) => p.id === item.product_id);
-        if (!product) throw new Error("Product not found");
+
+        if (!product) {
+          throw new Error("Product not found");
+        }
 
         if (!grouped[product.farmer_id]) {
           grouped[product.farmer_id] = [];
@@ -156,8 +61,9 @@ export const createOrder = async (items: CartItem[]) => {
       let totalAmount = 0;
       const createdOrders = [];
 
-      // 🔥 3. CREATE ORDER PER FARMER
+      // 3. CREATE ORDER FOR EACH FARMER
       for (const farmerId in grouped) {
+
         const farmerItems = grouped[farmerId];
 
         const order = await tx.order.create({
@@ -169,10 +75,15 @@ export const createOrder = async (items: CartItem[]) => {
         });
 
         for (const item of farmerItems) {
+
+          // CHECK STOCK
           if (item.product.stock < item.quantity) {
-            throw new Error(`Insufficient stock for ${item.product.product_name}`);
+            throw new Error(
+              `Insufficient stock for ${item.product.product_name}`
+            );
           }
 
+          // CREATE ORDER ITEM
           await tx.orderItem.create({
             data: {
               order_id: order.id,
@@ -182,13 +93,33 @@ export const createOrder = async (items: CartItem[]) => {
             },
           });
 
+          // UPDATE STOCK
+          await tx.product.update({
+            where: { id: item.product.id },
+            data: {
+              stock: item.product.stock - item.quantity,
+            },
+          });
+
+          // CALCULATE TOTAL
           totalAmount += item.product.price * item.quantity;
+
+          // CREATE NOTIFICATION FOR FARMER
+          await tx.notification.create({
+            data: {
+              user_id: item.product.farmer_id,
+              title: "New Order Received",
+              message: `${item.quantity} x ${item.product.product_name} has been ordered.`,
+              type: "ORDER",
+              product_id: item.product.id,
+            },
+          });
         }
 
         createdOrders.push(order);
       }
 
-      // 🔥 4. CREATE ONE PAYMENT
+      // 4. CREATE PAYMENT
       const payment = await tx.payment.create({
         data: {
           user_id: userId,
@@ -199,20 +130,27 @@ export const createOrder = async (items: CartItem[]) => {
         },
       });
 
-      // 🔥 5. LINK ORDERS TO PAYMENT
+      // 5. LINK PAYMENT TO ORDERS
       for (const order of createdOrders) {
         await tx.order.update({
           where: { id: order.id },
-          data: { payment_id: payment.id },
+          data: {
+            payment_id: payment.id,
+          },
         });
       }
 
-      // 🔥 6. DELETE CART
+      // 6. DELETE CART
       await tx.cart.delete({
-        where: { user_id: userId },
+        where: {
+          user_id: userId,
+        },
       });
 
-      return { payment, orders: createdOrders };
+      return {
+        payment,
+        orders: createdOrders,
+      };
     });
 
     return {
@@ -220,6 +158,7 @@ export const createOrder = async (items: CartItem[]) => {
       payment_id: result.payment.id,
       amount: result.payment.amount,
     };
+
   } catch (error: any) {
     return {
       success: false,

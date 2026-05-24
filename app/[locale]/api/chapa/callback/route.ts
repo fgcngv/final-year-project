@@ -1,3 +1,6 @@
+
+
+// // api/chapa/callback/route.ts
 // import { NextResponse } from "next/server";
 // import prisma from "@/lib/prisma";
 
@@ -35,7 +38,7 @@
 //   const payment = await prisma.payment.findFirst({
 //     where: { transactionRef: tx_ref },
 //     include: {
-//       order: {
+//       orders: {
 //         include: { items: true },
 //       },
 //     },
@@ -45,10 +48,8 @@
 //     return NextResponse.redirect("/check-out/failed");
 //   }
 
-
-//   // data base transaction starts here
 //   await prisma.$transaction(async (tx) => {
-//     // mark payment as paid
+//     // 1. mark payment
 //     await tx.payment.update({
 //       where: { id: payment.id },
 //       data: {
@@ -56,65 +57,53 @@
 //         paidAt: new Date(),
 //       },
 //     });
-
-//     // mark order as paid
-//     await tx.order.update({
-//       where: { id: payment.order_id },
-//       data: { status: "PAID" },
-//     });
-
-//     // reduce stock
-//     for (const item of payment.order.items) {
-//       await tx.product.update({
-//         where: { id: item.product_id },
+  
+//     // 2. loop orders
+//     for (const order of payment.orders) {
+//       // mark order paid
+//       await tx.order.update({
+//         where: { id: order.id },
+//         data: { status: "PAID" },
+//       });
+  
+//       let totalAmount = 0;
+  
+//       for (const item of order.items) {
+//         await tx.product.update({
+//           where: { id: item.product_id },
+//           data: {
+//             stock: { decrement: item.quantity },
+//           },
+//         });
+  
+//         totalAmount += item.quantity * item.price;
+//       }
+  
+//       // 🔥 payout per farmer
+//       const firstProduct = await tx.product.findUnique({
+//         where: { id: order.items[0].product_id },
+//       });
+  
+//       await tx.payout.create({
 //         data: {
-//           stock: { decrement: item.quantity },
+//           order_id: order.id,
+//           farmer_id: firstProduct!.farmer_id,
+//           amount: totalAmount,
+//           status: "PENDING",
+//         },
+//       });
+  
+//       // 🔥 notification per order
+//       await tx.notification.create({
+//         data: {
+//           user_id: payment.user_id,
+//           title: "Payment Successful",
+//           message: `Order #${order.id.slice(0, 6)} placed`,
+//           type: "ORDER",
+//           order_id: order.id,
 //         },
 //       });
 //     }
-
-//     //  Delete user's cart (if exists)
-//     await tx.cart.deleteMany({
-//       where: { user_id: payment.user_id },
-//     });
-
-//     // 4️ Calculate total amount
-//     const totalAmount = payment.order.items.reduce(
-//       (sum, item) => sum + item.quantity * item.price,
-//       0
-//     );
-
-//     // 5️ Get farmer_id
-//     const firstProduct = await tx.product.findUnique({
-//       where: { id: payment.order.items[0].product_id },
-//     });
-
-//     if (!firstProduct) {
-//       throw new Error("Product not found for payout");
-//     }
-
-//     // 6️ CREATE PAYOUT
-//     await tx.payout.create({
-//       data: {
-//         order_id: payment.order_id,
-//         farmer_id: firstProduct.farmer_id,
-//         amount: totalAmount,
-//         status: "PENDING",
-//       },
-//     });
-
-
-//     // 7 SEND NOTIFICATION TO BUYER
-//     await tx.notification.create({
-//       data: {
-//         user_id: payment.user_id,
-//         title: " Payment Successful ",
-//         message: `Your order #${payment.order_id.slice(0, 6)} has been placed successfully.`,
-//         type: "ORDER",
-//         order_id: payment.order_id,
-//         priority: 2,
-//       },
-//     });
 //   });
 
 
@@ -125,6 +114,17 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+// api/chapa/callback/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -138,7 +138,8 @@ export async function GET(req: Request) {
   // console.log("Search Params:", searchParams.toString());
 
   if (!tx_ref) {
-    return NextResponse.redirect("/check-out/failed");
+    // return NextResponse.redirect("/check-out/failed");
+    return NextResponse.redirect(new URL("/check-out/failed", req.url));
   }
 
   const verifyRes = await fetch(
@@ -156,17 +157,10 @@ export async function GET(req: Request) {
 
   if (result.status !== "success" || result.data?.status !== "success") {
     // console.error("Chapa payment failed:", result);
-    return NextResponse.redirect("/check-out/failed");
+    // return NextResponse.redirect("/check-out/failed");
+    return NextResponse.redirect(new URL("/check-out/failed", req.url));
   }
 
-  // const payment = await prisma.payment.findFirst({
-  //   where: { transactionRef: tx_ref },
-  //   include: {
-  //     order: {
-  //       include: { items: true },
-  //     },
-  //   },
-  // });
   const payment = await prisma.payment.findFirst({
     where: { transactionRef: tx_ref },
     include: {
@@ -177,80 +171,9 @@ export async function GET(req: Request) {
   });
 
   if (!payment || payment.status === "PAID") {
-    return NextResponse.redirect("/check-out/failed");
+    // return NextResponse.redirect("/check-out/failed");
+    return NextResponse.redirect(new URL("/check-out/failed", req.url));
   }
-
-
-  // data base transaction starts here
-  // await prisma.$transaction(async (tx) => {
-  //   // mark payment as paid
-  //   await tx.payment.update({
-  //     where: { id: payment.id },
-  //     data: {
-  //       status: "PAID",
-  //       paidAt: new Date(),
-  //     },
-  //   });
-
-  //   // mark order as paid
-  //   await tx.order.update({
-  //     where: { id: payment.order_id },
-  //     data: { status: "PAID" },
-  //   });
-
-  //   // reduce stock
-  //   for (const item of payment.order.items) {
-  //     await tx.product.update({
-  //       where: { id: item.product_id },
-  //       data: {
-  //         stock: { decrement: item.quantity },
-  //       },
-  //     });
-  //   }
-
-  //   //  Delete user's cart (if exists)
-  //   await tx.cart.deleteMany({
-  //     where: { user_id: payment.user_id },
-  //   });
-
-  //   // 4️ Calculate total amount
-  //   const totalAmount = payment.order.items.reduce(
-  //     (sum, item) => sum + item.quantity * item.price,
-  //     0
-  //   );
-
-  //   // 5️ Get farmer_id
-  //   const firstProduct = await tx.product.findUnique({
-  //     where: { id: payment.order.items[0].product_id },
-  //   });
-
-  //   if (!firstProduct) {
-  //     throw new Error("Product not found for payout");
-  //   }
-
-  //   // 6️ CREATE PAYOUT
-  //   await tx.payout.create({
-  //     data: {
-  //       order_id: payment.order_id,
-  //       farmer_id: firstProduct.farmer_id,
-  //       amount: totalAmount,
-  //       status: "PENDING",
-  //     },
-  //   });
-
-
-  //   // 7 SEND NOTIFICATION TO BUYER
-  //   await tx.notification.create({
-  //     data: {
-  //       user_id: payment.user_id,
-  //       title: " Payment Successful ",
-  //       message: `Your order #${payment.order_id.slice(0, 6)} has been placed successfully.`,
-  //       type: "ORDER",
-  //       order_id: payment.order_id,
-  //       priority: 2,
-  //     },
-  //   });
-  // });
 
   await prisma.$transaction(async (tx) => {
     // 1. mark payment
@@ -261,7 +184,7 @@ export async function GET(req: Request) {
         paidAt: new Date(),
       },
     });
-  
+
     // 2. loop orders
     for (const order of payment.orders) {
       // mark order paid
@@ -269,9 +192,9 @@ export async function GET(req: Request) {
         where: { id: order.id },
         data: { status: "PAID" },
       });
-  
+
       let totalAmount = 0;
-  
+
       for (const item of order.items) {
         await tx.product.update({
           where: { id: item.product_id },
@@ -279,15 +202,15 @@ export async function GET(req: Request) {
             stock: { decrement: item.quantity },
           },
         });
-  
+
         totalAmount += item.quantity * item.price;
       }
-  
-      // 🔥 payout per farmer
+
+      // payout per farmer
       const firstProduct = await tx.product.findUnique({
         where: { id: order.items[0].product_id },
       });
-  
+
       await tx.payout.create({
         data: {
           order_id: order.id,
@@ -296,8 +219,8 @@ export async function GET(req: Request) {
           status: "PENDING",
         },
       });
-  
-      // 🔥 notification per order
+
+      //  notification per order
       await tx.notification.create({
         data: {
           user_id: payment.user_id,
@@ -310,6 +233,6 @@ export async function GET(req: Request) {
     }
   });
 
-
-  return NextResponse.redirect("/check-out/success");
+  // return NextResponse.redirect("/check-out/success");
+  return NextResponse.redirect(new URL("/check-out/success", req.url));
 }

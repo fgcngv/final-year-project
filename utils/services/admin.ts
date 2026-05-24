@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { startOfMonth } from "date-fns";
 
 
 export async function getUserById(id:string) {
@@ -148,7 +149,11 @@ export async function getUserLanguage({ id, userType }: LanguageProps) {
 export const getAllUsers = async () => {
 
   const {userId} = await auth();
-  if(!userId) return;
+  if(!userId) return {
+    success: false,
+    error: true,
+    message: "Unauthorized",
+  };
   try {
     // Fetch users and count at the same time
     const [users, totalUsers] = await Promise.all([
@@ -363,6 +368,121 @@ export const getAllOrderItems = async () => {
     };
   }
 };
+
+
+export async function getFarmerDashboard(farmerId: string) {
+  const startMonth = startOfMonth(new Date());
+
+  const [products, orderItems, payouts, farmer, reports] =
+    await Promise.all([
+      prisma.product.findMany({
+        where: { farmer_id: farmerId },
+      }),
+
+      prisma.orderItem.findMany({
+        where: {
+          product: { farmer_id: farmerId },
+        },
+        include: {
+          order: {
+            include: { user: true, },
+          },
+        },
+        // orderBy: { createdAt: "desc" }, // make sure this field exists
+        take: 5,
+      }),
+
+      prisma.payout.findMany({
+        where: {
+          farmer_id: farmerId,
+          status: "SENT",
+          sentAt: { gte: startMonth },
+        },
+      }),
+
+      prisma.farmer.findUnique({
+        where: { id: farmerId },
+      }),
+
+      prisma.report.findMany({
+        where: {
+          farmer_id: farmerId,
+          status: "PENDING",
+        },
+      }),
+    ]);
+
+  /* ================= STATS ================= */
+
+  const revenue = payouts.reduce((sum, p) => sum + p.amount, 0);
+
+  const totalOrders = orderItems.length;
+
+  const productsCount = products.length;
+
+  const rating = farmer?.avgRating || 0;
+
+  /* ================= RECENT ORDERS ================= */
+
+  const recentOrders = orderItems.map((item) => ({
+    id: item.id,
+    status: item.status,
+    items: [{ id: item.id }],
+    user: {
+      first_name: item.order.user.first_name,
+    },
+  }));
+
+  /* ================= TOP PRODUCTS ================= */
+
+  const productSalesMap: Record<string, number> = {};
+
+  orderItems.forEach((item) => {
+    const pid = item.product_id;
+    productSalesMap[pid] =
+      (productSalesMap[pid] || 0) + item.quantity;
+  });
+
+  const topProducts = products
+    .map((p) => ({
+      ...p,
+      sold: productSalesMap[p.id] || 0,
+    }))
+    .sort((a, b) => b.sold - a.sold)
+    .slice(0, 3);
+
+  /* ================= ALERTS ================= */
+
+  const alerts = [
+    // Low stock alerts
+    ...products
+      .filter((p) => p.stock < 5)
+      .map((p) => ({
+        id: p.id,
+        message: `${p.product_name} is low on stock`,
+      })),
+
+    // Reports
+    ...reports.map((r) => ({
+      id: r.id,
+      message: `New report: ${r.reason}`,
+    })),
+  ];
+
+  /* ================= FINAL RETURN ================= */
+
+  return {
+    stats: {
+      revenue,
+      totalOrders,
+      products: productsCount,
+      rating,
+    },
+    recentOrders,
+    topProducts,
+    alerts,
+  };
+}
 
 
 // export const getAllMessages = async() =>{

@@ -69,15 +69,16 @@ export const addToCart = async (product_id: string, quantity: number = 1) => {
     //  Remove stock decrement here
 
     // Optional: notify farmer that someone added to cart
-    await tx.notification.create({
-      data: {
-        user_id: product.farmer_id,
-        title: "Product Added to Cart",
-        message: `${product.product_name} has been added to a cart (${quantity})`,
-        type: "ORDER",
-        product_id: product.id,
-      },
-    });
+    
+    // await tx.notification.create({
+    //   data: {
+    //     user_id: product.farmer_id,
+    //     title: "Product Added to Cart",
+    //     message: `${product.product_name} has been added to a cart (${quantity})`,
+    //     type: "ORDER",
+    //     product_id: product.id,
+    //   },
+    // });
 
     return { success: true, message: "Added to cart!" };
   });

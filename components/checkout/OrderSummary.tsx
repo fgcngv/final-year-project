@@ -89,6 +89,7 @@ export default function OrderSummary({
         return;
       }
 
+
       window.location.href = data.checkout_url;
     } catch (err) {
       toast.error("Catch Error : Payment initialization failed");

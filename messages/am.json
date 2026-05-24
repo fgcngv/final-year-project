@@ -137,6 +137,17 @@
     "update":"አካባቢ አሻሽል",
     "confirm":"አረጋግጥ",
     "updating":"በማስገባት ላይ..."
-  }
-
+  },
+  "orderspage":{
+    "titile":"የትዕዛዞች ዳሽቦርድ",
+    "torders":"ጠቅላላ ትዕዛዞች",
+    "tproducts":"ጠቅላላ ምር�ቶች",
+    "trevenue":"ጠቅላላ ገቢ",
+    "porders":"ትዕዛዞችን በመጠባበቅ ላይ ያሉ ትዕዛዞች",
+    "sorders":"የተላኩ ትዕዛዞች",
+    "dorders":"የዳረሱ ትዕዛዞች",
+    "corders":"የተሰረዙ ትዕዛዞች",
+    "norders":"ምንም ትዕዛዞች አልተገኙም",
+    "conorders":"የተረጋገጡ ትዕዛዞች",
+    "orderdetails":"የትዕዛዝ ዝርዝሮች"  }
 }
