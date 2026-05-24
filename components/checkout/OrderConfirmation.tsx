@@ -173,7 +173,7 @@ import { Check, Package, Truck, Home, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/navigation";
 import LoaderBtn from "../loaderBtn";
 
 interface Order {
@@ -197,7 +197,7 @@ export default function OrderConfirmation({
   const totalItems = orders.reduce((sum, o) => sum + o.items.length, 0);
 
   const address = orders[0]?.address;
-  const router = useRouter();
+  // const router = useRouter();
 
   function formatDate(date: string) {
     return new Date(date).toLocaleDateString("en-US", {
