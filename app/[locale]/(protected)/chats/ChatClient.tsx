@@ -1,5 +1,3 @@
-
-
 // "use client";
 
 // import { useState } from "react";
@@ -19,13 +17,11 @@
 //   matches: ChatData[]
 // }
 
-
 // export default function ChatClient({ matches }: ChatProps) {
 //   console.log("matchesmatchesmatches : ",matches)
 //   const [chats] = useState(matches);
 //   const router = useRouter();
 //   const [loading, setLoading] = useState(false);
-  
 
 //   function formatTime(timestamp: string) {
 //     const date = new Date(timestamp);
@@ -43,7 +39,7 @@
 //   }
 
 //   const otherUserId = (matche:ChatData)=>{
-     
+
 //   }
 
 //   // return (
@@ -149,16 +145,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -177,20 +163,24 @@ interface ChatData {
 }
 
 interface ChatProps {
-  matches: ChatData[]
-  users?: User[]
-  userId?:string
-  headerQuantity?:number
-  unreadNotifition?:number
+  matches: ChatData[];
+  users?: User[];
+  userId?: string;
+  headerQuantity?: number;
+  unreadNotifition?: number;
 }
 
-
-export default function ChatClient({ matches,users,userId,headerQuantity,unreadNotifition }: ChatProps) {
-  console.log("matchesmatchesmatches : ",matches)
+export default function ChatClient({
+  matches,
+  users,
+  userId,
+  headerQuantity,
+  unreadNotifition,
+}: ChatProps) {
+  console.log("matchesmatchesmatches : ", matches);
   const [chats] = useState(matches);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  
 
   function formatTime(timestamp: string) {
     const date = new Date(timestamp);
@@ -207,9 +197,7 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
     return date.toLocaleDateString();
   }
 
-  const otherUserId = (matche:ChatData)=>{
-     
-  }
+  const otherUserId = (matche: ChatData) => {};
 
   if (loading) {
     return (
@@ -258,96 +246,96 @@ export default function ChatClient({ matches,users,userId,headerQuantity,unreadN
         ) : (
           <div className="max-w-2xl mx-auto bg-g">
             <div className=" flex flex-col bg-gray-300 gap-2 dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-              {chats.map((chat:any, key:any) => (
+              {chats.map((chat: any, key: any) => (
                 <Link
                   key={key}
                   href={`/chats/${chat.id}`}
                   className="block hover:bg-gray-50 dark:hover:bg-gray-700 active:bg-gray-900 transition-colors duration-200"
                 >
-                  {
-                    users && userId && (
-                        userId === chat.user1_id ? 
-                        users.map((user)=>(
-                          user.id === chat.user2_id && (
-                            <div key={user.id} className="flex bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 transition-colors">
-                            <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                              <img
-                                src="/image.png"
-                                // alt={chat.user.first_name}
-                                className="w-full h-full object-cover"
-                              />
-                              {chat.unreadCount > 0 && (
-                                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
-                                  {chat.unreadCount}
+                  {users &&
+                    userId &&
+                    (userId === chat.user1_id
+                      ? users.map(
+                          (user) =>
+                            user.id === chat.user2_id && (
+                              <div
+                                key={user.id}
+                                className="flex bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0 transition-colors"
+                              >
+                                <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                                  <img
+                                    src="/image.png"
+                                    // alt={chat.user.first_name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                  {chat.unreadCount > 0 && (
+                                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                                      {chat.unreadCount}
+                                    </div>
+                                  )}
                                 </div>
-                              )}
-                            </div>
-        
-                            <div className="flex-1 min-w-0 ml-4">
-                              <div className="flex items-center justify-between mb-1">
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
-                                  {user.first_name} {user.last_name}
-                                </h3>
-                                <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
-                                  {formatTime(chat.created_at)}
-                                </span>
-                              </div>
-        
-                              <div className="text-gray-600 dark:text-gray-400 space-y-1 text-sm">
-  <p className="truncate">{user.email}</p>
-  <p className="truncate">{user.language}</p>
-  <p className="truncate">{user.role}</p>
-</div>
-                            </div>
-                          </div>
-                          )
 
-                        ))
-                         :userId === chat.user2_id ?
-                         users.map((user)=>(
-                          user.id === chat.user1_id && (
-                            <div className="flex  bg-white hover:bg-gray-200  items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-                            <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                              <img
-                                src="/image.png"
-                                // alt={chat.user.first_name}
-                                className="w-full h-full object-cover"
-                              />
-                              {chat.unreadCount > 0 && (
-                                <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
-                                  {chat.unreadCount}
+                                <div className="flex-1 min-w-0 ml-4">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                                      {user.first_name} {user.last_name}
+                                    </h3>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
+                                      {formatTime(chat.created_at)}
+                                    </span>
+                                  </div>
+
+                                  <div className="text-gray-600 dark:text-gray-400 space-y-1 text-sm">
+                                    <p className="truncate">{user.email}</p>
+                                    <p className="truncate">{user.language}</p>
+                                    <p className="truncate">{user.role}</p>
+                                  </div>
                                 </div>
-                              )}
-                            </div>
-        
-                            <div className="flex-1 min-w-0 ml-4">
-                              <div className="flex items-center justify-between mb-1">
-                                <h3 className="text-lg  text-gray-900 dark:text-gray-800 truncate font-bold">
-                                  {user.first_name} {user.last_name}
-                                </h3>
-                                <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
-                                  {formatTime(chat.created_at)}
-                                </span>
                               </div>
-        
-                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {user.email}
-                              </p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {user.language}
-                              </p>
-                              <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
-                                {user.role}
-                              </p>
-                            </div>
-                          </div>
-                          )
+                            )
+                        )
+                      : userId === chat.user2_id
+                      ? users.map(
+                          (user) =>
+                            user.id === chat.user1_id && (
+                              <div className="flex  bg-white hover:bg-gray-200  items-center p-6 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                                <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                                  <img
+                                    src="/image.png"
+                                    // alt={chat.user.first_name}
+                                    className="w-full h-full object-cover"
+                                  />
+                                  {chat.unreadCount > 0 && (
+                                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                                      {chat.unreadCount}
+                                    </div>
+                                  )}
+                                </div>
 
-                        ))
-                          :null
-                   
-                    )
-                  }
+                                <div className="flex-1 min-w-0 ml-4">
+                                  <div className="flex items-center justify-between mb-1">
+                                    <h3 className="text-lg  text-gray-900 dark:text-gray-800 truncate font-bold">
+                                      {user.first_name} {user.last_name}
+                                    </h3>
+                                    <span className="text-sm text-gray-500 dark:text-gray-400 flex-shrink-0">
+                                      {formatTime(chat.created_at)}
+                                    </span>
+                                  </div>
+
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                                    {user.email}
+                                  </p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                                    {user.language}
+                                  </p>
+                                  <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
+                                    {user.role}
+                                  </p>
+                                </div>
+                              </div>
+                            )
+                        )
+                      : null)}
                 </Link>
               ))}
             </div>
