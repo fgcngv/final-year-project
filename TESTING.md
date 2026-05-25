@@ -92,7 +92,7 @@
 
 ---
 
-## Files:
+## Files:s
 `tests/chapa.initialize.test.ts`
 ![alt text](image-5.png)
 What is tested:
@@ -349,3 +349,92 @@ This ensures full system reliability from payment to farmer payout.
 
 ## Expected Result
 All createOrder business logic works correctly and safely handles failures.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- CHAT WORK FLOW -->
+
+1. Authentication (Clerk)
+User logs in using Clerk
+auth() gives userId
+Protected routes like /chats and /chats/[userId]
+2. Chat List Page (/chats)
+getUserMatches() fetches matches from Supabase
+Match = relationship between user1_id and user2_id
+You also fetch:
+Prisma users (for display info)
+notifications + cart count
+ChatClient renders all conversations
+3. Open Chat (/chats/[userId])
+Route receives otherUserId
+Checks if match exists in Supabase
+Fetches otherUser from Prisma
+Passes user into StreamChatInterface
+4. Stream Chat Initialization
+
+Inside StreamChatInterface:
+
+Calls getStreamUserToken()
+creates Stream user token
+connects user to Stream
+Calls createOrGetChannel(otherUserId)
+checks Supabase match exists
+creates deterministic Stream channel ID
+creates/gets Stream channel
+5. Real-Time Chat (Stream)
+channel.watch() subscribes to messages
+Loads last 50 messages from Stream
+Listens for:
+message.new
+typing.start / stop
+6. Sending Messages
+User types message
+channel.sendMessage({ text })
+Stream broadcasts message to both users instantly
+UI updates via event listener
+   Important Note
+   You are NOT storing messages in your database
+   Supabase sendMessage() is not part of real chat flow
+✅ Stream is the ONLY message system
+✅ Supabase is only for matches/users
+
+
+
+
+
+
+
+
+
+
+
+
+# Why Our Playwright Auth Test is Failing (Clerk MFA Issue)
+
+##  The Root Problem
+
+Your Playwright authentication test is failing because **Clerk Multi-Factor Authentication (MFA) is enabled**.
+
+Playwright cannot automatically complete MFA (OTP verification), so the login flow stops.
+
+---

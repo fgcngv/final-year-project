@@ -2,6 +2,7 @@
 
 "use client";
 
+// import { toggleWishlist } from "@/utils/services/wishlist";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { motion } from "framer-motion";
@@ -16,6 +17,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import FarmLocationMap from "./farmer/FarmLocationMap";
 import AddProduct from "./form/add-product";
+import { toggleWishlist } from "@/utils/services/wishlist";
 
 export default function ProductById({ product, isDashboard,cartQuantity,notification}: { product: any; isDashboard?: boolean, cartQuantity?:number,notification?:number}) {
   const [loadingId, setLoadingId] = useState<string | null>(null);
@@ -28,6 +30,10 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
 
   const { language } = LanguageTheme();
   const lang = language;
+
+  const [liked, setLiked] = useState(false);
+const [wishLoading, setWishLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 
   const handleAddToCart = async () => {
     if (quantity > product.stock) {
@@ -59,6 +65,21 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
     router.refresh();
   };
 
+
+  const handleWishlist = async () => {
+    setLoading(true);
+  
+    const res = await toggleWishlist(product.id);
+  
+    if (res.success) {
+      setLiked(!!res.liked);
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  
+    setLoading(false);
+  };
 
   return (
     <motion.div
@@ -184,14 +205,36 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
                     : `እቃ ቀሪ: ${product.stock}`} Kg
                 </span>
   
-                <Button className="flex items-center gap-2 rounded-xl px-6 py-3 text-base shadow-md hover:shadow-lg">
+                {/* <Button className="flex items-center gap-2 rounded-xl px-6 py-3 text-base shadow-md hover:shadow-lg">
                   <Heart size={18} />
                   {language === "ENGLISH"
                     ? " Add to Wishlist "
                     : language === "AFAN_OROMO"
                     ? " Tarree fedhitti dabali"
                     : "ወደ ፍላጎት ዝርዝር ጨምር"}
-                </Button>
+                </Button> */}
+<Button
+  onClick={handleWishlist}
+  disabled={wishLoading}
+  className={`flex items-center gap-2 rounded-xl px-6 py-3 text-base shadow-md hover:shadow-lg ${
+    liked ? "bg-red-500 text-white" : ""
+  }`}
+>
+  <Heart
+    size={18}
+    fill={liked ? "currentColor" : "none"}
+  />
+
+  {wishLoading
+    ? "Loading..."
+    : liked
+    ? "Remove from Wishlist"
+    : language === "ENGLISH"
+    ? "Add to Wishlist"
+    : language === "AFAN_OROMO"
+    ? "Tarree fedhitti dabali"
+    : "ወደ ፍላጎት ዝርዝር ጨምር"}
+</Button>
   
                 <Button
                   className="rounded-xl cursor-pointer bg-green-600 dark:bg-green-700 hover:bg-green-700 dark:hover:bg-green-800"
@@ -211,16 +254,16 @@ export default function ProductById({ product, isDashboard,cartQuantity,notifica
                     : "ወደ ግዢው ቅርጫት ጨምር"}
                 </Button>
   
-                <Button
+                {/* <Button
                   className="rounded-xl bg-blue-600 dark:bg-blue-700 text-white font-bold"
                   onClick={() => alert("Redirecting to checkout")}
                 >
                   {language === "ENGLISH"
-                    ? "Buy Now"
+                    ? "Buy Now dd"
                     : language === "AFAN_OROMO"
                     ? "Amma Biti"
                     : "አሁን ግዛ"}
-                </Button>
+                </Button> */}
               </div>
             )}
   

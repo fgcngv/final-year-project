@@ -8,8 +8,16 @@ import prisma from "../prisma";
 import { StreamClient } from "@stream-io/node-sdk";
 
 
+
+// getStreamUserToken() Does :
+    // verifies user is logged in
+    // gets user info from database
+    // creates Stream token
+    // registers user inside Stream
+
+    // Then returns everything to frontend.
 export async function getStreamUserToken() {
-  const supabase = await createClient();
+  // const supabase = await createClient();
 
   const {userId} = await auth();
 
@@ -17,6 +25,7 @@ export async function getStreamUserToken() {
     return { success: false, error: "User not authenticated" };
   }
 
+  // Fetch user data from Prisma
   const userData = await prisma.user.findUnique({
     where:{id:userId}
   })
@@ -26,19 +35,23 @@ export async function getStreamUserToken() {
     throw new Error("Failed to fetch user data");
   }
 
+  // Initialize Stream Chat server client
   const serverClient = StreamChat.getInstance(
     process.env.STREAM_API_KEY!,
     process.env.STREAM_SECRET_KEY!
   );
 
+  // Create a token for the authenticated user
   const token = serverClient.createToken(userId);
 
+  // Upsert the user in Stream Chat (create if not exists, otherwise update)
   await serverClient.upsertUser({
     id: userId,
     name: userData.first_name,
     image: userData.last_name || undefined,
   });
 
+  // Return token to frontend so it can connect to Stream Chat
   return {
     token,
     userId: userId,

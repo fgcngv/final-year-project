@@ -1,3 +1,6 @@
+// what this file does: This is the main chat client component that handles the UI and logic for a one-on-one chat using Stream Chat. It initializes the chat, loads messages, listens for new messages, and allows the user to send messages. It also includes a loading state while the chat is being set up.
+
+
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -54,6 +57,7 @@ export default function ChatClient({
     const tempId = crypto.randomUUID();
     const text = newMessage.trim();
 
+    // Optimistically add message to UI
     setMessages((prev) => [
       ...prev,
       {
@@ -68,8 +72,10 @@ export default function ChatClient({
     setNewMessage("");
 
     try {
+      // Send message to Stream Chat
       const res = await channel.sendMessage({ text });
 
+      // Update the optimistic message with real ID and timestamp from Stream
       setMessages((prev) =>
         prev.map((m) =>
           m.id === tempId
@@ -161,7 +167,7 @@ export default function ChatClient({
       } catch (err) {
         console.error("Failed to initialize chat:", err);
       } finally {
-        setLoading(false); // ✅ ADDED
+        setLoading(false); //  ADDED
       }
     }
 

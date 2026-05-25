@@ -1,5 +1,125 @@
 
 
+// // "use client";
+
+// // import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
+// // import { Button } from "./ui/button";
+// // import AnimatedTypewriter from "./ai-clone/animated_type";
+// // import { useState } from "react";
+// // import { Volume2, Sparkles } from "lucide-react";
+// // import { toast } from "sonner";
+// // import { Product } from "@prisma/client";
+
+// // // interface Product {
+// // //   id: string;
+// // //   product_name: string;
+// // // }
+
+// // // 🔊 SPEAK FUNCTION
+// // const speak = (text: string) => {
+// //   const utterance = new SpeechSynthesisUtterance(text);
+// //   utterance.lang = "en-US"; // later you can change to am-ET / om-ET
+// //   speechSynthesis.speak(utterance);
+// // };
+
+// // function AIProductDescription(product:Product) {
+// //   const [aiText, setAiText] = useState<string | null>(null);
+// //   const [loading, setLoading] = useState(false);
+
+// //   // const product: Product = {
+// //   //   id: "1",
+// //   //   product_name: "Yirgacheffe Coffee",
+// //   // };
+
+// //   // 🚀 GENERATE AI
+// //   const generateAI = async () => {
+// //     try {
+// //       setLoading(true);
+// //       const locale = "en";
+// //               const res = await fetch(`/${locale}/api/generate-description`,  {
+// //         method: "POST",
+// //         headers: {
+// //           "Content-Type": "application/json",
+// //         },
+// //         body: JSON.stringify({
+// //           name: product.product_name,
+// //           category: "Coffee",
+// //         }),
+// //       });
+
+// //       if (!res.ok) throw new Error("API failed");
+
+// //       const data = await res.json();
+
+// //       setAiText(data.description);
+
+// //       console.log("Ai text : ",aiText)
+
+// //     } catch (error) {
+// //       console.error(error);
+// //       toast.error("AI failed to generate description");
+// //     } finally {
+// //       setLoading(false);
+// //     }
+// //   };
+
+// //   return (
+// //     <div className="flex justify-center mt-10">
+// //       <Card className="max-w-xl w-full shadow-xl rounded-2xl">
+// //         <CardHeader>
+// //           <CardTitle className="text-center text-xl">
+// //             🤖 AI Product Description
+// //           </CardTitle>
+// //         </CardHeader>
+
+// //         <CardContent>
+// //           {/* AI TEXT */}
+// //           {aiText ? (
+// //             <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
+// //               <AnimatedTypewriter response={[aiText]} />
+// //             </div>
+// //           ) : (
+// //             <p className="text-gray-500 text-center">
+// //               Click AI button to generate description
+// //             </p>
+// //           )}
+// //         </CardContent>
+
+// //         <CardFooter className="flex gap-3 justify-center">
+// //           {/* GENERATE BUTTON */}
+// //           <Button
+// //             onClick={generateAI}
+// //             className="bg-purple-600 text-white flex items-center gap-2"
+// //           >
+// //             <Sparkles size={18} />
+// //             {loading ? "Generating..." : "Generate AI"}
+// //           </Button>
+
+// //           {/* SPEAK BUTTON */}
+// //           <Button
+// //             onClick={() => aiText && speak(aiText)}
+// //             disabled={!aiText}
+// //             className="bg-green-600 text-white"
+// //           >
+// //             <Volume2 />
+// //           </Button>
+// //         </CardFooter>
+// //       </Card>
+// //     </div>
+// //   );
+// // }
+
+// // export default AIProductDescription;
+
+
+
+
+
+
+
+
+
+
 // "use client";
 
 // import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
@@ -10,41 +130,49 @@
 // import { toast } from "sonner";
 // import { Product } from "@prisma/client";
 
-// // interface Product {
-// //   id: string;
-// //   product_name: string;
-// // }
-
-// // 🔊 SPEAK FUNCTION
+// //  SPEAK FUNCTION
 // const speak = (text: string) => {
+//   if (!text) return;
 //   const utterance = new SpeechSynthesisUtterance(text);
-//   utterance.lang = "en-US"; // later you can change to am-ET / om-ET
+//   utterance.lang = "en-US"; // can add am-ET / om-ET later
 //   speechSynthesis.speak(utterance);
 // };
 
-// function AIProductDescription(product:Product) {
+// // 🔹 CREATE PROMPT USING REAL PRODUCT DATA
+// const createPrompt = (product: Product) => {
+//   return `
+// You are a coffee expert writing an engaging product description for online shoppers.
+
+// Include the following details in a friendly, persuasive way:
+// - Name: ${product.product_name}
+// - Price: $${product.price.toFixed(2)}
+// - Stock: ${product.stock} available
+// - Product details: ${product.product_detail || "No extra details"}
+// - Emphasize flavor, origin, and sustainability if known
+// - Include brewing tips and why it’s unique
+// Keep it concise, clear, and attractive for buyers.
+// `;
+// };
+
+// interface AIProductDescriptionProps {
+//   product: Product;
+// }
+
+// export default function AIProductDescription({ product }: AIProductDescriptionProps) {
 //   const [aiText, setAiText] = useState<string | null>(null);
 //   const [loading, setLoading] = useState(false);
 
-//   // const product: Product = {
-//   //   id: "1",
-//   //   product_name: "Yirgacheffe Coffee",
-//   // };
-
-//   // 🚀 GENERATE AI
 //   const generateAI = async () => {
 //     try {
 //       setLoading(true);
+//       const prompt = createPrompt(product);
+
+
 //       const locale = "en";
-//               const res = await fetch(`/${locale}/api/generate-description`,  {
+//       const res = await fetch(`/${locale}/api/generate-description`, {
 //         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           name: product.product_name,
-//           category: "Coffee",
-//         }),
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ prompt }),
 //       });
 
 //       if (!res.ok) throw new Error("API failed");
@@ -52,8 +180,7 @@
 //       const data = await res.json();
 
 //       setAiText(data.description);
-
-//       console.log("Ai text : ",aiText)
+//       console.log("AI generated text:", data.description);
 
 //     } catch (error) {
 //       console.error(error);
@@ -67,13 +194,10 @@
 //     <div className="flex justify-center mt-10">
 //       <Card className="max-w-xl w-full shadow-xl rounded-2xl">
 //         <CardHeader>
-//           <CardTitle className="text-center text-xl">
-//             🤖 AI Product Description
-//           </CardTitle>
+//           <CardTitle className="text-center text-xl">🤖 AI Product Description</CardTitle>
 //         </CardHeader>
 
 //         <CardContent>
-//           {/* AI TEXT */}
 //           {aiText ? (
 //             <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
 //               <AnimatedTypewriter response={[aiText]} />
@@ -86,18 +210,17 @@
 //         </CardContent>
 
 //         <CardFooter className="flex gap-3 justify-center">
-//           {/* GENERATE BUTTON */}
 //           <Button
 //             onClick={generateAI}
 //             className="bg-purple-600 text-white flex items-center gap-2"
+//             disabled={loading}
 //           >
 //             <Sparkles size={18} />
 //             {loading ? "Generating..." : "Generate AI"}
 //           </Button>
 
-//           {/* SPEAK BUTTON */}
 //           <Button
-//             onClick={() => aiText && speak(aiText)}
+//             onClick={() => speak(aiText!)}
 //             disabled={!aiText}
 //             className="bg-green-600 text-white"
 //           >
@@ -109,7 +232,9 @@
 //   );
 // }
 
-// export default AIProductDescription;
+
+
+
 
 
 
@@ -122,107 +247,95 @@
 
 "use client";
 
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+
 import { Button } from "./ui/button";
 import AnimatedTypewriter from "./ai-clone/animated_type";
 import { useState } from "react";
-import { Volume2, Sparkles } from "lucide-react";
-import { toast } from "sonner";
+import { Volume2, Info } from "lucide-react";
 import { Product } from "@prisma/client";
 
-// 🔊 SPEAK FUNCTION
+// 🔊 TEXT TO SPEECH
 const speak = (text: string) => {
   if (!text) return;
+
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US"; // can add am-ET / om-ET later
+  utterance.lang = "en-US";
+
   speechSynthesis.speak(utterance);
-};
-
-// 🔹 CREATE PROMPT USING REAL PRODUCT DATA
-const createPrompt = (product: Product) => {
-  return `
-You are a coffee expert writing an engaging product description for online shoppers.
-
-Include the following details in a friendly, persuasive way:
-- Name: ${product.product_name}
-- Price: $${product.price.toFixed(2)}
-- Stock: ${product.stock} available
-- Product details: ${product.product_detail || "No extra details"}
-- Emphasize flavor, origin, and sustainability if known
-- Include brewing tips and why it’s unique
-Keep it concise, clear, and attractive for buyers.
-`;
 };
 
 interface AIProductDescriptionProps {
   product: Product;
 }
 
-export default function AIProductDescription({ product }: AIProductDescriptionProps) {
-  const [aiText, setAiText] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+export default function AIProductDescription({
+  product,
+}: AIProductDescriptionProps) {
+  const [productInfo, setProductInfo] = useState<string>("");
 
-  const generateAI = async () => {
-    try {
-      setLoading(true);
-      const prompt = createPrompt(product);
+  // GENERATE PRODUCT INFO FROM DATABASE
+  const generateProductInfo = () => {
+    const info = `
+${product.product_name} is a premium Ethiopian coffee product.
 
+The current price is ${product.price} ETB.
 
-      const locale = "en";
-      const res = await fetch(`/${locale}/api/generate-description`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
+There are currently ${product.stock} kilograms available in stock.
 
-      if (!res.ok) throw new Error("API failed");
+Product Status: ${product.status}.
 
-      const data = await res.json();
+Description:
+${product.product_detail || "No additional product details available."}
 
-      setAiText(data.description);
-      console.log("AI generated text:", data.description);
+This coffee product is carefully prepared and supplied directly from local Ethiopian farmers to ensure freshness and quality.
+`;
 
-    } catch (error) {
-      console.error(error);
-      toast.error("AI failed to generate description");
-    } finally {
-      setLoading(false);
-    }
+    setProductInfo(info);
   };
 
   return (
-    <div className="flex justify-center mt-10">
-      <Card className="max-w-xl w-full shadow-xl rounded-2xl">
+    <div className="flex justify-center mt-10 px-4">
+      <Card className="w-full max-w-xl shadow-xl rounded-2xl">
         <CardHeader>
-          <CardTitle className="text-center text-xl">🤖 AI Product Description</CardTitle>
+          <CardTitle className="text-center text-2xl font-bold text-green-700">
+            Product Informations
+          </CardTitle>
         </CardHeader>
 
         <CardContent>
-          {aiText ? (
+          {productInfo ? (
             <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-xl">
-              <AnimatedTypewriter response={[aiText]} />
+              <AnimatedTypewriter response={[productInfo]} />
             </div>
           ) : (
-            <p className="text-gray-500 text-center">
-              Click AI button to generate description
+            <p className="text-center text-gray-500">
+              Click the button below to view product information.
             </p>
           )}
         </CardContent>
 
-        <CardFooter className="flex gap-3 justify-center">
+        <CardFooter className="flex justify-center gap-3">
+          {/* PRODUCT INFO BUTTON */}
           <Button
-            onClick={generateAI}
-            className="bg-purple-600 text-white flex items-center gap-2"
-            disabled={loading}
+            onClick={generateProductInfo}
+            className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
           >
-            <Sparkles size={18} />
-            {loading ? "Generating..." : "Generate AI"}
+            <Info size={18} />
+            Product Infos
           </Button>
 
+          {/* SPEAK BUTTON */}
           <Button
-            onClick={() => speak(aiText!)}
-            disabled={!aiText}
-            className="bg-green-600 text-white"
+            onClick={() => speak(productInfo)}
+            disabled={!productInfo}
+            className="bg-blue-600 hover:bg-blue-700 text-white"
           >
             <Volume2 />
           </Button>

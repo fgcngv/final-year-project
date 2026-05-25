@@ -317,14 +317,14 @@ transition-colors"
                       />
                     </Link>
 
-                    <Button
+                    {/* <Button
                       onClick={() => handleBuyNow(product.id)}
                       variant="secondary"
                       className="absolute bottom-3 right-3 bg-blue-700 text-white hover:bg-blue-600"
                       disabled={product.stock === 0}
                     >
-                      {tb("buy")}
-                    </Button>
+                      {tb("buy")}wk
+                    </Button> */}
                   </div>
 
                   {/* CONTENT */}

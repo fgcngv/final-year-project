@@ -36,30 +36,56 @@ export async function getPotentialMatches(): Promise<any[]> {
 }
 
 
+// export async function getUserMatches() {
+//   const supabase = await createClient();
+//   const {userId} = await auth();
+
+//   if (!userId) throw new Error("Not authenticated.");
+
+//   const { data: matches, error } = await supabase
+//   .from("matches")
+//   .select("*")
+//   .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
+//   .eq("is_active", true);
+
+// console.log("SERVER matches:", matches);
+// console.log("SERVER error:", error);
+
+
+//   if (error) throw new Error("Failed to fetch matches");
+
+
+//   for (const match of matches || []) {
+//     const otherUserId =
+//       match.user1_id === userId ? match.user2_id : match.user1_id;
+
+//   }
+
+//   return matches;
+// }
+
 export async function getUserMatches() {
-  const supabase = await createClient();
-  const {userId} = await auth();
+  try {
+    const supabase = await createClient();
+    const { userId } = await auth();
 
-  if (!userId) throw new Error("Not authenticated.");
+    // Safe fallback instead of crashing app
+    if (!userId) return [];
 
-  const { data: matches, error } = await supabase
-  .from("matches")
-  .select("*")
-  .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
-  .eq("is_active", true);
+    const { data: matches, error } = await supabase
+      .from("matches")
+      .select("*")
+      .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
+      .eq("is_active", true);
 
-console.log("SERVER matches:", matches);
-console.log("SERVER error:", error);
+    if (error) {
+      console.error(error);
+      return [];
+    }
 
-
-  if (error) throw new Error("Failed to fetch matches");
-
-
-  for (const match of matches || []) {
-    const otherUserId =
-      match.user1_id === userId ? match.user2_id : match.user1_id;
-
+    return matches || [];
+  } catch (error) {
+    console.error("getUserMatches error:", error);
+    return [];
   }
-
-  return matches;
 }

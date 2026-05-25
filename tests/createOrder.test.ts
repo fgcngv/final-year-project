@@ -24,15 +24,25 @@ vi.mock("@/lib/prisma", () => ({
 
     product: {
       findMany: vi.fn(),
+      update: vi.fn(),
+    },
+    
+    notification: {
+      create: vi.fn(),
     },
 
     order: {
       create: vi.fn(),
-      update: vi.fn(),
+      update: vi.fn().mockResolvedValue({
+        id: "order1",
+        payment_id: "payment1",
+      }),
     },
 
     orderItem: {
-      create: vi.fn(),
+      create: vi.fn().mockResolvedValue({
+        id: "item1",
+      }),
     },
 
     payment: {
@@ -40,12 +50,19 @@ vi.mock("@/lib/prisma", () => ({
     },
 
     cart: {
-      delete: vi.fn(),
+      delete: vi.fn().mockResolvedValue(true),
     },
 
-    $transaction: vi.fn(async (callback) => {
-      return callback(prisma);
-    }),
+    $transaction: vi.fn(async (callback) =>
+      callback({
+        product: prisma.product,
+        order: prisma.order,
+        orderItem: prisma.orderItem,
+        payment: prisma.payment,
+        cart: prisma.cart,
+        notification: prisma.notification,
+      })
+    ),
   },
 }));
 
