@@ -67,14 +67,14 @@ export function UserStatusDropdown({
 <Select value={status} onValueChange={handleChange} disabled={loading}>
       <SelectTrigger className="w-32">
         {/* Display the current status inside the trigger */}
-        <SelectValue placeholder="Select Status">{status}</SelectValue>
+        <SelectValue placeholder="Select Status">{status==="DORMANT"?"WARNING":status}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectItem className="bg-blue-700 font-bold text-white" value="ACTIVE">
           ACTIVE
         </SelectItem>
         <SelectItem className="bg-yellow-500 font-bold text-white" value="DORMANT">
-          DORMANT
+          WARNING
         </SelectItem>
         <SelectItem className="bg-red-600 font-bold text-white" value="INACTIVE">
           INACTIVE

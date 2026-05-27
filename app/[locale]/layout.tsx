@@ -16,13 +16,14 @@ import { getAllUnreadNotifications } from "@/utils/services/notification";
 import Footer from "@/components/footer";
 import { routing } from "@/i18n/routing";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import LanguageProvider from "@/Providers/LanguageProvider";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { auth } from "@clerk/nextjs/server";
 import { trackUserSession } from "./actions/sessionTrack";
 import { setUserDefaultRole } from "./actions/general";
+import { checkUserStatus } from "@/utils/auth/checkUserStatus";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -76,6 +77,13 @@ export default async function RootLayout({
 
   const notification = await getAllUnreadNotifications();
 
+
+  const userStatus = await checkUserStatus(userId??"");
+  console.log("user sttatus check", userStatus)
+
+  if (userStatus === "INACTIVE") {
+    redirect("/en/blocked");
+  }
   return (
     <ClerkProvider>
      <html lang={locale}>

@@ -1,144 +1,12 @@
-
-
-// // api/chapa/callback/route.ts
-// import { NextResponse } from "next/server";
-// import prisma from "@/lib/prisma";
-
-// export async function GET(req: Request) {
-//   // console.log(" CHAPA CALLBACK HIT");
-//   // console.log("Full URL:", req.url);
-
-//   const { searchParams } = new URL(req.url);
-//   const tx_ref = searchParams.get("tx_ref");
-
-//   // console.log("Search Params:", searchParams.toString());
-
-//   if (!tx_ref) {
-//     return NextResponse.redirect("/check-out/failed");
-//   }
-
-//   const verifyRes = await fetch(
-//     `${process.env.CHAPA_BASE_URL}/v1/transaction/verify/${tx_ref}`,
-//     {
-//       headers: {
-//         Authorization: `Bearer ${process.env.CHAPA_SECRET_KEY}`,
-//       },
-//     }
-//   );
-
-//   const result = await verifyRes.json();
-
-//   // console.log("CHAPA VERIFY RESULT:", result);
-
-//   if (result.status !== "success" || result.data?.status !== "success") {
-//     // console.error("Chapa payment failed:", result);
-//     return NextResponse.redirect("/check-out/failed");
-//   }
-
-//   const payment = await prisma.payment.findFirst({
-//     where: { transactionRef: tx_ref },
-//     include: {
-//       orders: {
-//         include: { items: true },
-//       },
-//     },
-//   });
-
-//   if (!payment || payment.status === "PAID") {
-//     return NextResponse.redirect("/check-out/failed");
-//   }
-
-//   await prisma.$transaction(async (tx) => {
-//     // 1. mark payment
-//     await tx.payment.update({
-//       where: { id: payment.id },
-//       data: {
-//         status: "PAID",
-//         paidAt: new Date(),
-//       },
-//     });
-  
-//     // 2. loop orders
-//     for (const order of payment.orders) {
-//       // mark order paid
-//       await tx.order.update({
-//         where: { id: order.id },
-//         data: { status: "PAID" },
-//       });
-  
-//       let totalAmount = 0;
-  
-//       for (const item of order.items) {
-//         await tx.product.update({
-//           where: { id: item.product_id },
-//           data: {
-//             stock: { decrement: item.quantity },
-//           },
-//         });
-  
-//         totalAmount += item.quantity * item.price;
-//       }
-  
-//       // 🔥 payout per farmer
-//       const firstProduct = await tx.product.findUnique({
-//         where: { id: order.items[0].product_id },
-//       });
-  
-//       await tx.payout.create({
-//         data: {
-//           order_id: order.id,
-//           farmer_id: firstProduct!.farmer_id,
-//           amount: totalAmount,
-//           status: "PENDING",
-//         },
-//       });
-  
-//       // 🔥 notification per order
-//       await tx.notification.create({
-//         data: {
-//           user_id: payment.user_id,
-//           title: "Payment Successful",
-//           message: `Order #${order.id.slice(0, 6)} placed`,
-//           type: "ORDER",
-//           order_id: order.id,
-//         },
-//       });
-//     }
-//   });
-
-
-//   return NextResponse.redirect("/check-out/success");
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // api/chapa/callback/route.ts
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: Request) {
-  // console.log(" CHAPA CALLBACK HIT");
-  // console.log("Full URL:", req.url);
-
   const { searchParams } = new URL(req.url);
   const tx_ref = searchParams.get("tx_ref");
 
-  // console.log("Search Params:", searchParams.toString());
-
   if (!tx_ref) {
-    // return NextResponse.redirect("/check-out/failed");
     return NextResponse.redirect(new URL("/check-out/failed", req.url));
   }
 
@@ -153,11 +21,7 @@ export async function GET(req: Request) {
 
   const result = await verifyRes.json();
 
-  // console.log("CHAPA VERIFY RESULT:", result);
-
   if (result.status !== "success" || result.data?.status !== "success") {
-    // console.error("Chapa payment failed:", result);
-    // return NextResponse.redirect("/check-out/failed");
     return NextResponse.redirect(new URL("/check-out/failed", req.url));
   }
 
@@ -171,7 +35,6 @@ export async function GET(req: Request) {
   });
 
   if (!payment || payment.status === "PAID") {
-    // return NextResponse.redirect("/check-out/failed");
     return NextResponse.redirect(new URL("/check-out/failed", req.url));
   }
 
@@ -233,6 +96,57 @@ export async function GET(req: Request) {
     }
   });
 
-  // return NextResponse.redirect("/check-out/success");
   return NextResponse.redirect(new URL("/check-out/success", req.url));
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// # Chapa Payment Callback Flow (`api/chapa/callback/route.ts`)
+
+// This route handles the payment verification callback after a user completes payment using Chapa.
+
+// ---
+
+// # Main Purpose
+
+// When Chapa redirects back to the application after payment:
+
+// 1. Verify payment with Chapa API
+// 2. Update payment status in database
+// 3. Update order status
+// 4. Reduce product stock
+// 5. Create farmer payout records
+// 6. Create user notifications
+// 7. Redirect user to success or failed page
+
+// ---
+
+// # Step-by-Step Flow
+
+// ## 1. Receive Callback Request
+
+// ```ts
+// export async function GET(req: Request)

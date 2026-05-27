@@ -191,11 +191,11 @@ export default function OrdersTable({
                                       Qty: {item.quantity}
                                     </p>
                                   </div>
-                                  <ReviewDialog
+                                  {/* <ReviewDialog
                                     order_id={order.id}
                                     product_id={item.product.id}
                                     isAllowed={false}
-                                  />
+                                  /> */}
                                   <LoaderBtn
                                     className="bg-green-800 text-gray-200"
                                     btnName="Product Detail"

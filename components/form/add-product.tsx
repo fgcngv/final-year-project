@@ -47,18 +47,6 @@ export default function AddProduct({ isEdit = false, product }: AddProductProps)
   const [loading, setLoading] = useState(false);
   const tf = useTranslations("form");
 
-  // const form = useForm({
-  //   resolver: zodResolver(AddProductSchema),
-  //   defaultValues: {
-  //     product_name: "",
-  //     image: undefined,
-  //     price: 0,
-  //     quantity: 0,
-  //     product_detail: "",
-  //     status: "active",
-  //   },
-  // });
-  
   const form = useForm({
     resolver: zodResolver(AddProductSchema),
     defaultValues: {
@@ -71,58 +59,6 @@ export default function AddProduct({ isEdit = false, product }: AddProductProps)
     },
   });
 
-
-  // const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
-  //   values
-  // ) => {
-  //   if (!id) return;
-
-  //   setLoading(true);
-
-  //   try {
-  //     const file = values.image;
-
-  //     if (!file) {
-  //       toast.error("Image is required");
-  //       return;
-  //     }
-
-  //     // Generate unique filename
-  //     const fileExt = file.name.split(".").pop();
-  //     const fileName = `${id}-${Date.now()}.${fileExt}`;
-
-  //     // Upload image
-  //     const { error } = await supabase.storage
-  //       .from("Ethiopian-green-coffee-product-images")
-  //       .upload(fileName, file);
-
-  //     if (error) throw new Error(error.message);
-
-  //     // Get public URL
-  //     const { data } = supabase.storage
-  //       .from("Ethiopian-green-coffee-product-images")
-  //       .getPublicUrl(fileName);
-
-  //     const imageUrl = data.publicUrl;
-
-  //     // Send to backend
-  //     const added = await addProduct({
-  //       farmer_id: id,
-  //       values: {
-  //         ...values,
-  //         image: imageUrl,
-  //       },
-  //     });
-
-  //     toast.success(added.message);
-  //     router.refresh();
-  //     form.reset();
-  //   } catch (err: any) {
-  //     toast.error(err.message || "Upload failed");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const onSubmit: SubmitHandler<z.infer<typeof AddProductSchema>> = async (
     values
