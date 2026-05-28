@@ -1,9 +1,7 @@
-"use server"
+"use server";
 
 import prisma from "@/lib/prisma";
 import { Language, Role, Status } from "@prisma/client";
-
-
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
@@ -38,71 +36,75 @@ export const setUserDefaultRole = async (userId: string) => {
   }
 };
 
-
-
 export async function deleteDataById(
-    id: string,
-  
-    deleteType: "user" | "farmer" | "product" | "order" | "order_item" | "cart" | "cart_item" | "wishlist"
-  ) {
-    try {
-      switch (deleteType) {
-        case "user":
-          await prisma.user.delete({ where: { id: id } });
-          break;
-  
-        case "farmer":
-          await prisma.farmer.delete({ where: { id: id } });
-          break;
-  
-        case "product":
-          await prisma.product.delete({ where: { id: id } });
-          break;
-  
-        case "order":
-          await prisma.order.delete({ where: { id: id } });
-          break;
+  id: string,
 
-        case "cart":
-          await prisma.cart.delete({ where: { id: id } });
-          break;
+  deleteType:
+    | "user"
+    | "farmer"
+    | "product"
+    | "order"
+    | "order_item"
+    | "cart"
+    | "cart_item"
+    | "wishlist"
+) {
+  try {
+    switch (deleteType) {
+      case "user":
+        await prisma.user.delete({ where: { id: id } });
+        break;
 
-        case "cart_item" :
-          await prisma.cartItem.delete({ where: { id: id } });
-          break;
+      case "farmer":
+        await prisma.farmer.delete({ where: { id: id } });
+        break;
 
-        case "order_item" :
-            await prisma.orderItem.delete({where:{id:id}});
-            break;
+      case "product":
+        await prisma.product.delete({ where: { id: id } });
+        break;
 
-        case "wishlist":
-            await prisma.wishlist.delete({where:{id:id}});
-      }
-  
-  
-      return {
-        success: true,
-        message: "Data deleted successfully",
-        status: 200,
-      };
-    } catch (error) {
-      console.log(error);
-  
-      return {
-        success: false,
-        message: "Internal Server Error",
-        status: 500,
-      };
+      case "order":
+        await prisma.order.delete({ where: { id: id } });
+        break;
+
+      case "cart":
+        await prisma.cart.delete({ where: { id: id } });
+        break;
+
+      case "cart_item":
+        await prisma.cartItem.delete({ where: { id: id } });
+        break;
+
+      case "order_item":
+        await prisma.orderItem.delete({ where: { id: id } });
+        break;
+
+      case "wishlist":
+        await prisma.wishlist.delete({ where: { id: id } });
     }
-  }
-  
 
-  interface ProductProps {
-    farmer_id?:string,
-    product_id?:string,
-    values:any
+    return {
+      success: true,
+      message: "Data deleted successfully",
+      status: 200,
+    };
+  } catch (error) {
+    console.log(error);
+
+    return {
+      success: false,
+      message: "Internal Server Error",
+      status: 500,
+    };
   }
-  
+}
+
+interface ProductProps {
+  farmer_id?: string;
+  product_id?: string;
+  values: any;
+}
+
 // export const addProduct = async ({ farmer_id, values }: ProductProps) => {
 //   try {
 //     // 1️ Create product
@@ -159,7 +161,6 @@ export async function deleteDataById(
 //     };
 //   }
 // };
-
 
 export const addProduct = async ({ farmer_id, values }: ProductProps) => {
   try {
@@ -260,10 +261,9 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
     }
 
     // 7. Execute all notifications
-    await Promise.all([
-      ...userNotifications,
-      farmerNotification,
-    ].filter(Boolean));
+    await Promise.all(
+      [...userNotifications, farmerNotification].filter(Boolean)
+    );
 
     return {
       success: true,
@@ -281,8 +281,6 @@ export const addProduct = async ({ farmer_id, values }: ProductProps) => {
     };
   }
 };
-
-
 
 export const updateProduct = async ({
   product_id,
@@ -320,19 +318,16 @@ export const updateProduct = async ({
   }
 };
 
-
-
 interface FarmerRegistrationProps {
-  id:string
-  first_name:string
-  last_name: string
-  email:string
-  address?:string | null
-  language:Language
-  role: Role
-  status:Status
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  address?: string | null;
+  language: Language;
+  role: Role;
+  status: Status;
 }
-
 
 export const registerFarmer = async ({
   id,
@@ -354,27 +349,21 @@ export const registerFarmer = async ({
         address: address || null,
 
         language:
-          Language[language as keyof typeof Language] ??
-          Language.ENGLISH,
+          Language[language as keyof typeof Language] ?? Language.ENGLISH,
 
-        role:
-          Role[role as keyof typeof Role] ??
-          Role.SELLER,
+        role: Role[role as keyof typeof Role] ?? Role.SELLER,
 
-        status:
-          Status[status as keyof typeof Status] ??
-          Status.ACTIVE,
+        status: Status[status as keyof typeof Status] ?? Status.ACTIVE,
       },
     });
 
-        // 2Update Clerk role to "seller"
-        const client = await clerkClient();
-        await client.users.updateUser(id, {
-          publicMetadata: {
-            role: "farmer", // upgrade buyer → seller
-          },
-        });
-    
+    // 2Update Clerk role to "seller"
+    const client = await clerkClient();
+    await client.users.updateUser(id, {
+      publicMetadata: {
+        role: "farmer", // upgrade buyer → seller
+      },
+    });
 
     return {
       success: true,
@@ -401,7 +390,6 @@ export const registerFarmer = async ({
     };
   }
 };
-
 
 export const updateFarmer = async ({
   id,
@@ -447,7 +435,6 @@ export const updateFarmer = async ({
     };
   }
 };
-
 
 export const updateUserProfile = async ({
   id,
@@ -498,8 +485,6 @@ export const updateUserProfile = async ({
     };
   }
 };
-
-
 
 export const updateFarmerLocation = async ({
   latitude,

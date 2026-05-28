@@ -3,27 +3,31 @@
 import prisma from "@/lib/prisma";
 import { ContactFormSchema } from "@/lib/schema";
 
-export async function AddContact(values: unknown) {
-  const parsed = ContactFormSchema.safeParse(values);
-
-  if (!parsed.success) {
-    return {
-      success: false,
-      message: "Invalid form data",
-    };
-  }
-
+export const AddContact = async (
+  rawData: unknown
+) => {
   try {
-    await prisma.contact.create({
-      data: parsed.data,
-    });
+    // SERVER-SIDE VALIDATION
+    const validated =
+      ContactFormSchema.parse(rawData);
 
-    return { success: true };
-  } catch (error) {
-    console.error("Prisma error:", error);
+    const contact =
+      await prisma.contact.create({
+        data: validated,
+      });
+
+    return {
+      success: true,
+      data: contact,
+    };
+  } catch (error: any) {
+    console.error(error);
+
     return {
       success: false,
-      message: "Failed to submit message",
+      message:
+        error?.message ||
+        "Failed to send message",
     };
   }
-}
+};

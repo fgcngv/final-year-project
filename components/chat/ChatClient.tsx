@@ -1,4 +1,5 @@
-// what this file does: This is the main chat client component that handles the UI and logic for a one-on-one chat using Stream Chat. It initializes the chat, loads messages, listens for new messages, and allows the user to send messages. It also includes a loading state while the chat is being set up.
+// what this file does: This is the main chat client component that handles the UI and logic for a one-on-one chat using Stream Chat.
+//  It initializes the chat, loads messages, listens for new messages, and allows the user to send messages. It also includes a loading state while the chat is being set up.
 
 
 "use client";
@@ -12,7 +13,6 @@ import {
 } from "@/lib/chatActions/stream";
 import { ArrowRight, Coffee, Video } from "lucide-react";
 import Header from "../header";
-import { toast } from "sonner";
 
 interface ChatClientProps {
   otherUser: User;
@@ -102,25 +102,30 @@ export default function ChatClient({
 
     async function initChat() {
       try {
-        setLoading(true); // ✅ ADDED
+        setLoading(true); 
 
         const { token, userId, userName, userImage } =
           await getStreamUserToken();
 
+          //Create the Stream chat client SDK instance.
         chatClient = StreamChat.getInstance("v58enct5fzhv");
 
+        //Authenticate the current user with Stream. "Login this user into chat"
         await chatClient.connectUser(
           { id: userId!, name: userName, image: userImage },
           token
         );
 
+        //checks if chat exists,creates chat if not
         const { channelType, channelId } = await createOrGetChannel(
           otherUser.id
         );
 
+        //Get a reference to the conversation.
         chatChannel = chatClient.channel(channelType!, channelId);
-        await chatChannel.watch();
+        await chatChannel.watch();//activate realtime listening
 
+        // SELECT last 50 messages FROM conversation
         const state = await chatChannel.query({ messages: { limit: 50 } });
 
         setMessages(
@@ -156,6 +161,7 @@ export default function ChatClient({
           );
         };
 
+        // Listening for New Messages
         chatChannel.on("message.new", onNewMessage);
 
         setClient(chatClient);
@@ -197,14 +203,7 @@ export default function ChatClient({
               </div>
             </div>
 
-            <button
-              onClick={() =>
-                toast.success("Hid kezi video call min yiseralehal!!")
-              }
-              className="p-3 rounded-full hover:bg-[#3B2316]"
-            >
-              <Video />
-            </button>
+
           </div>
 
           {/* Messages */}

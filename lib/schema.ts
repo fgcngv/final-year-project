@@ -36,28 +36,138 @@ export const AddProductSchema = z.object({
     }),
 });
 
+// Allows letters, numbers, spaces, and common punctuation
+const safeTextRegex = /^[a-zA-Z0-9\s,.'!?@#&()\-_:;/]+$/
+
+// Name: letters + spaces + apostrophes + hyphens only
+const nameRegex = /^[a-zA-Z\s'-]+$/
+
+// Prevent emojis
+const noEmojiRegex = /^[^\p{Extended_Pictographic}]+$/u
+
+// export const ContactFormSchema = z.object({
+//   name: z
+//     .string()
+//     .trim()
+//     .min(2, { message: "Name must be at least 2 characters long" })
+//     .max(50, { message: "Name must be less than 50 characters" })
+//     .regex(nameRegex, {
+//       message:
+//         "Name can only contain letters, spaces, apostrophes, and hyphens",
+//     })
+//     .regex(noEmojiRegex, {
+//       message: "Emoji are not allowed in name",
+//     }),
+
+//   email: z
+//     .string()
+//     .trim()
+//     .min(1, { message: "Email is required" })
+//     .max(100, { message: "Email is too long" })
+//     .email({ message: "Please enter a valid email address" }),
+
+//   subject: z
+//     .string()
+//     .trim()
+//     .min(3, { message: "Subject must be at least 3 characters long" })
+//     .max(100, { message: "Subject must be less than 100 characters" })
+//     .regex(safeTextRegex, {
+//       message: "Subject contains invalid characters",
+//     })
+//     .regex(noEmojiRegex, {
+//       message: "Emoji are not allowed in subject",
+//     }),
+
+//   message: z
+//     .string()
+//     .trim()
+//     .min(10, { message: "Message must be at least 10 characters long" })
+//     .max(1000, { message: "Message must be less than 1000 characters" })
+//     .regex(safeTextRegex, {
+//       message: "Message contains invalid characters",
+//     })
+//     .regex(noEmojiRegex, {
+//       message: "Emoji are not allowed in message",
+//     }),
+// })
+
 
 
 export const ContactFormSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long" })
-    .max(50, { message: "Name must be less than 50 characters" }),
+    .trim()
+    .min(2, {
+      message:
+        "Name must be at least 2 characters long",
+    })
+    .max(50, {
+      message:
+        "Name must be less than 50 characters",
+    })
+    .regex(nameRegex, {
+      message:
+        "Name can only contain letters, spaces, apostrophes, and hyphens",
+    })
+    .regex(noEmojiRegex, {
+      message:
+        "Emoji are not allowed in name",
+    }),
 
   email: z
     .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
+    .trim()
+    .min(1, {
+      message: "Email is required",
+    })
+    .max(100, {
+      message: "Email is too long",
+    })
+    .email({
+      message:
+        "Please enter a valid email address",
+    }),
 
-  subject: z.string(),
+  subject: z
+    .string()
+    .trim()
+    .min(3, {
+      message:
+        "Subject must be at least 3 characters",
+    })
+    .max(100, {
+      message:
+        "Subject must be less than 100 characters",
+    })
+    .regex(safeTextRegex, {
+      message:
+        "Subject contains invalid characters",
+    })
+    .regex(noEmojiRegex, {
+      message:
+        "Emoji are not allowed in subject",
+    }),
+
   message: z
     .string()
-    .min(10, { message: "Message must be at least 10 characters long" })
-    .max(1000, { message: "Message must be less than 1000 characters" }),
+    .trim()
+    .min(10, {
+      message:
+        "Message must be at least 10 characters long",
+    })
+    .max(1000, {
+      message:
+        "Message must be less than 1000 characters",
+    })
+    .regex(safeTextRegex, {
+      message:
+        "Message contains invalid characters",
+    })
+    .regex(noEmojiRegex, {
+      message:
+        "Emoji are not allowed in message",
+    }),
 });
-
-
-// address schema 
 
 export const addressSchema = z.object({
   fullName: z.string().min(2),
@@ -74,16 +184,78 @@ export const addressSchema = z.object({
 })
 
 
+
+const addressRegex = /^[a-zA-Z0-9\s,.'/#-]+$/
+
 export const FarmerRegistrationSchema = z.object({
-  first_name:z.string().min(2," name should be greater than 1 character").trim(),
-  last_name:z.string().min(2," name should be greater than 1 character").trim(),  
+  first_name: z
+    .string()
+    .trim()
+    .min(2, {
+      message: "First name should be greater than 1 character",
+    })
+    .max(50, {
+      message: "First name must be less than 50 characters",
+    })
+    .regex(nameRegex, {
+      message:
+        "First name can only contain letters, spaces, apostrophes, and hyphens",
+    })
+    .regex(noEmojiRegex, {
+      message: "Emoji are not allowed in first name",
+    }),
+
+  last_name: z
+    .string()
+    .trim()
+    .min(2, {
+      message: "Last name should be greater than 1 character",
+    })
+    .max(50, {
+      message: "Last name must be less than 50 characters",
+    })
+    .regex(nameRegex, {
+      message:
+        "Last name can only contain letters, spaces, apostrophes, and hyphens",
+    })
+    .regex(noEmojiRegex, {
+      message: "Emoji are not allowed in last name",
+    }),
+
   email: z
     .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email address" }),
-    address:z.string().min(2," address should be greater than 1 character").trim(), 
-    image: z.any().optional(),
-  language: z.string().default("ENGLISH"), 
-  role: z.string().default("SELLER"), 
-  status: z.string().default("ACTIVE"),
-});
+    .trim()
+    .min(1, {
+      message: "Email is required",
+    })
+    .max(100, {
+      message: "Email is too long",
+    })
+    .email({
+      message: "Please enter a valid email address",
+    }),
+
+  address: z
+    .string()
+    .trim()
+    .min(2, {
+      message: "Address should be greater than 1 character",
+    })
+    .max(255, {
+      message: "Address must be less than 255 characters",
+    })
+    .regex(addressRegex, {
+      message: "Address contains invalid characters",
+    })
+    .regex(noEmojiRegex, {
+      message: "Emoji are not allowed in address",
+    }),
+
+  image: z.any().optional(),
+
+  language: z.enum(["ENGLISH"]).default("ENGLISH"),
+
+  role: z.enum(["SELLER"]).default("SELLER"),
+
+  status: z.enum(["ACTIVE"]).default("ACTIVE"),
+})
